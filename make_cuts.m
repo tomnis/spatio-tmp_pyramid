@@ -1,7 +1,7 @@
 % dim.protate specifies probability of 'rotating' a cut
 % dim => struct containing start_frame, end_frame, xlen, ylen, dim.protate
 function [cuts] = make_cuts(level, cuts, dim)
-
+	
 	for j= 1:2^(level-1)
 		% generate randomly rotated cuts
 		if (rand(1) < dim.protate)
