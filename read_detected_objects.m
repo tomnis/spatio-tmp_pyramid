@@ -5,7 +5,7 @@ dirlist = dir(path2);
 % get rid of . and ..
 dirlist(1:2) = [];
 for i = 1:length(dirlist)
-  objects{i} = dirlist(i).name
+  objects{i} = dirlist(i).name;
 end
 
 %%% reading best scoring detected objects
