@@ -7,12 +7,9 @@ function [hist] = compute_hist(feats, nlevels, dim)
 
 	% level 0 is the entire shot
 	for level = 0:nlevels-1
-		level
-		% build the histogram for the current level
 		% add another set of cuts 
 		cuts = make_cuts(level, cuts, dim);
 		% compute the histogram for the current level
-
-		hist = [hist compute_cur_hist(feats, cuts, level, dim)];
+		hist = [hist; compute_cur_hist(feats, cuts, level, dim)];
 	end
 end
