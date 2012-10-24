@@ -22,9 +22,9 @@ path3 = [path0 'ADL_detected_objects/testset/passive/'];  %% detected passive ob
 load tempfile
 
 
-%object_type = 'active_passive'
-object_type = 'passive'
-nlevels = 3
+object_type = 'active_passive'
+%object_type = 'passive'
+nlevels = 1
 protate = 0.5
 dim = struct('start_frame', 1, 'end_frame', 1000, 'xlen', 1280, 'ylen', 960, 'protate', protate);
 
