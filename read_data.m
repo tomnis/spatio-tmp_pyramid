@@ -1,4 +1,4 @@
-function [data best_s_active best_s_passive frs objects_active objects_passive] = read_data(person_ids, path1, path2, path3)
+function [data best_s_active best_s_passive locations_active locations_passive frs objects_active objects_passive] = read_data(person_ids, path1, path2, path3)
 k = 0;
 for i = person_ids
   fname = [path1 'P_' sprintf('%0.2d', i) '.txt']
@@ -23,8 +23,8 @@ for k = 1:length(data.label)
 end
 
 %%% reading best scoring detected objects
-[best_s_active frs_active objects_active] = read_detected_objects(path2, person_ids);
-[best_s_passive frs_passive objects_passive] = read_detected_objects(path3, person_ids);
+[best_s_active locations_active frs_active objects_active] = read_detected_objects(path2, person_ids);
+[best_s_passive locations_passive frs_passive objects_passive] = read_detected_objects(path3, person_ids);
 
 for i = 1:length(frs_passive)
   assert(isequal(frs_active{i}, frs_passive{i}));
