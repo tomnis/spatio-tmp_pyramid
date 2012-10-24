@@ -4,7 +4,9 @@
 function [bin_label] = bin(f, cuts, dim)
 	assert(isequal(size(f), [1,3]));
 	bin_label = 0;
-	
+	cuts;
+	size(cuts.xcuts);
+	size(cuts.xcuts,1);
 	% x := 2x or x := 2x +1 as necessary
 	for i=1:size(cuts.xcuts,1)
 		bin_label = 2 * bin_label + compare(f, cuts.xcuts(i,:), dim);
@@ -26,6 +28,7 @@ end
 function [c] = compare(f, cut, dim)
 	% get normal vector to this cut plane 
 	% for equation of the form ax + by + cz = d, a normal vector is given by [a b c]
+
 	nrm = cut(1:3);
 	
 	% compute the nearest point on the cut plane, then see which point is closer to the origin
