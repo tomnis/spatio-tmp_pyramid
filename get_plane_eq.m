@@ -4,6 +4,6 @@
 function [eq] = get_plane_eq(p1, p2, p3)
 	nrm = get_normal(p1, p2, p3);
 	d = dot(nrm, p1);
-	eq = [nrm, d]
+	eq = [nrm, d];
 	assert(isequal(size(eq), [1,4]));
 end
