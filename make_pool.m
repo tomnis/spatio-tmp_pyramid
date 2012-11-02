@@ -1,3 +1,5 @@
+% pool{i}(j) => size 2^(j-1), the unique cuts made for level j of the ith partition scheme
+%
 % used in boosting
 % the boosting algo requires that we are able to represent a 
 % pool of partition schemas without computing corresponding histograms,
@@ -8,14 +10,15 @@
 
 % TODO add a way to specify only partitioning along the temporal dimension
 % TODO Some overlap with make_cuts.m, should be refactored
+% TODO should add a way to make regular cuts
 function [pool] = make_pool(num_partitions, num_levels, protate)
 	assert(protate >= 0.0 && protate <= 1.0)
 
 	for i = 1:num_partitions
-		pool(i) = make_partition(num_levels, protate);
+		pool{i} = make_partition(num_levels, protate);
 	end
-	
 end
+
 
 % partition is set of xcuts, ycuts, zcuts,
 % level i has 2^i - 1 planar cuts

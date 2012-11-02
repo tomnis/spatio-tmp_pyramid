@@ -1,5 +1,7 @@
+% used in compute_hist, but should be able to compute a histogram for already existing cuts...
+% make next level of cuts, then compute level of histogram, alternate between the two
 % dim.protate specifies probability of 'rotating' a cut
-% dim => struct containing start_frame, end_frame, xlen, ylen, dim.protate
+% dim => struct containing start_frame, end_frame, xlen, ylen, protate
 function [cuts] = make_cuts(level, cuts, dim)
 	
 	for j= 1:2^(level-1)
