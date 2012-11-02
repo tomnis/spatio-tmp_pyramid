@@ -2,9 +2,11 @@
 % output is strong classifier
 function [f] = boost(data, partitions, target_accuracy)
 
+num_clips = length(data.label);
+
 for pattern = partitions
 	% randomly sample a subset of the clips
-
+	sampleinds = sort(randsample(num_clips, randi(num_clips)));
 	% represent each clip in the subset using pattern
 
 	% train an svm classifier on the subset
@@ -16,8 +18,8 @@ c = length(unique(data.label));
 
 % each w_i = 1 / c * number of clips with label c_i
 % inversely proportional to class size, to prevent unbalanced sample sizes
-for i=1:length(data.label)
-	weights(i) = 1 / (c * length(find(data.label == data.label{i})))
+for i=1:num_clips
+	weights(i) = 1 / (c * length(find(data.label == data.label(i))));
 end
 
 j = 0;
