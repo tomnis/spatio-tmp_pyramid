@@ -24,8 +24,9 @@ load tempfile
 
 object_type = 'active_passive'
 %object_type = 'passive'
-nlevels = 2
+nlevels = 4
 protate = 0.8
+% initially start_frame and end_frame set to dummy values
 dim = struct('start_frame', 1, 'end_frame', 1000, 'xlen', 1280, 'ylen', 960, 'protate', protate);
 
 
@@ -63,6 +64,14 @@ assert(isequal(size(data.locs), size(data.best_s)));
 
 dim.num_feat_types = size(data.best_s{1},1);
 
+%%% now make the partition scheme
+partition = make_pool(1, nlevels, dim.protate);
+partition = partition{1};
+
+
+
+
+
 % compute feature histograms for each clip
 for k=1:length(data.label)
 	clear feats
@@ -96,7 +105,7 @@ for k=1:length(data.label)
 		end
 	end
 
-	data.feat(:,k) = compute_hist(feats, nlevels, dim);
+	data.feat(:,k) = compute_hist(feats, nlevels, dim, partition);
 end
 
 data.feat = bsxfun(@rdivide, data.feat, sum(data.feat, 1) + eps); %% normalizing
