@@ -12,24 +12,25 @@
 % TODO Some overlap with make_cuts.m, should be refactored
 % TODO should add a way to make regular cuts
 % num_partitions -> number of partitions in the pool
-% max_level -> return cuts for levels [0..max_level + 1]
+% num_levels -> return partitions for levels [0..num_levels-1]
 % protate -> probability of independently rotating each planar cut
-function [pool] = make_pool(num_partitions, max_level, protate)
+function [pool] = make_pool(num_partitions, num_levels, protate)
 	assert(protate >= 0.0 && protate <= 1.0);
 	assert(num_partitions > 0);
-	assert(max_level > 0);
+	assert(num_levels > 0);
 
 	for i = 1:num_partitions
-		pool{i} = make_partition(max_level, protate);
+		pool{i} = make_partition(num_levels, protate);
 	end
 end
 
 
 % partition is set of xcuts, ycuts, zcuts,
+% level 0 is the entire unpartitioned clip, no need to explicitly represent
 % level i has 2^i - 1 planar cuts
-function [partition] = make_partition(max_level, protate)
+function [partition] = make_partition(num_levels, protate)
 	% for i levels, we need a total of 2^i -1 cuts
-	for level = 1:max_level
+	for level = 1:num_levels-1
 		partition(level) = make_cut_fracs(level, protate);
 	end
 end
