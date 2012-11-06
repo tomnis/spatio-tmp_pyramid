@@ -12,7 +12,6 @@ function [cut_eqs] = apply_partition(partition, xlen, ylen, start_frame, end_fra
 	% for each level in the partition scheme
 	for lvl = length(partition)
 		cut_eqs(lvl) = struct('xcuts', [], 'ycuts', [], 'zcuts', []);
-
 		
 		level = partition(lvl);
 
