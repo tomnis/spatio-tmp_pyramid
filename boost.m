@@ -107,6 +107,9 @@ while accuracy < target_accuracy && j < 10
 	accuracy = mean(strong_class_indicator);
 	accuracies(j) = accuracy;
 end
+	f.alpha = alpha;
+	f.min_class_classifiers = min_class_classifiers;
+	f.accuracies = accuracies;
 end
 
 
