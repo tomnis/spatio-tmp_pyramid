@@ -3,6 +3,7 @@
 function [f] = boost(data, partitions, target_accuracy, num_levels, dim)
 data
 
+spatial_cuts = dim.spatial_cuts;
 labels = unique(data.label);
 n_label = length(labels);
 clear map1

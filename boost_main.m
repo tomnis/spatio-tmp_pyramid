@@ -1,12 +1,12 @@
 load tempfile
 
 pool_size = 20;
-num_levels = 2;
-protate = 0.8;
+num_levels = 3;
+protate = 0;
 target_accuracy = .5;
 object_type = 'active_passive';
-
-dim = struct('start_frame', 1, 'end_frame', 1000, 'xlen', 1280, 'ylen', 960, 'protate', protate);
+spatial_cuts = 0;
+dim = struct('start_frame', 1, 'end_frame', 1000, 'xlen', 1280, 'ylen', 960, 'protate', protate, 'spatial_cuts', spatial_cuts);
 
 % assign the best scores to each clip
 compute_scores
