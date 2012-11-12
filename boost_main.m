@@ -1,6 +1,6 @@
 load tempfile
 
-pool_size = 10;
+pool_size = 20;
 num_levels = 2;
 protate = 0.8;
 target_accuracy = .5;
