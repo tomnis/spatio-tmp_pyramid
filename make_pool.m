@@ -1,6 +1,6 @@
 % pool{i}(j) => size 2^(j-1), the unique cuts made for level j of the ith partition scheme
 %
-% used in boosting
+% used in boosting and prepare_data
 % the boosting algo requires that we are able to represent a 
 % pool of partition schemas without computing corresponding histograms,
 % so generate the pool.
@@ -9,7 +9,6 @@
 % algo to find the actual cuts
 
 % TODO add a way to specify only partitioning along the temporal dimension
-% TODO Some overlap with make_cuts.m, should be refactored
 % TODO should add a way to make regular cuts
 % num_partitions -> number of partitions in the pool
 % num_levels -> return partitions for levels [0..num_levels-1]
