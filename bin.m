@@ -38,9 +38,7 @@ function [c] = compare(f, cut, dim)
 	p_prime = nrm * cut(4) / norm(nrm);
 	p = f + (dot(nrm, p_prime) - dot(nrm, f)) * nrm;
 
-
-	% TODO verify this is the correct way to represent the origin
-	origin = [0 0 dim.start_frame];
+	origin = [1 1 dim.start_frame];
 	c = dist(f, origin) >= dist(p, origin);
 	assert(c == 0 || c == 1)
 end
