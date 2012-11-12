@@ -1,4 +1,4 @@
-function [avg stddev] = run_all(protate, num_itrs)
+function [stats] = run_all(protate, num_itrs, spatial_cuts)
 setup
 
 show_confn = 0;
@@ -25,11 +25,12 @@ for itr = 1:num_itrs
 	accuracy(itr,:) = itr_accuracy;
 end
 
-for i=1:size(accuracy,2)
-	avg(i) = mean(accuracy(:,i));
-	stddev(i) = std(accuracy(:,i));
-end
+stats = struct('avg', [], 'stddev', [], 'min', [], 'max', []);
 
-avg
-stddev
+for i=1:size(accuracy,2)
+	stats.avg(i) = mean(accuracy(:,i));
+	stats.stddev(i) = std(accuracy(:,i));
+	stats.min(i) = min(accuracy(:,i));
+	stats.max(i) = max(accuracy(:,i));
+end
 end
