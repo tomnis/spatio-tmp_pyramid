@@ -9,11 +9,14 @@ n_label = length(labels);
 clear map1
 map1(labels+1) = [1:n_label]; %% mapping the action labels to a new label set.
 
+data_prime = data;
 
 % for each partition pattern
 for prt_num = 1:length(partitions)
 	partition = partitions{prt_num};
-	
+
+	% do we need to reset data to its prior state?
+	data = data_prime;
 	% represent each clip in the subset using partition pattern
 	compute_feats
 	data
@@ -40,19 +43,15 @@ for prt_num = 1:length(partitions)
     f3 = [f3 f2(1:100)];
   end
 
+	% select the training examples to use
   x_train1 = x_train(:, f3);
   y_train1 = y_train(:, f3);
-	
-%	y_train_size = size(y_train1) % 1 x n
-%	y_train_type = class(y_train1) % double
-%	length(y_train1)
 	
 	allsampleinds{prt_num} = sampleinds;
 	classifiers(prt_num) = svmtrain(y_train1', x_train1', '-c 1 -t 0');
 end
 
-
-% weight vector w
+% initialize the weight vector w
 weights = zeros(length(data.label), 1);
 c = length(unique(data.label));
 
@@ -66,29 +65,34 @@ j = 0;
 accuracy = 0;
 accuracies = [];
 while accuracy < target_accuracy && j < 10
+	err = [];
+	
 	% for each clip, update the weight
 	weights = weights ./ sum(weights);
 	j = j+1;
 
+	% TODO need to track the specific indicator that led to the minimum score
 	% for each pattern, compute classification error
 	% should be dot(weights, I) where I is indicator of incorrect prediction
+	x_test = data.feat';
+	y_test = map1(data.label+1)';
+	
+	% compute the pattern which gives min err
+	min_err = length(weights);
+	min_pat_ind = 1;
 	for pattern_ind = 1:length(partitions)
-		% find the clips that were not used to train this classifier
-		%f1 = setdiff([1:length(data.label)], allsampleinds{pattern_ind});
- 	  f1 = [1:length(data.label)];
-		x_test = data.feat(:, f1);
-  	y_test = data.label(:, f1);
-  	y_test = map1(y_test+1);
-
-		y_pred = svmpredict(y_test', x_test', classifiers(pattern_ind));
-		
+		y_pred = svmpredict(y_test, x_test, classifiers(pattern_ind));
 		indicator = y_pred' ~= data.label;
 		
-		err(pattern_ind) = dot(weights, indicator);
+		cur_err = dot(weights, indicator);
+		
+		% if we find a new minimum, store the error and the pattern
+		if cur_err <= min_err
+			min_err = cur_err;
+			min_pat_ind = pattern_ind;
+			min_indicator = indicator;
+		end
 	end
-
-	% select the pattern with minimum error
-	[min_err min_pat_ind] = min(err);
 
 	% compute the weight for this pattern
 	alpha(j) = log((1 - min_err) / min_err) + log(c - 1);
@@ -96,18 +100,20 @@ while accuracy < target_accuracy && j < 10
 	min_class_classifiers(j) = classifiers(min_pat_ind);
 
 	% recompute the weights
+	% note that indicator needs to be in the correct state
 	for i=1:length(weights)
-		weights(i) = weights(i) * exp(alpha(j) * indicator(i));
+		weights(i) = weights(i) * exp(alpha(j) * min_indicator(i));
 	end
 
 	% generate the strong classifier
 	strong_classifications = strong_classify_all(alpha, min_class_classifiers, data);
 	
 	% compute its classification accuracy (percentage of correct classifications)
-	strong_class_indicator = strong_classifications == data.label;
+	strong_class_indicator = (strong_classifications == data.label);
 	accuracy = mean(strong_class_indicator);
 	accuracies(j) = accuracy;
-end
+	end
+
 	f.alpha = alpha;
 	f.min_class_classifiers = min_class_classifiers;
 	f.accuracies = accuracies;
@@ -122,13 +128,12 @@ function [labels] = strong_classify_all(alpha, min_class_classifiers, data)
 end
 
 % strongly classify the ith data point
-% = argmax_c (sum_{m=1}^j alpha(m) * f_m(I) == c
+% = argmax_c (sum_{m=1}^j alpha(m) * f_m(I) == c)
 function [label] = strong_classify(alpha, min_class_classifiers, data, i)
 	cur_max_label = 0;
 	cur_max_score = 0;
 	
 	num_labels = length(unique(data.label));
- 	f1 = [1:length(data.label)];
 
 	for j=1:num_labels
 		cur_score = 0;
