@@ -46,7 +46,6 @@ data.feat = bsxfun(@rdivide, data.feat, sum(data.feat, 1) + eps); %% normalizing
 thr = 0.01;
 data.feat(data.feat > thr) = thr;   %% clipping features
 
-
 valid_labels = [1 2 3 4 5 6 9 10 12 13 14 15 17 20 22 23 24 27];
 
 f1 = find(ismember(data.label, valid_labels));
