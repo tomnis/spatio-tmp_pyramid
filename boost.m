@@ -9,8 +9,12 @@ n_label = length(labels);
 clear map1
 map1(labels+1) = [1:n_label]; %% mapping the action labels to a new label set.
 
+% store the original data before we do any computation
+% TODO find out if this is necessary.
+% seems like it could be the case that the original values are being overwritten or something?
+% not sure what could lead to this weird behavior across all the iterations
 data_prime = data;
-
+new_labels = map1(data.label+1);
 % for each partition pattern
 for prt_num = 1:length(partitions)
 	partition = partitions{prt_num};
@@ -18,16 +22,17 @@ for prt_num = 1:length(partitions)
 	% do we need to reset data to its prior state?
 	data = data_prime;
 	% represent each clip in the subset using partition pattern
+	% must be in the loop because the histogram will be different depending on the partition pattern
 	compute_feats
 	data
-
 	num_clips = length(data.label);
+
 	% randomly sample a subset of the clips
 	sampleinds = sort(randsample(num_clips, randi(num_clips)));
 
 	% train an svm classifier on the subset
 	x_train = data.feat(:, sampleinds);
-	y_train = data.label(:, sampleinds);
+	y_train = new_labels(:, sampleinds);
   y_train = map1(y_train+1);
 
   %%% repeat samples to be balanced
@@ -47,15 +52,15 @@ for prt_num = 1:length(partitions)
   x_train1 = x_train(:, f3);
   y_train1 = y_train(:, f3);
 	
-	allsampleinds{prt_num} = sampleinds;
 	classifiers(prt_num) = svmtrain(y_train1', x_train1', '-c 1 -t 0');
 end
 
 % initialize the weight vector w
 weights = zeros(length(data.label), 1);
+% c is the number of classes
 c = length(unique(data.label));
 
-% each w_i = 1 / c * number of clips with label c_i
+% each w_i = 1 / (c * number of clips with label c_i)
 % inversely proportional to class size, to prevent unbalanced sample sizes
 for i=1:length(data.label)
 	weights(i) = 1 / (c * length(find(data.label == data.label(i))));
@@ -64,8 +69,7 @@ end
 j = 0;
 accuracy = 0;
 accuracies = [];
-while accuracy < target_accuracy && j < 10
-	err = [];
+while accuracy < target_accuracy && j < 20
 	
 	% for each clip, update the weight
 	weights = weights ./ sum(weights);
@@ -86,7 +90,7 @@ while accuracy < target_accuracy && j < 10
 		
 		cur_err = dot(weights, indicator);
 		
-		% if we find a new minimum, store the error and the pattern
+		% if we find a new minimum, store the error, pattern, and indicator
 		if cur_err <= min_err
 			min_err = cur_err;
 			min_pat_ind = pattern_ind;
@@ -99,6 +103,8 @@ while accuracy < target_accuracy && j < 10
 	% remember which svm gave the min error in the jth iteration
 	min_class_classifiers(j) = classifiers(min_pat_ind);
 
+	assert(length(weights) == length(min_indicator));
+
 	% recompute the weights
 	% note that indicator needs to be in the correct state
 	for i=1:length(weights)
@@ -106,7 +112,7 @@ while accuracy < target_accuracy && j < 10
 	end
 
 	% generate the strong classifier
-	strong_classifications = strong_classify_all(alpha, min_class_classifiers, data);
+	strong_classifications = strong_classify_all(alpha, min_class_classifiers, data, new_labels);
 	
 	% compute its classification accuracy (percentage of correct classifications)
 	strong_class_indicator = (strong_classifications == data.label);
@@ -121,15 +127,22 @@ end
 
 
 % classify all the data points
-function [labels] = strong_classify_all(alpha, min_class_classifiers, data)
+% pass in the new labels that have been map1'ed
+function [labels] = strong_classify_all(alpha, min_class_classifiers, data, new_labels)
+	labels = [];
 	for i = 1:length(data.label)
-		labels(i) = strong_classify(alpha, min_class_classifiers, data, i)
+		labels(i) = strong_classify(alpha, min_class_classifiers, data, i, new_labels(i));
 	end
 end
 
+% label is the correct label of the ith data point
+% (already map1'ed)
 % strongly classify the ith data point
 % = argmax_c (sum_{m=1}^j alpha(m) * f_m(I) == c)
-function [label] = strong_classify(alpha, min_class_classifiers, data, i)
+% j = length(alpha)
+% TODO need to map y_test to a new label set analagous to what was done
+% earlier in training all the svms?
+function [label] = strong_classify(alpha, min_class_classifiers, data, i ,new_label)
 	cur_max_label = 0;
 	cur_max_score = 0;
 	
@@ -139,9 +152,11 @@ function [label] = strong_classify(alpha, min_class_classifiers, data, i)
 		cur_score = 0;
 		for m=1:length(alpha)
 			x_test = data.feat(:,i);
-			y_test = data.label(:,i);
+			y_test = new_label;
+			%y_test = map1(data.label+1);
+			%y_test = y_test(:,i);
 			cur_label = svmpredict(y_test', x_test', min_class_classifiers(m));
-			cur_score = cur_score + alpha(m) * (cur_label == data.label(i));
+			cur_score = cur_score + alpha(m) * (cur_label == new_label);
 		end
 		if cur_score > cur_max_score
 			cur_max_label = cur_label;
