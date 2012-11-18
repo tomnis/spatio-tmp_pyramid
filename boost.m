@@ -26,6 +26,7 @@ for prt_num = 1:length(partitions)
 	compute_feats
 	data
 	num_clips = length(data.label);
+	new_labels = map1(data.label+1);
 
 	% randomly sample a subset of the clips
 	sampleinds = sort(randsample(num_clips, randi(num_clips)));
@@ -33,7 +34,7 @@ for prt_num = 1:length(partitions)
 	% train an svm classifier on the subset
 	x_train = data.feat(:, sampleinds);
 	y_train = new_labels(:, sampleinds);
-  y_train = map1(y_train+1);
+  %y_train = map1(y_train+1);
 
   %%% repeat samples to be balanced
   f3 = [];
@@ -58,12 +59,12 @@ end
 % initialize the weight vector w
 weights = zeros(length(data.label), 1);
 % c is the number of classes
-c = length(unique(data.label));
+c = length(unique(new_labels));
 
 % each w_i = 1 / (c * number of clips with label c_i)
 % inversely proportional to class size, to prevent unbalanced sample sizes
 for i=1:length(data.label)
-	weights(i) = 1 / (c * length(find(data.label == data.label(i))));
+	weights(i) = 1 / (c * length(find(new_labels == new_labels(i))));
 end
 
 j = 0;
@@ -79,14 +80,14 @@ while accuracy < target_accuracy && j < 20
 	% for each pattern, compute classification error
 	% should be dot(weights, I) where I is indicator of incorrect prediction
 	x_test = data.feat';
-	y_test = map1(data.label+1)';
+	y_test = new_labels';
 	
 	% compute the pattern which gives min err
 	min_err = length(weights);
 	min_pat_ind = 1;
 	for pattern_ind = 1:length(partitions)
 		y_pred = svmpredict(y_test, x_test, classifiers(pattern_ind));
-		indicator = y_pred' ~= data.label;
+		indicator = y_pred' ~= new_labels;
 		
 		cur_err = dot(weights, indicator);
 		
@@ -115,7 +116,7 @@ while accuracy < target_accuracy && j < 20
 	strong_classifications = strong_classify_all(alpha, min_class_classifiers, data, new_labels);
 	
 	% compute its classification accuracy (percentage of correct classifications)
-	strong_class_indicator = (strong_classifications == data.label);
+	strong_class_indicator = (strong_classifications == new_labels);
 	accuracy = mean(strong_class_indicator);
 	accuracies(j) = accuracy;
 	end
@@ -153,8 +154,7 @@ function [label] = strong_classify(alpha, min_class_classifiers, data, i ,new_la
 		for m=1:length(alpha)
 			x_test = data.feat(:,i);
 			y_test = new_label;
-			%y_test = map1(data.label+1);
-			%y_test = y_test(:,i);
+			
 			cur_label = svmpredict(y_test', x_test', min_class_classifiers(m));
 			cur_score = cur_score + alpha(m) * (cur_label == new_label);
 		end

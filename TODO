@@ -1,0 +1,2 @@
+--setting num_levels to 1 in boost_main leads to a problem with making the partition in make_pool>make_partition
+	(partition output arg not asssigned)
