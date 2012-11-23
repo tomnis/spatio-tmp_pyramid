@@ -4,7 +4,7 @@ load tempfile
 pool_size = 50;
 num_levels = 3;
 protate = 0;
-target_accuracy = .45;
+target_accuracy = .8;
 object_type = 'active_passive';
 spatial_cuts = 1;
 dim = struct('start_frame', 1, 'end_frame', 1000, 'xlen', 1280, 'ylen', 960, 'protate', protate, 'spatial_cuts', spatial_cuts);
