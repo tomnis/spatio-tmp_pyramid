@@ -1,4 +1,4 @@
-function [stats] = run_all(protate, num_itrs, spatial_cuts)
+function [stats] = compute_accuracy_stats(protate, num_itrs, spatial_cuts)
 setup
 
 show_confn = 0;
