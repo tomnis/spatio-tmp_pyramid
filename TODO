@@ -1,2 +1,6 @@
 --setting num_levels to 1 in boost_main leads to a problem with making the partition in make_pool>make_partition
 	(partition output arg not asssigned)
+
+--should compute max, min, stddev across runs of boosting
+
+--should test the boosted classifier on all the data. (seems this could best be done with a refactor of strong classification)
