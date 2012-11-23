@@ -76,7 +76,6 @@ while accuracy < target_accuracy && j < 20
 	weights = weights ./ sum(weights);
 	j = j+1;
 
-	% TODO need to track the specific indicator that led to the minimum score
 	% for each pattern, compute classification error
 	% should be dot(weights, I) where I is indicator of incorrect prediction
 	x_test = data.feat';
@@ -124,44 +123,4 @@ while accuracy < target_accuracy && j < 20
 	f.alpha = alpha;
 	f.min_class_classifiers = min_class_classifiers;
 	f.accuracies = accuracies;
-end
-
-
-% classify all the data points
-% pass in the new labels that have been map1'ed
-function [labels] = strong_classify_all(alpha, min_class_classifiers, data, new_labels)
-	labels = [];
-	for i = 1:length(data.label)
-		labels(i) = strong_classify(alpha, min_class_classifiers, data, i, new_labels(i));
-	end
-end
-
-% label is the correct label of the ith data point
-% (already map1'ed)
-% strongly classify the ith data point
-% = argmax_c (sum_{m=1}^j alpha(m) * f_m(I) == c)
-% j = length(alpha)
-% TODO need to map y_test to a new label set analagous to what was done
-% earlier in training all the svms?
-function [label] = strong_classify(alpha, min_class_classifiers, data, i ,new_label)
-	cur_max_label = 0;
-	cur_max_score = 0;
-	
-	num_labels = length(unique(data.label));
-
-	for j=1:num_labels
-		cur_score = 0;
-		for m=1:length(alpha)
-			x_test = data.feat(:,i);
-			y_test = new_label;
-			
-			cur_label = svmpredict(y_test', x_test', min_class_classifiers(m));
-			cur_score = cur_score + alpha(m) * (cur_label == new_label);
-		end
-		if cur_score > cur_max_score
-			cur_max_label = cur_label;
-			cur_max_score = cur_score;
-		end
-	end
-	label = cur_max_label;
 end
