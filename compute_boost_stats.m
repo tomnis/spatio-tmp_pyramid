@@ -1,4 +1,4 @@
-function [stats] = compute_boost_stats(num_itrs, pool_size)
+function [stats] = compute_boost_stats(pool_size, num_itrs)
 
 setup
 load tempfile
