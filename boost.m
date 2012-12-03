@@ -4,17 +4,15 @@ function [f] = boost(data, partitions, target_accuracy, num_levels, dim)
 data
 
 spatial_cuts = dim.spatial_cuts;
-labels = unique(data.label);
-n_label = length(labels);
-clear map1
-map1(labels+1) = [1:n_label]; %% mapping the action labels to a new label set.
 
 % store the original data before we do any computation
 % TODO find out if this is necessary.
 % seems like it could be the case that the original values are being overwritten or something?
-% not sure what could lead to this weird behavior across all the iterations
 data_prime = data;
-new_labels = map1(data.label+1);
+
+labels = unique(data.label);
+n_label = length(labels);
+
 % for each partition pattern
 for prt_num = 1:length(partitions)
 	partition = partitions{prt_num};
@@ -24,17 +22,18 @@ for prt_num = 1:length(partitions)
 	% represent each clip in the subset using partition pattern
 	% must be in the loop because the histogram will be different depending on the partition pattern
 	compute_feats
+
+	partitioned_feats{prt_num} = data.feat;
+
 	data
 	num_clips = length(data.label);
-	new_labels = map1(data.label+1);
 
 	% randomly sample a subset of the clips
 	sampleinds = sort(randsample(num_clips, randi(num_clips)));
 
 	% train an svm classifier on the subset
 	x_train = data.feat(:, sampleinds);
-	y_train = new_labels(:, sampleinds);
-  %y_train = map1(y_train+1);
+	y_train = data.label(sampleinds);
 
   %%% repeat samples to be balanced
   f3 = [];
@@ -59,18 +58,18 @@ end
 % initialize the weight vector w
 weights = zeros(length(data.label), 1);
 % c is the number of classes
-c = length(unique(new_labels));
+c = length(unique(data.label));
 
 % each w_i = 1 / (c * number of clips with label c_i)
 % inversely proportional to class size, to prevent unbalanced sample sizes
 for i=1:length(data.label)
-	weights(i) = 1 / (c * length(find(new_labels == new_labels(i))));
+	weights(i) = 1 / (c * length(find(data.label == data.label(i))));
 end
 
 j = 0;
 accuracy = 0;
 accuracies = [];
-while accuracy < target_accuracy && j < 20
+while accuracy < target_accuracy && j < 10
 	
 	% for each clip, update the weight
 	weights = weights ./ sum(weights);
@@ -79,14 +78,16 @@ while accuracy < target_accuracy && j < 20
 	% for each pattern, compute classification error
 	% should be dot(weights, I) where I is indicator of incorrect prediction
 	x_test = data.feat';
-	y_test = new_labels';
+	y_test = data.label';
 	
 	% compute the pattern which gives min err
 	min_err = length(weights);
 	min_pat_ind = 1;
 	for pattern_ind = 1:length(partitions)
+		x_test = partitioned_feats{pattern_ind}';
+		
 		y_pred = svmpredict(y_test, x_test, classifiers(pattern_ind));
-		indicator = y_pred' ~= new_labels;
+		indicator = y_pred' ~= data.label;
 		
 		cur_err = dot(weights, indicator);
 		
@@ -98,10 +99,11 @@ while accuracy < target_accuracy && j < 20
 		end
 	end
 
-	% compute the weight for this pattern
+	% compute the weight for the pattern with min error
 	alpha(j) = log((1 - min_err) / min_err) + log(c - 1);
 	% remember which svm gave the min error in the jth iteration
 	min_class_classifiers(j) = classifiers(min_pat_ind);
+	min_pat_inds(j) = min_pat_ind;
 
 	assert(length(weights) == length(min_indicator));
 
@@ -112,10 +114,10 @@ while accuracy < target_accuracy && j < 20
 	end
 
 	% generate the strong classifier
-	strong_classifications = strong_classify_all(alpha, min_class_classifiers, data, new_labels);
+	strong_classifications = strong_classify_all(alpha, min_class_classifiers, min_pat_inds, partitioned_feats, data.label);
 	
 	% compute its classification accuracy (percentage of correct classifications)
-	strong_class_indicator = (strong_classifications == new_labels);
+	strong_class_indicator = (strong_classifications == data.label);
 	accuracy = mean(strong_class_indicator);
 	accuracies(j) = accuracy;
 	end
@@ -123,4 +125,5 @@ while accuracy < target_accuracy && j < 20
 	f.alpha = alpha;
 	f.min_class_classifiers = min_class_classifiers;
 	f.accuracies = accuracies;
+	f.min_pat_inds = min_pat_inds;
 end
