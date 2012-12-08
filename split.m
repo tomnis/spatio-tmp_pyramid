@@ -16,6 +16,7 @@ function [traininds testinds] = split(data, p)
 		cur_label = uniq_labels(i);
 		clips_with_label = find(data.label == cur_label);
 
+
 		% only one clip with this label type
 		% TODO is this the right approach to take?
 		if length(clips_with_label) == 1
@@ -31,8 +32,6 @@ function [traininds testinds] = split(data, p)
 			num_sampledclips = num_sampledclips -1
 		end
 		
-		
-		
 		% get a sample to use
 		sampled_inds = sort(randsample(length(clips_with_label), num_sampledclips));
 		not_sampled_inds = setdiff([1:length(clips_with_label)], sampled_inds);
@@ -46,9 +45,6 @@ function [traininds testinds] = split(data, p)
 		assert(length(find(data.label(test_inds_from_data) ~= cur_label)) == 0);
 		assert(length(test_inds_from_data) > 0);
 
-
 		traininds = [traininds train_inds_from_data];
 		testinds = [testinds test_inds_from_data];
 	end
-
-
