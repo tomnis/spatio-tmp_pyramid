@@ -1,13 +1,20 @@
+function [accuracy confn] = orig_method_split(train_inds, test_inds, data, frs, best_s_active, best_s_passive)
+
+
+
+
+%{
 clear
 addpath third_party/libsvm-mat-3.0-1
 path0 = '~/ADLdataset/';  %% root directory
 
-% person_ids = [1:6];  %% persons used in action recognition
-person_ids = [7:20];  %% persons used in action recognition
-
 path1 = [path0 'ADL_annotations/action_annotation/'];     %% action annottaion
 path2 = [path0 'ADL_detected_objects/testset/active/'];   %% detected active objects
 path3 = [path0 'ADL_detected_objects/testset/passive/'];  %% detected passive objects
+%}
+
+% person_ids = [1:6];  %% persons used in action recognition
+person_ids = [7:20];  %% persons used in action recognition
 
 feat_type = 'pyramid';
 % feat_type = 'bag';
@@ -20,10 +27,8 @@ object_type = 'active_passive';
 
 %[data best_s_active best_s_passive frs objects_active objects_passive] = read_data(person_ids, path1, path2, path3);
 % save temp_file data best_s_active best_s_passive frs
- load tempfile
+% load tempfile
 
-whos
-keyboard
 
 %%% assigning best scores to each pre-segmented data point (clip)
 for k = 1:length(data.label)
