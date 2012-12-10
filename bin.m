@@ -3,9 +3,7 @@
 function [bin_label] = bin(f, cut_eqs, dim)
 	assert(isequal(size(f), [1 3]));
 	bin_label = 0;
-	cut_eqs;
-	size(cut_eqs.xcuts);
-	size(cut_eqs.xcuts,1);
+	
 	% x := 2x or x := 2x +1 as necessary
 	for i=1:size(cut_eqs.xcuts,1)
 		bin_label = 2 * bin_label + compare(f, cut_eqs.xcuts(i,:), dim);
@@ -34,7 +32,6 @@ function [c] = compare(f, cut, dim)
 	% p_prime is an arbitrary point on the plane, so use the 
 	% point on the plane that is closest to the origin, which is given by:
 	% [a b c] * d
-
 	p_prime = nrm * cut(4) / norm(nrm);
 	p = f + (dot(nrm, p_prime) - dot(nrm, f)) * nrm;
 

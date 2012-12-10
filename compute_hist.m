@@ -10,7 +10,6 @@ function [hist] = compute_hist(feats, nlevels, cut_eqs, dim)
 
 	% level 0 is the entire shot
 	for level = 0:nlevels-1
-
 		if level > 0
 			prt_cuts = cut_eqs(level);
 			
