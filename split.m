@@ -3,8 +3,8 @@
 % select a subset to be used as training data
 % the other subset is used as t
 % return 
-function [traininds testinds] = split(data, p)
-	assert( 0 <= p && p <= 1)
+function [traininds testinds] = split(data, train_frac)
+	assert( 0 <= train_frac && train_frac <= 1)
 	traininds = [];
 	testinds = [];
 
@@ -16,7 +16,6 @@ function [traininds testinds] = split(data, p)
 		cur_label = uniq_labels(i);
 		clips_with_label = find(data.label == cur_label);
 
-
 		% only one clip with this label type
 		% TODO is this the right approach to take?
 		if length(clips_with_label) == 1
@@ -26,7 +25,7 @@ function [traininds testinds] = split(data, p)
 		end
 		
 		% how many clips with this label should we select?
-		num_sampledclips = round(p * length(clips_with_label));
+		num_sampledclips = round(train_frac * length(clips_with_label));
 
 		if num_sampledclips == length(clips_with_label)
 			num_sampledclips = num_sampledclips -1
