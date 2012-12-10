@@ -1,6 +1,6 @@
+% take as params a split of test and train indices
+% perform the original ramanan method
 function [accuracy confn] = orig_method_split(train_inds, test_inds, data, frs, best_s_active, best_s_passive)
-
-
 
 
 %{
@@ -45,10 +45,12 @@ for k = 1:length(data.label)
   data.best_s_passive{1, k} = data.best_s_passive{1, k} + 0.35;
   data.best_s_passive{1, k}(data.best_s_passive{1, k} < 0) = 0;
   
+	%% active + passive objects
   if isequal(object_type, 'active_passive')
-    data.best_s{1, k} = [data.best_s_active{1, k}; data.best_s_passive{1, k}];  %% active + passive objects
+    data.best_s{1, k} = [data.best_s_active{1, k}; data.best_s_passive{1, k}];
+	%% passive objects only
   elseif isequal(object_type, 'passive')
-    data.best_s{1, k} = [data.best_s_passive{1, k}];  %% passive objects only
+    data.best_s{1, k} = [data.best_s_passive{1, k}]; 
   end
 end
 
@@ -75,11 +77,11 @@ data.feat(data.feat > thr) = thr;   %% clipping features
 %%% leave one out train and test
 valid_labels = [1 2 3 4 5 6 9 10 12 13 14 15 17 20 22 23 24 27];
 
-f1 = find(ismember(data.label, valid_labels));
-data = sub(data, f1, 2);
+%f1 = find(ismember(data.label, valid_labels));
+%data = sub(data, f1, 2);
 
 labels = unique(data.label);
-n_label = length(labels);
+n_label = length(labels)
 clear map1
 map1(labels+1) = [1:n_label]; %% mapping the action labels to a new label set.
 
@@ -87,6 +89,26 @@ assert(n_label == length(valid_labels));
 
 conf = zeros(n_label, n_label);
 
+size(data.feat)
+train_inds
+
+
+x_train = data.feat(:, train_inds);
+y_train = data.label(:, train_inds);
+y_train = map1(y_train+1);
+
+x_test = data.feat(:, test_inds);
+y_test = data.label(:, test_inds);
+y_test = map1(y_test+1);
+
+svm1 = svmtrain(y_train', x_train', '-c 1 -t 0');
+y_pred = svmpredict(y_test', x_test', svm1);
+
+
+indicator = y_pred == y_test';
+acc = mean(indicator)
+
+%{
 for left_out = person_ids
   f1 = find(data.person ~= left_out);
   x_train = data.feat(:, f1);
@@ -124,6 +146,13 @@ for left_out = person_ids
   conf = conf + conf1;
   [left_out sum(diag(conf1))/sum(conf1(:))]
 end
+%}
+
+conf = zeros(n_label, n_label);
+  
+  for j = 1:length(y_test)
+    conf(y_test(j), y_pred(j)) = conf(y_test(j), y_pred(j)) + 1;
+  end
 
 confn = bsxfun(@rdivide, conf, sum(conf, 2) + eps); %% normalize the confussin matrix
 accuracy = sum(diag(confn)/sum(confn(:)))
