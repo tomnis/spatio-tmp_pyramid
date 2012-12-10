@@ -1,4 +1,4 @@
-function [stats] = boost_main(pool_size, num_itrs, split_frac)
+function [stats] = boost_main(pool_size, num_itrs, train_inds, test_inds)
 	setup
 	load tempfile
 
@@ -22,13 +22,12 @@ function [stats] = boost_main(pool_size, num_itrs, split_frac)
 		% create the partition pool
 		pool = make_pool(pool_size, num_levels, protate);
 
-		[traininds, testinds] = split(data, split_frac);
-		traindata = applysplit(data, traininds);
+		traindata = applysplit(data, train_inds);
 
 		f = boost(traindata, pool, target_accuracy, num_levels, dim);
 
 		% now that we have the classifier, test on the test data
-		testdata = applysplit(data, testinds);
+		testdata = applysplit(data, test_inds);
 		testdataorig = testdata;
 
 		% get application of each partition scheme that will be used by the classifier
