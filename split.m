@@ -17,10 +17,7 @@ function [traininds testinds] = split(data, train_frac)
 		clips_with_label = find(data.label == cur_label);
 
 		% only one clip with this label type
-		% TODO is this the right approach to take?
 		if length(clips_with_label) == 1
-			traininds = [traininds clips_with_label(1)];
-			testinds = [testinds clips_with_label(1)];
 			continue;
 		end
 		
