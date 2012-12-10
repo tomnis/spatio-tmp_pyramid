@@ -1,5 +1,4 @@
 function [stats] = boost_main(pool_size, num_itrs, split_frac)
-
 	setup
 	load tempfile
 
@@ -13,14 +12,6 @@ function [stats] = boost_main(pool_size, num_itrs, split_frac)
 	% assign the best scores to each clip
 	compute_scores
 
-
-	labels = unique(data.label);
-	n_label = length(labels);
-	clear map1
-	map1(labels+1) = [1:n_label]; %% mapping the action labels to a new label set.
-	new_labels = map1(data.label+1);
-	data.label = new_labels;
-
 	% store the original data struct, not sure if necessary
 	dataorig = data;
 
@@ -31,7 +22,7 @@ function [stats] = boost_main(pool_size, num_itrs, split_frac)
 		% create the partition pool
 		pool = make_pool(pool_size, num_levels, protate);
 
-		[traininds, testinds] = split(data, .6);
+		[traininds, testinds] = split(data, split_frac);
 		traindata = applysplit(data, traininds);
 
 		f = boost(traindata, pool, target_accuracy, num_levels, dim);
