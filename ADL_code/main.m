@@ -22,9 +22,6 @@ object_type = 'active_passive';
 % save temp_file data best_s_active best_s_passive frs
  load tempfile
 
-whos
-keyboard
-
 %%% assigning best scores to each pre-segmented data point (clip)
 for k = 1:length(data.label)
   i = data.person(k);
