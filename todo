@@ -6,3 +6,5 @@
 -- make the generation of partition better, ie no longer axis-aligned
 
 -- much freedom in playing with partition generation
+
+-- data sub is in train_an_test

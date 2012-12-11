@@ -1,1 +1,0 @@
-should build a small struct to keep track of frequently used params, ie start/end frame, x,ylen, etc
