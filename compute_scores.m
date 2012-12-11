@@ -1,3 +1,8 @@
+% TODO  change this to check for defined of variabe object type
+object_type = 'active_passive';
+
+size(best_s_active)
+
 %%% assigning best scores to each pre-segmented data point (clip)
 for k = 1:length(data.label)
   i = data.person(k);
