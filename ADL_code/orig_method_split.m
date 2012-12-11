@@ -1,7 +1,9 @@
 % take as params a split of test and train indices
 % perform the original ramanan method
-function [accuracy confn] = orig_method_split(train_inds, test_inds, data, frs, best_s_active, best_s_passive)
+function [accuracy confn] = orig_method_split(train_inds, test_inds, data, frs, best_s_active, best_s_passive, feat_type, object_type)
 
+assert(isequal(feat_type, 'bag') || isequal(feat_type, 'pyramid'))
+assert(isequal(object_type, 'passive') || isequal(object_type, 'active_passive'))
 
 %{
 clear
@@ -16,10 +18,10 @@ path3 = [path0 'ADL_detected_objects/testset/passive/'];  %% detected passive ob
 % person_ids = [1:6];  %% persons used in action recognition
 person_ids = [7:20];  %% persons used in action recognition
 
-feat_type = 'pyramid';
+%feat_type = 'pyramid';
 % feat_type = 'bag';
 
-object_type = 'active_passive';
+%object_type = 'active_passive';
 % object_type = 'passive';
 
 %%% reading action annottaion
