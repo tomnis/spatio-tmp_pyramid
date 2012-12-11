@@ -13,11 +13,15 @@ locs = [];
 xlen = 1280;
 ylen = 960;
 
-size(data.best_s{1})
 
 % TODO there is some very similar code in compute_feats, should refactor
+
+
+
 for k=1:length(data.best_s)
-	for r = 1:size(data.best_s{k}, 1)
+	%for r = 1:size(data.best_s{k}, 1)
+	% the first 5 are active objects
+	for r = 1:5
 		num_frames = size(data.best_s{k}, 2);
 		for c = 1:num_frames
 		
@@ -26,8 +30,8 @@ for k=1:length(data.best_s)
 				loc = reshape(data.locs{k}(r,c,:), 1,4);
 				
 				% compute the centroid of the bounding box
-				x = (loc(1) + mean([loc(1) loc(3)])) / xlen;
-				y = (loc(2) + mean([loc(2) loc(4)])) / ylen;
+				x = mean([loc(1) loc(3)]) / xlen;
+				y = mean([loc(2) loc(4)]) / ylen;
 				% the frame is the column in the best score matrix
 				z = c / num_frames;
 				locs = [locs; x,y,z];
@@ -36,8 +40,8 @@ for k=1:length(data.best_s)
 	end
 end
 
-distr.x_mean = mean(locs(:, 1))
-distr.x_std = std(locs(:, 1))
+distr.x_mean = mean(locs(:, 1));
+distr.x_std = std(locs(:, 1));
 % TODO see if any difference from using the mle
 %j = mle(locs(:,1), 'distribution', 'norm')
 distr.y_mean = mean(locs(:, 2));

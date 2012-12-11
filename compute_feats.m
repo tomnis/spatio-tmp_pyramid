@@ -21,8 +21,8 @@ for k=1:length(data.label)
 				
 				feats.person(feats_ind) = i;
 				% compute the centroid of the bounding box
-				feats.x(feats_ind) = loc(1) + mean([loc(1) loc(3)]);
-				feats.y(feats_ind) = loc(2) + mean([loc(2) loc(4)]);
+				feats.x(feats_ind) = mean([loc(1) loc(3)]);
+				feats.y(feats_ind) = mean([loc(2) loc(4)]);
 				% the frame is the column in the best score matrix
 				feats.z(feats_ind) = c;
 				% the object label is the row in the best score matrix
