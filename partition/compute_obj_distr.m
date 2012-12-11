@@ -48,3 +48,7 @@ distr.y_mean = mean(locs(:, 2));
 distr.y_std = std(locs(:, 2));
 distr.z_mean = mean(locs(:, 3));
 distr.z_std = std(locs(:, 3));
+
+
+bin_centers = [.05:.1:1];
+hist(locs(:,3), bin_centers);
