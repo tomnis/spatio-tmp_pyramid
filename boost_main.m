@@ -8,6 +8,7 @@ function [stats] = boost_main(pool_size, num_itrs, train_inds, test_inds)
 	object_type = 'active_passive';
 	spatial_cuts = 1;
 	dim = struct('start_frame', 1, 'end_frame', 1000, 'xlen', 1280, 'ylen', 960, 'protate', protate, 'spatial_cuts', spatial_cuts);
+	should_boost = 1;
 
 	% assign the best scores to each clip
 	compute_scores
@@ -24,7 +25,7 @@ function [stats] = boost_main(pool_size, num_itrs, train_inds, test_inds)
 
 		traindata = applysplit(data, train_inds);
 
-		f = boost(traindata, pool, target_accuracy, num_levels, dim);
+		f = boost(traindata, pool, target_accuracy, num_levels, dim, should_boost);
 
 		% now that we have the classifier, test on the test data
 		testdata = applysplit(data, test_inds);

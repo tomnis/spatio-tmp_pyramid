@@ -1,6 +1,8 @@
 % data contains labels
 % output is strong classifier
-function [f] = boost(data, partitions, target_accuracy, num_levels, dim)
+% should_boost determines whether we should simple return 
+function [f] = boost(data, partitions, target_accuracy, num_levels, dim, should_boost)
+assert(should_boost == 0 || should_boost == 1);
 data
 
 spatial_cuts = dim.spatial_cuts;
@@ -66,6 +68,17 @@ for i=1:length(data.label)
 	weights(i) = 1 / (c * length(find(data.label == data.label(i))));
 end
 
+
+% just compute accuracy using the initial weights
+if ~should_boost
+
+
+	return
+end
+
+
+
+
 j = 0;
 accuracy = 0;
 accuracies = [];
@@ -126,4 +139,11 @@ while accuracy < target_accuracy && j < 10
 	f.min_class_classifiers = min_class_classifiers;
 	f.accuracies = accuracies;
 	f.min_pat_inds = min_pat_inds;
+
+
+	% basically, only perform one iteration
+	% TODO this can be controlled more intuitively via j passed as a param
+	if ~should_boost
+		return
+	end
 end
