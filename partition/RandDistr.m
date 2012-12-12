@@ -9,7 +9,6 @@ classdef RandDistr
 		distr
 		inv_distr
 		psums
-
 	end
 
 	methods (Access='private')
