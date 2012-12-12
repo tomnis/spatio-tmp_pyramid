@@ -7,21 +7,34 @@ classdef RandDistr
 	properties (GetAccess='private', SetAccess='private')
 		% distribution histogram 
 		distr
+		inv_distr
 		psums
+
+	end
+
+	methods (Access='private')
+		% TODO this could probably give more optimal results
+		function [inv] = get_inv(self, fn)
+			inv = max(fn) - fn  + .25 * std(fn);
+			inv = inv / (sum(inv));
+		end
 	end
 
 	methods
 		% constructor
 		function self=RandDistr(varargin)
 			self.distr = [1];
+			self.inv_distr = [1];
 			if nargin == 1
 				self.distr = varargin{1};
+				self.inv_distr = self.get_inv(self.distr);
 			end
-			self.psums = cumsum(self.distr);
+			self.psums = cumsum(self.inv_distr);
 			% assert distr sums to 1
 			assert(abs(self.psums(end) - 1) < .001)
 		end
-	
+
+
 		% get the next number according to the current distribution
 		function a=get(self)
 			r = rand;
@@ -33,10 +46,11 @@ classdef RandDistr
 			end
 
 			% then generate a new random number coming from that bin range to return
-			low = (b-1) / length(self.distr);
-			high = b / length(self.distr);
+			low = (b-1) / length(self.inv_distr);
+			high = b / length(self.inv_distr);
 			% interval [low, high]
 			a = low + (high - low)*rand;
 		end
+
 	end
 end

@@ -78,10 +78,3 @@ subplot(2,3,6);
 bar(z, get_inv(bz));
 %}
 end
-
-% TODO move this to the randgen
-function [inv] = get_inv(fn)
-	std(fn)
-	inv = max(fn) - fn  + .25 * std(fn);
-	inv = inv / (sum(inv));
-end
