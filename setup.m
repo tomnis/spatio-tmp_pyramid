@@ -2,6 +2,7 @@ w = whos
 
 addpath /u/tomas/thesis  %% root directory
 addpath /u/tomas/thesis/partition
+addpath /u/tomas/thesis/test
 addpath /u/tomas/thesis/vis 
 addpath /u/tomas/thesis/third_party/libsvm-mat-3.0-1
 
