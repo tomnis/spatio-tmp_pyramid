@@ -18,7 +18,7 @@ function [cut_fracs] = make_cut_fracs(level, protate)
 	% could vectorize, but we need the possibility to independently rotate each partition
 	for i = 1:2^(level-1)
 		% randomly rotated cut_fracs		
-		if (rand < protate)
+		if (rand <= protate)
 			newxcut = [0 rand rand];
 			newycut = [rand 0 rand];
 			newzcut = [rand rand 0];
