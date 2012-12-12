@@ -10,3 +10,5 @@
 -- data sub is in train_an_test
 
 -- move the get inv stuff from compute_obj_distr to the randgen object
+
+-- create an object to model the dataset
