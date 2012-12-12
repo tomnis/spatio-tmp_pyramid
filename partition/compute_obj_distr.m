@@ -4,6 +4,7 @@
 % of the clip
 % compute a mean and stddev for each dimension. 
 % TODO this will compute using all data points, should there be filtering first?
+% TODO actually use the num_bins arg
 function [distr] = compute_obj_distr(data, num_bins)
 
 distr = struct('bx', [], 'by', [], 'bz', []);
@@ -45,15 +46,10 @@ bin_centers = [.05:.1:1];
 [by, y] = hist(locs(:,2), bin_centers);
 [bz, z] = hist(locs(:,3), bin_centers);
 
-
 % normalize
-bx = bx / sum(bx);
-by = by / sum(by);
-bz = bz / sum(bz);
-
-distr.bx = bx;
-distr.by = by;
-distr.bz = bz;
+distr.bx = bx / sum(bx);
+distr.by = by / sum(by);
+distr.bz = bz / sum(bz);
 
 %{
 subplot(2,3,1);
