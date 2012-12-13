@@ -6,9 +6,9 @@ classdef RandDistr
 	
 	properties (GetAccess='private', SetAccess='private')
 		% distribution histogram 
-		distr
-		inv_distr
-		psums
+		distr = [1];
+		inv_distr = [1];
+		psums = [1];
 	end
 
 	methods (Access='private')
@@ -22,8 +22,6 @@ classdef RandDistr
 	methods
 		% constructor
 		function self=RandDistr(varargin)
-			self.distr = [1];
-			self.inv_distr = [1];
 			if nargin == 1
 				self.distr = varargin{1};
 				self.inv_distr = self.get_inv(self.distr);
