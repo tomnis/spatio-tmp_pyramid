@@ -4,7 +4,7 @@ function [accuracy] = train_and_test(data, person_ids, show_confn)
 valid_labels = [1 2 3 4 5 6 9 10 12 13 14 15 17 20 22 23 24 27];
 
 f1 = find(ismember(data.label, valid_labels));
-data = sub(data, f1, 2);
+%data = sub(data, f1, 2);
 
 labels = unique(data.label);
 n_label = length(labels);
