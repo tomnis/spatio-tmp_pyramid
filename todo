@@ -11,4 +11,6 @@
 
 -- create an object to model the dataset
 
--- compute_obj_distr should be a method on the new
+-- compute_obj_distr should be a method on the new object
+
+-- should all the datapoints, even those with invalid labels, participate in the object distribution calculation?
