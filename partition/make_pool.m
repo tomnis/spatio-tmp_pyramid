@@ -1,6 +1,5 @@
 % pool{i}(j) => size 2^(j-1), the unique cuts made for level j of the ith partition scheme
 %
-% used in boosting and prepare_data
 % the boosting algo requires that we are able to represent a 
 % pool of partition schemas without computing corresponding histograms,
 % so generate the pool.
@@ -25,7 +24,6 @@ end
 
 
 
-
 % partition is set of xcuts, ycuts, zcuts,
 % level 0 is the entire unpartitioned clip, no need to explicitly represent
 % level i has 2^i - 1 planar cuts
@@ -35,7 +33,6 @@ function [partition] = make_partition(num_levels, protate)
 		partition(level) = make_cut_fracs(level, protate);
 	end
 end
-
 
 
 
