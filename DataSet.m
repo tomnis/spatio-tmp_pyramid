@@ -59,7 +59,6 @@ classdef DataSet
 
 
 
-
 		% return a subset of self
 		function self = sub(self, I, D)
 			if ~exist('D')
@@ -126,14 +125,16 @@ classdef DataSet
 
 
 
+
 		% given a partition, compute the resulting feature histograms for each clip
 		function hists=compute_histograms(self, partition, dim)
 			dim.num_feat_types = size(self.best_s{1}, 1)
 			for k=1:self.num_clips
       	clear features
         i = self.person(k);
-      	
-				num_levels = length(partition) + 1;
+      
+				% TODO this is bad, could be encapsulated somehow
+				num_levels = length(partition);
       	% set the start and end frames of the current clip, used in compute_hist
       	dim.start_frame = self.frs{k}(1);
       	dim.end_frame = self.frs{k}(end);
