@@ -29,8 +29,8 @@ end
 % level i has 2^i - 1 planar cuts
 function [partition] = make_partition(num_levels, protate)
 	% for i levels, we need a total of 2^i -1 cuts
-	for level = 1:num_levels-1
-		partition(level) = make_cut_fracs(level, protate);
+	for level = 0:num_levels-1
+		partition(level+1) = make_cut_fracs(level, protate);
 	end
 end
 
