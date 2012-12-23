@@ -7,8 +7,13 @@
 %
 % return:
 % equations of the form [a b c d] representing the cut planes
-function [cut_eqs] = apply_partition(partition, xlen, ylen, start_frame, end_frame, spatial_cuts)
-	
+function [cut_eqs] = apply_partition(partition, dim)
+
+	xlen = dim.xlen;
+	ylen = dim.ylen;
+	start_frame = dim.start_frame;
+	end_frame = dim.end_frame;
+	spatial_cuts = dim.spatial_cuts;
 	zlen = end_frame - start_frame + 1;
 
 	% for each level in the partition scheme

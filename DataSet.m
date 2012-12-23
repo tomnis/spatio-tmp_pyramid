@@ -163,11 +163,7 @@ classdef DataSet
       	end
       
       	% apply the partition to the features
-      	if num_levels == 1
-      		cut_eqs = struct('xcuts', [], 'ycuts', [], 'zcuts', []);
-      	else
-      		cut_eqs = apply_partition(partition, dim.xlen, dim.ylen, dim.start_frame, dim.end_frame, dim.spatial_cuts);
-      	end
+      	cut_eqs = apply_partition(partition, dim);
 				hists(:, k) = compute_hist(features, num_levels, cut_eqs, dim);
 			end
 			hists = bsxfun(@rdivide, hists, sum(hists, 1) + eps); %% normalizing
