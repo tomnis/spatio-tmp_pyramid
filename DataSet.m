@@ -17,7 +17,8 @@ classdef DataSet
 	end
 
 	methods (Access='private')
-		function set_scores(self, frs, best_scores, locations, object_type)
+	
+		function self=set_scores(self, frs, best_scores, locations, object_type)
 			best_s_active = best_scores.active;
 			best_s_passive = best_scores.passive;	
 			locs_active = locations.active;
@@ -29,7 +30,8 @@ classdef DataSet
 				% TODO figure out exactly what this is doing
 			  f1 = find((frs{i} > self.fr_start(k)) .* (frs{i} < self.fr_end(k)));
 				% the frames of person i that are in this clip
-			  self.frs{k} = frs{i}(f1);
+				self.frs{k} = frs{i}(f1);
+
 				 
  				self.best_s_active{k} = best_s_active{i}(:, f1);
 			  self.best_s_active{k} = self.best_s_active{k} + 0.7;
@@ -49,20 +51,46 @@ classdef DataSet
 					self.locs{k} = [locs_passive{i}(:, f1, :)];
 			  end
 			end
+
 			% sanity check, should have locations for each score
 			assert(isequal(size(self.locs), size(self.best_s)));
-			self.num_clips = 55;
 		end
 
 
 
-		function set_feats(self)
+
+
+		% return a subset of self
+		function self = sub(self, I, D)
+			if ~exist('D')
+  			D = 1;
+			end
+			
+			if ~isempty(self),
+			  n = properties(self);
+			  for i = 1:length(n),
+			    f = n{i};
+
+			    if isequal(class(self.(f)), 'double')
+						% scalar value, so subset doesnt make sense
+						if length(self.(f)) == 1
+							continue;
+						end
+			      self.(f) = self.(f)(I);
+
+			    elseif isequal(class(self.(f)), 'cell')
+						tmp = cell(1,length(I));
+			      for j = 1:length(I)
+			        tmp{j} = self.(f){I(j)};
+			      end
+						self.(f) = tmp;
+			    end
+
+			  end
+			end
+			self.num_clips = length(I);
 		end
 
-
-
-		function sanity_check(self)
-		end
 	end
 
 	methods 
@@ -74,7 +102,7 @@ classdef DataSet
 			self.fr_start = data.fr_start;
 			self.fr_end = data.fr_end;
 			self.label = data.label;
-
+			
 			self.num_clips = length(self.person);
 			% initialize the cell arrays
 			self.frs = cell(1, self.num_clips);
@@ -82,10 +110,70 @@ classdef DataSet
 			self.best_s_passive = cell(1, self.num_clips);
 			self.best_s = cell(1, self.num_clips);
 			self.locs = cell(1, self.num_clips);
-			% compute the best scoring objects
-			set_scores(self, frs, best_scores, locations, object_type);
-			% compute the feature vectors
-		end
-	end
 
+
+			self = set_scores(self, frs, best_scores, locations, object_type);
+			% remap the label set
+			valid_labels = [1 2 3 4 5 6 9 10 12 13 14 15 17 20 22 23 24 27];
+			f1 = find(ismember(self.label, valid_labels));
+			self = sub(self, f1, 2);
+			labels = unique(self.label);
+			n_label = length(labels);
+			%% mapping the action labels to a new label set.
+			map1(labels+1) = [1:n_label]; 
+			self.label = map1(self.label+1);
+		end
+
+
+
+		% given a partition, compute the resulting feature histograms for each clip
+		function hists=compute_histograms(self, partition, dim)
+			dim.num_feat_types = size(self.best_s{1}, 1)
+			for k=1:self.num_clips
+      	clear features
+        i = self.person(k);
+      	
+				num_levels = length(partition) + 1;
+      	% set the start and end frames of the current clip, used in compute_hist
+      	dim.start_frame = self.frs{k}(1);
+      	dim.end_frame = self.frs{k}(end);
+      
+      	features = struct('person', [], 'x', [], 'y', [], 'z', [], 'label',[]);
+      	features_ind = 0;
+      
+      	for r = 1:size(self.best_s{k}, 1)
+      		for c = 1:size(self.best_s{k}, 2)
+      			if self.best_s{k}(r,c) > 0
+      				features_ind = features_ind + 1;
+      				
+      				% reshape the location from 1x1x4 to 1x4
+      				loc = reshape(self.locs{k}(r,c,:), 1,4);
+      				
+      				features.person(features_ind) = i;
+      				% compute the centroid of the bounding box
+      				features.x(features_ind) = mean([loc(1) loc(3)]);
+      				features.y(features_ind) = mean([loc(2) loc(4)]);
+      				% the frame is the column in the best score matrix
+      				features.z(features_ind) = c;
+      				% the object label is the row in the best score matrix
+      				features.label(features_ind) = r;
+      			end
+      		end
+      	end
+      
+      	% apply the partition to the features
+      	if num_levels == 1
+      		cut_eqs = struct('xcuts', [], 'ycuts', [], 'zcuts', []);
+      	else
+      		cut_eqs = apply_partition(partition, dim.xlen, dim.ylen, dim.start_frame, dim.end_frame, dim.spatial_cuts);
+      	end
+				hists(:, k) = compute_hist(features, num_levels, cut_eqs, dim);
+			end
+			hists = bsxfun(@rdivide, hists, sum(hists, 1) + eps); %% normalizing
+
+			thr = 0.01;
+			hists(hists > thr) = thr;   %% clipping features
+		end
+	
+	end
 end
