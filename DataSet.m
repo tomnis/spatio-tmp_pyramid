@@ -135,9 +135,7 @@ classdef DataSet
       
       	% set the start and end frames of the current clip, used in compute_hist
       	dim.start_frame = self.frs{k}(1);
-				assert(dim.start_frame == self.fr_start(k));
       	dim.end_frame = self.frs{k}(end);
-				assert(dim.end_frame == self.fr_end(k));
       
       	features = struct('person', [], 'x', [], 'y', [], 'z', [], 'label',[]);
       	features_ind = 0;

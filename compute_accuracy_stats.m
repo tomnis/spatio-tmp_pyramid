@@ -9,7 +9,7 @@ function [stats] = compute_accuracy_stats(num_itrs, protate, spatial_cuts)
   
   % set empirically, found that 4 levels overflows memory but
   % if using a more space efficient representation could experiment with this more
-  min_num_levels = 3;
+  min_num_levels = 1;
   max_num_levels = 3;
   
   accuracy = [];

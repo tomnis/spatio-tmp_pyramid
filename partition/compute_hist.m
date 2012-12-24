@@ -4,13 +4,14 @@
 % cut_eqs => array of structs. 
 function [hist] = compute_hist(feats, cut_eqs, dim)
 	hist = [];
-	
+
+ 	% TODO seems there is something wrong with cut_eqs at this point
 	cuts = struct('xcuts', [], 'ycuts', [], 'zcuts', []);
 
 	% level 0 is the entire shot
 	% level i is stored in cut_eqs(i+1)
-	for level = 1:length(cut_eqs)
-		prt_cuts = cut_eqs(level);
+	for level = 0:length(cut_eqs)-1
+		prt_cuts = cut_eqs(level+1);
 			
 		cuts.xcuts = [cuts.xcuts; prt_cuts.xcuts];
 		cuts.ycuts = [cuts.ycuts; prt_cuts.ycuts];
