@@ -34,7 +34,7 @@ for k=1:length(data.label)
 	% apply the partition to the features
 	cut_eqs = apply_partition(partition, dim);
 		
-	data.feat(:,k) = compute_hist(feats, num_levels, cut_eqs, dim);
+	data.feat(:,k) = compute_hist(feats, cut_eqs, dim);
 end
 
 data.feat = bsxfun(@rdivide, data.feat, sum(data.feat, 1) + eps); %% normalizing
