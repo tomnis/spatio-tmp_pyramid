@@ -133,11 +133,11 @@ classdef DataSet
       	clear features
         i = self.person(k);
       
-				% TODO this is bad, could be encapsulated somehow
-				num_levels = length(partition);
       	% set the start and end frames of the current clip, used in compute_hist
       	dim.start_frame = self.frs{k}(1);
+				assert(dim.start_frame == self.fr_start(k));
       	dim.end_frame = self.frs{k}(end);
+				assert(dim.end_frame == self.fr_end(k));
       
       	features = struct('person', [], 'x', [], 'y', [], 'z', [], 'label',[]);
       	features_ind = 0;
@@ -164,7 +164,7 @@ classdef DataSet
       
       	% apply the partition to the features
       	cut_eqs = apply_partition(partition, dim);
-				hists(:, k) = compute_hist(features, num_levels, cut_eqs, dim);
+				hists(:, k) = compute_hist(features, cut_eqs, dim);
 			end
 			hists = bsxfun(@rdivide, hists, sum(hists, 1) + eps); %% normalizing
 
