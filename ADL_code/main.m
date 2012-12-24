@@ -9,11 +9,11 @@ path1 = [path0 'ADL_annotations/action_annotation/'];     %% action annottaion
 path2 = [path0 'ADL_detected_objects/testset/active/'];   %% detected active objects
 path3 = [path0 'ADL_detected_objects/testset/passive/'];  %% detected passive objects
 
-%feat_type = 'pyramid';
- feat_type = 'bag';
+feat_type = 'pyramid';
+%feat_type = 'bag';
 
-%object_type = 'active_passive';
-object_type = 'passive';
+object_type = 'active_passive';
+%object_type = 'passive';
 
 %%% reading action annottaion
 %%% data.X(i) corresponds to one presegmented video clip
