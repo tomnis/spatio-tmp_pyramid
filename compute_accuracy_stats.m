@@ -1,4 +1,4 @@
-function [stats] = compute_accuracy_stats(num_itrs, protate,  spatial_cuts)
+function [stats] = compute_accuracy_stats(num_itrs, protate, spatial_cuts)
   setup
   
   show_confn = 0;
@@ -9,16 +9,16 @@ function [stats] = compute_accuracy_stats(num_itrs, protate,  spatial_cuts)
   
   % set empirically, found that 4 levels overflows memory but
   % if using a more space efficient representation could experiment with this more
+  min_num_levels = 3;
   max_num_levels = 3;
   
   accuracy = [];
-  itr_accuracy = [];
   
   for object_type = {'passive', 'active_passive'}
   	object_type = object_type{1}
   	dataset = DataSet(data, frs, best_scores, locations, object_type);
   
-  	for num_levels = 1:max_num_levels
+  	for num_levels = min_num_levels:max_num_levels
   		itr_acc = [];
   		% compute accuracy num_itrs different times given current state
   		for itr = 1:num_itrs
@@ -26,13 +26,14 @@ function [stats] = compute_accuracy_stats(num_itrs, protate,  spatial_cuts)
   			partition = pool{1};
   			hists = dataset.compute_histograms(partition, dim);
   			itr_acc= [itr_acc; train_and_test(dataset, hists, person_ids, show_confn)];
+				clear hists;
   		end
   		accuracy = [accuracy itr_acc];
   	end
   end
   
   stats = struct('avg', [], 'stddev', [], 'min', [], 'max', []);
-  
+ 	accuracy 
   for i=1:size(accuracy,2)
   	stats.avg(i) = mean(accuracy(:,i));
   	stats.stddev(i) = std(accuracy(:,i));

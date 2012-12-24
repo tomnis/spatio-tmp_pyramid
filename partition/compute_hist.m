@@ -2,21 +2,19 @@
 % compute the feature histogram
 % dim => struct containing start_frame, end_frame, xlen, ylen, protate
 % cut_eqs => array of structs. 
-function [hist] = compute_hist(feats, nlevels, cut_eqs, dim)
-	assert(nlevels > 0);
+function [hist] = compute_hist(feats, cut_eqs, dim)
 	hist = [];
 	
 	cuts = struct('xcuts', [], 'ycuts', [], 'zcuts', []);
 
 	% level 0 is the entire shot
-	for level = 0:nlevels-1
-		if level > 0
-			prt_cuts = cut_eqs(level);
+	% level i is stored in cut_eqs(i+1)
+	for level = 1:length(cut_eqs)
+		prt_cuts = cut_eqs(level);
 			
-			cuts.xcuts = [cuts.xcuts; prt_cuts.xcuts];
-			cuts.ycuts = [cuts.ycuts; prt_cuts.ycuts];
-			cuts.zcuts = [cuts.zcuts; prt_cuts.zcuts];
-		end
+		cuts.xcuts = [cuts.xcuts; prt_cuts.xcuts];
+		cuts.ycuts = [cuts.ycuts; prt_cuts.ycuts];
+		cuts.zcuts = [cuts.zcuts; prt_cuts.zcuts];
 
 		% compute the histogram for the current level
 		hist = [hist; compute_curlvl_hist(feats, cuts, level, dim)];
@@ -26,6 +24,7 @@ end
 
 
 % given the current set of features and cuts, compute the current histogram
+% cuts for level i are stored in cuts(i+1)
 % each level i has 2^i -1 cuts along each dimension, 
 % and a feature can be positive or negative with respect to each cut
 function [cur_hist] = compute_curlvl_hist(feats, cuts, level, dim)

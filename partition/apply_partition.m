@@ -21,9 +21,12 @@ function [cut_eqs] = apply_partition(partition, dim)
 		cut_eqs(lvl) = struct('xcuts', [], 'ycuts', [], 'zcuts', []);
 		
 		level = partition(lvl);
-
 		% for each cut in the current level
 		for i = 1:length(level)
+			if length(level.xcut_fracs) == 0
+				continue
+			end
+
 			% apply the spatial cuts if specified
 			if spatial_cuts
 				% multiplying the fractional cut vectors by the x and y length
