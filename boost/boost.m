@@ -1,18 +1,12 @@
 % data contains labels
 % output is strong classifier
 % should_boost determines whether we should simple return 
-function [f] = boost(data, partitions, target_accuracy, num_levels, dim, should_boost)
+function [f] = boost(dataset, partitions, target_accuracy, num_levels, dim, should_boost)
   assert(should_boost == 0 || should_boost == 1);
-  data
-  
+
   spatial_cuts = dim.spatial_cuts;
   
-  % store the original data before we do any computation
-  % TODO find out if this is necessary.
-  % seems like it could be the case that the original values are being overwritten or something?
-  data_prime = data;
-  
-  labels = unique(data.label);
+  labels = unique(dataset.label);
   n_label = length(labels);
   
   % for each partition pattern
@@ -20,22 +14,18 @@ function [f] = boost(data, partitions, target_accuracy, num_levels, dim, should_
   	partition = partitions{prt_num};
   
   	% do we need to reset data to its prior state?
-  	data = data_prime;
   	% represent each clip in the subset using partition pattern
   	% must be in the loop because the histogram will be different depending on the partition pattern
-  	compute_feats
-  
-  	partitioned_feats{prt_num} = data.feat;
-  
-  	data
-  	num_clips = length(data.label);
+		hists = dataset.compute_histograms(partition, dim);
+  	partitioned_feats{prt_num} = hists;
   
   	% randomly sample a subset of the clips
-  	sampleinds = sort(randsample(num_clips, randi(num_clips)));
+		num_sample_clips = randi(dataset.num_clips);
+  	sampleinds = sort(randsample(dataset.num_clips, num_sample_clips));
   
   	% train an svm classifier on the subset
-  	x_train = data.feat(:, sampleinds);
-  	y_train = data.label(sampleinds);
+  	x_train = hists(:, sampleinds);
+  	y_train = dataset.label(sampleinds);
   
     %%% repeat samples to be balanced
     f3 = [];
@@ -58,14 +48,14 @@ function [f] = boost(data, partitions, target_accuracy, num_levels, dim, should_
   end
   
   % initialize the weight vector w
-  weights = zeros(length(data.label), 1);
+  weights = zeros(length(dataset.label), 1);
   % c is the number of classes
-  c = length(unique(data.label));
+  c = length(unique(dataset.label));
   
   % each w_i = 1 / (c * number of clips with label c_i)
   % inversely proportional to class size, to prevent unbalanced sample sizes
-  for i=1:length(data.label)
-  	weights(i) = 1 / (c * length(find(data.label == data.label(i))));
+  for i=1:dataset.num_clips
+  	weights(i) = 1 / (c * length(find(dataset.label == dataset.label(i))));
   end
   
   
@@ -90,8 +80,7 @@ function [f] = boost(data, partitions, target_accuracy, num_levels, dim, should_
   
   	% for each pattern, compute classification error
   	% should be dot(weights, I) where I is indicator of incorrect prediction
-  	x_test = data.feat';
-  	y_test = data.label';
+  	y_test = dataset.label';
   	
   	% compute the pattern which gives min err
   	min_err = length(weights);
@@ -100,7 +89,7 @@ function [f] = boost(data, partitions, target_accuracy, num_levels, dim, should_
   		x_test = partitioned_feats{pattern_ind}';
   		
   		y_pred = svmpredict(y_test, x_test, classifiers(pattern_ind));
-  		indicator = y_pred' ~= data.label;
+  		indicator = y_pred' ~= dataset.label;
   		
   		cur_err = dot(weights, indicator);
   		
@@ -127,24 +116,23 @@ function [f] = boost(data, partitions, target_accuracy, num_levels, dim, should_
   	end
   
   	% generate the strong classifier
-  	strong_classifications = strong_classify_all(alpha, min_class_classifiers, min_pat_inds, partitioned_feats, data.label);
+  	strong_classifications = strong_classify_all(alpha, min_class_classifiers, min_pat_inds, partitioned_feats, dataset.label);
   	
   	% compute its classification accuracy (percentage of correct classifications)
-  	strong_class_indicator = (strong_classifications == data.label);
+  	strong_class_indicator = (strong_classifications == dataset.label);
   	accuracy = mean(strong_class_indicator);
   	accuracies(j) = accuracy;
-  	end
+  end
   
-  	f.alpha = alpha;
-  	f.min_class_classifiers = min_class_classifiers;
-  	f.accuracies = accuracies;
-  	f.min_pat_inds = min_pat_inds;
+  f.alpha = alpha;
+  f.min_class_classifiers = min_class_classifiers;
+  f.accuracies = accuracies;
+  f.min_pat_inds = min_pat_inds;
   
   
-  	% basically, only perform one iteration
-  	% TODO this can be controlled more intuitively via j passed as a param
-  	if ~should_boost
-  		return
-  	end
+  % basically, only perform one iteration
+  % TODO this can be controlled more intuitively via j passed as a param
+  if ~should_boost
+  	return
   end
 end
