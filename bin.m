@@ -39,3 +39,8 @@ function [c] = compare(f, cut, dim)
 	c = dist(f, origin) >= dist(p, origin);
 	assert(c == 0 || c == 1)
 end
+
+
+function [d] = dist(p1, p2)
+	d = sqrt(sum((p1-p2) .^ 2));
+end
