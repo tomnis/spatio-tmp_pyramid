@@ -1,16 +1,11 @@
---setting num_levels to 1 in boost_main leads to a problem with making the partition in make_pool>make_partition
-	(partition output arg not asssigned)
-
 --problem in applying a partition. output of the function doesnt seem to match for some reason
 
 -- make the generation of partition better, ie no longer axis-aligned
 
 -- much freedom in playing with partition generation
 
--- data sub is in train_an_test
-
--- create an object to model the dataset
-
 -- compute_obj_distr should be a method on the new object
 
 -- should all the datapoints, even those with invalid labels, participate in the object distribution calculation?
+
+-- boost_main and compute_boost_stats are very similar

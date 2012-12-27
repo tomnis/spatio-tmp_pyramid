@@ -29,6 +29,7 @@ function [stats] = boost_main(pool_size, num_itrs, train_inds, test_inds)
 		% get application of each partition scheme that will be used by the classifier
 		% todo this can be made more efficient
 		% this is also compute in boost.m i believe
+		% TODO only use the max here?
 		for pat_ind = 1:length(f.min_pat_inds)
 			pool_num = f.min_pat_inds(pat_ind);
 			partition = pool{pool_num};
