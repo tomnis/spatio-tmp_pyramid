@@ -10,3 +10,10 @@
 
 -- boost_main and compute_boost_stats are very similar
 --find out what is in datafile
+
+
+-- compare ramanan and boosting
+
+-- graph what happens to the accuracy as pool size increases
+
+-- bias the creation of pool
