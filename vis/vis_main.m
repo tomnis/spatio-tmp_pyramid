@@ -1,10 +1,11 @@
 pool_size = 1;
 num_levels = 3;
 protate = 0;
+regular = 0;
 spatial_cuts = 1;
 
 % create the partition pool
-pool = make_pool(pool_size, num_levels, protate);
+pool = make_pool(pool_size, num_levels, protate, regular);
 
 eqs_to_plot = visualize_partition(pool{1}, spatial_cuts);
 

@@ -17,7 +17,8 @@ compute_scores
 num_partitions = 1;
 num_levels = 3;
 protate = 0;
-pool = make_pool(num_partitions, num_levels, protate);
+regular = 0;
+pool = make_pool(num_partitions, num_levels, protate, regular);
 partition = pool{1};
 dim.xlen = 1280;
 dim.ylen = 960;

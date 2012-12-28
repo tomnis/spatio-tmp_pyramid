@@ -9,10 +9,12 @@ object_type
 %%% assigning best scores to each pre-segmented data point (clip)
 compute_scores
 
+
+regular = 0;
 %%% now make the partition scheme
 % make_pool takes as param the maximum level
 if num_levels > 1
-	partition = make_pool(1, num_levels, dim.protate);
+	partition = make_pool(1, num_levels, dim.protate, regular);
 	partition = partition{1}
 end
 

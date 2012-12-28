@@ -7,6 +7,7 @@ function [stats] = boost_main(pool_size, num_itrs, train_inds, test_inds)
 	target_accuracy = .8;
 	object_type = 'active_passive';
 	spatial_cuts = 1;
+	regular = 0;
 	dim = struct('start_frame', 1, 'end_frame', 1000, 'xlen', 1280, 'ylen', 960, 'protate', protate, 'spatial_cuts', spatial_cuts);
 	should_boost = 1;
 
@@ -16,7 +17,7 @@ function [stats] = boost_main(pool_size, num_itrs, train_inds, test_inds)
 	for itr=1:num_itrs
 
 		% create the partition pool
-		pool = make_pool(pool_size, num_levels, protate);
+		pool = make_pool(pool_size, num_levels, protate, regular);
 
 		%traindata = applysplit(data, train_inds);
 

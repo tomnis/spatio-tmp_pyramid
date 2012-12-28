@@ -1,4 +1,7 @@
-function [stats] = compute_accuracy_stats(num_itrs, protate, spatial_cuts)
+function [stats] = compute_accuracy_stats(num_itrs, protate, spatial_cuts, regular)
+	assert(spatial_cuts == 0 || spatial_cuts == 1);
+	assert(regular == 0 || regular == 1);
+	
   setup
   
   show_confn = 0;
@@ -22,7 +25,7 @@ function [stats] = compute_accuracy_stats(num_itrs, protate, spatial_cuts)
   		itr_acc = [];
   		% compute accuracy num_itrs different times given current state
   		for itr = 1:num_itrs
-  			pool = make_pool(1, num_levels, protate);	
+  			pool = make_pool(1, num_levels, protate, regular);	
   			partition = pool{1};
   			hists = dataset.compute_histograms(partition, dim);
   			itr_acc= [itr_acc; train_and_test(dataset, hists, person_ids, show_confn)];

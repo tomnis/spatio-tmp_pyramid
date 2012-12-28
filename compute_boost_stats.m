@@ -1,6 +1,6 @@
 % compute the training error. 
 % similar to calling boost_main with all indices
-function [stats] = compute_boost_stats(pool_size, num_itrs)
+function [stats] = compute_boost_stats(pool_size, num_itrs, regular)
 
   setup
   load loaded_data
@@ -19,7 +19,7 @@ function [stats] = compute_boost_stats(pool_size, num_itrs)
   max_accuracies = [];
   
   for i=1:num_itrs
-  	pool = make_pool(pool_size, num_levels, protate);
+  	pool = make_pool(pool_size, num_levels, protate, regular);
   	f = boost(dataset, pool, target_accuracy, num_levels, dim, should_boost);
   	max_accuracies = [max_accuracies max(f.accuracies)];
   end
