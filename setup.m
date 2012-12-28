@@ -3,6 +3,7 @@ w = whos
 addpath /u/tomas/thesis  %% root directory
 addpath /u/tomas/thesis/boost 
 addpath /u/tomas/thesis/legacy 
+addpath /u/tomas/thesis/matfiles 
 addpath /u/tomas/thesis/partition
 addpath /u/tomas/thesis/read_data
 addpath /u/tomas/thesis/test
