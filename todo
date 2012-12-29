@@ -1,5 +1,3 @@
---problem in applying a partition. output of the function doesnt seem to match for some reason
-
 -- make the generation of partition better, ie no longer axis-aligned
 
 -- much freedom in playing with partition generation
@@ -10,7 +8,6 @@
 
 -- boost_main and compute_boost_stats are very similar
 --find out what is in datafile
-
 
 -- compare ramanan and boosting
 
