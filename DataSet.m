@@ -59,36 +59,6 @@ classdef DataSet
 
 
 
-		% return a subset of self
-		function self = sub(self, I, D)
-			if ~exist('D')
-  			D = 1;
-			end
-			
-			if ~isempty(self),
-			  n = properties(self);
-			  for i = 1:length(n),
-			    f = n{i};
-
-			    if isequal(class(self.(f)), 'double')
-						% scalar value, so subset doesnt make sense
-						if length(self.(f)) == 1
-							continue;
-						end
-			      self.(f) = self.(f)(I);
-
-			    elseif isequal(class(self.(f)), 'cell')
-						tmp = cell(1,length(I));
-			      for j = 1:length(I)
-			        tmp{j} = self.(f){I(j)};
-			      end
-						self.(f) = tmp;
-			    end
-
-			  end
-			end
-			self.num_clips = length(I);
-		end
 
 	end
 
@@ -128,7 +98,7 @@ classdef DataSet
 
 		% given a partition, compute the resulting feature histograms for each clip
 		function hists=compute_histograms(self, partition, dim)
-			dim.num_feat_types = size(self.best_s{1}, 1)
+			dim.num_feat_types = size(self.best_s{1}, 1);
 			for k=1:self.num_clips
       	clear features
         i = self.person(k);
@@ -171,6 +141,35 @@ classdef DataSet
 		end
 
 
+
+
+		% compute the ramanan-style histograms
+		function hists = compute_ramanan_histograms(self, feat_type)
+			assert(isequal(feat_type, 'bag') || isequal(feat_type, 'pyramid'));
+
+      for k = 1:self.num_clips
+        
+        n_frs = length(self.frs{k});
+        
+        if isequal(feat_type, 'bag')
+          self.feat(:, k) = sum(self.best_s{k}, 2) / n_frs;
+        elseif isequal(feat_type, 'pyramid')
+          mid_fr = (self.fr_start(1, k) + self.fr_end(1, k))/2;
+          f1 = find(self.frs{1, k} < mid_fr);
+          f2 = find(self.frs{1, k} >= mid_fr);
+         	hists(:, k) = [sum(self.best_s{k}, 2); sum(self.best_s{k}(:, f1), 2); sum(self.best_s{k}(:, f2), 2)] / n_frs;
+        end
+        
+      end
+      hists = bsxfun(@rdivide, hists, sum(hists, 1) + eps); %% normalizing
+      
+      thr = 0.01;
+      hists(hists > thr) = thr;   %% clipping features
+		end
+
+
+
+
 		function [traininds testinds] = get_split(self, train_frac)
 			assert(0 <= train_frac && train_frac <= 1);
 			traininds = [];
@@ -186,6 +185,7 @@ classdef DataSet
     
     		% only one clip with this label type
     		if length(clips_with_label) == 1
+					disp('singleton class');
     			continue;
     		end
     		
@@ -213,5 +213,40 @@ classdef DataSet
     		testinds = [testinds test_inds_from_data];
     	end
 		end
+		
+		
+		
+		
+		% return a subset of self
+		function self = sub(self, I, D)
+			if ~exist('D')
+  			D = 1;
+			end
+			
+			if ~isempty(self),
+			  n = properties(self);
+			  for i = 1:length(n),
+			    f = n{i};
+
+			    if isequal(class(self.(f)), 'double')
+						% scalar value, so subset doesnt make sense
+						if length(self.(f)) == 1
+							continue;
+						end
+			      self.(f) = self.(f)(I);
+
+			    elseif isequal(class(self.(f)), 'cell')
+						tmp = cell(1,length(I));
+			      for j = 1:length(I)
+			        tmp{j} = self.(f){I(j)};
+			      end
+						self.(f) = tmp;
+			    end
+
+			  end
+			end
+			self.num_clips = length(I);
+		end
+
 	end
 end

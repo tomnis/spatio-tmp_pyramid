@@ -19,29 +19,27 @@ function [stats] = boost_main(pool_size, num_itrs, train_inds, test_inds)
 		% create the partition pool
 		pool = make_pool(pool_size, num_levels, protate, regular);
 
-		%traindata = applysplit(data, train_inds);
+		traindata = dataset.sub(train_inds);
 
-		% TODO change this to take advantage of the split
-		f = boost(dataset, pool, target_accuracy, num_levels, dim, should_boost);
+		f = boost(traindata, pool, target_accuracy, num_levels, dim, should_boost);
 
 		% now that we have the classifier, test on the test data
-		%testdata = applysplit(data, test_inds);
+		testdata = dataset.sub(test_inds);
 
-		% get application of each partition scheme that will be used by the classifier
+		% get application of each partition scheme to be used by the classifier
 		% todo this can be made more efficient
 		% this is also compute in boost.m i believe
 		% TODO only use the max here?
 		for pat_ind = 1:length(f.min_pat_inds)
 			pool_num = f.min_pat_inds(pat_ind);
 			partition = pool{pool_num};
-			% TODO does dim need to change somewhere?
-			partitioned_feats{pool_num} = dataset.compute_histograms(partition, dim);
+			partitioned_feats{pool_num} = testdata.compute_histograms(partition, dim); 
 		end
 
 
-		strong_classifications = strong_classify_all(f.alpha, f.min_class_classifiers, f.min_pat_inds, partitioned_feats, dataset.label);
+		strong_classifications = strong_classify_all(f.alpha, f.min_class_classifiers, f.min_pat_inds, partitioned_feats, testdata.label);
 
-		strong_class_indicator = (strong_classifications == dataset.label);
+		strong_class_indicator = (strong_classifications == testdata.label);
 		accuracy = mean(strong_class_indicator)
 		accuracies(itr) = accuracy;
 	end

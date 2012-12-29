@@ -1,24 +1,35 @@
-setup
-addpath ADL_code
-load tempfile
-whos
-train_frac = .6;
+% run the ramanan version and my own version
+% we need to run the boosting a number of iterations to account for
+% any bad luck with selection of the partition.
 
+function [stats] = compare_orig_and_boost(pool_size, num_itrs, train_frac)
+	setup
+	load loaded_data
 
+	object_type = 'active_passive';
+  d = DataSet(data, frs, best_scores, locations, object_type);
 
-valid_labels = [1 2 3 4 5 6 9 10 12 13 14 15 17 20 22 23 24 27];
+	% create a split with the specified properties
+	[train_inds test_inds] = d.get_split(train_frac);
 
-f1 = find(ismember(data.label, valid_labels));
-data = sub(data, f1, 2);
+	size(train_inds)
+	size(test_inds)
 
-%feat_type = 'pyramid';
-feat_type = 'bag';
-%object_type = 'active_passive';
-object_type = 'passive';
+	% compute accuracy using the ramanan method...
+	% this is deterministic, so just run once
+	rhists = d.compute_ramanan_histograms('pyramid');
+	x_train = rhists(:, train_inds);
+	y_train = d.label(:, train_inds);
+	svm = svmtrain(y_train', x_train', '-c 1 -t 0');
 
+	x_test = rhists(:, test_inds);
+	y_test = d.label(:, test_inds);
+  y_pred = svmpredict(y_test', x_test', svm);
 
-[train_inds test_inds] = split(data, train_frac);
-[orig_accuracy orig_confn] = orig_method_split(train_inds, test_inds, data, frs, best_s_active, best_s_passive, feat_type, object_type);
-
-[stats] = boost_main(50, 5, train_inds, test_inds);
-
+	ind = (y_pred' == y_test);
+	acc = mean(ind)
+	
+	% compute accuracy using the boosting method. 
+	stats = boost_main(pool_size, num_itrs, train_inds, test_inds);
+	stats.orig_acc = acc;
+end
