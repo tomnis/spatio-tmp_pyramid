@@ -7,7 +7,6 @@
 % so represent the planar cuts as fractions, multiply later in the boosting 
 % algo to find the actual cuts
 
-% TODO should add a way to make regular cuts
 % num_partitions -> number of partitions in the pool
 % num_levels -> return partitions for levels [0..num_levels-1]
 % protate -> probability of independently rotating each planar cut
