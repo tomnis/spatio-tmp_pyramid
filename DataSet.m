@@ -248,5 +248,55 @@ classdef DataSet
 			self.num_clips = length(I);
 		end
 
-	end
+
+
+
+    function [distr] = compute_obj_distr(self, num_bins)
+    
+      distr = struct('bx', [], 'by', [], 'bz', []);
+      
+      locs = [];
+      % TODO get rid of these constants, maybe insert into the data struct
+      xlen = 1280;
+      ylen = 960;
+      
+      
+      % TODO there is some very similar code in compute_feats, should refactor
+      
+      
+      for k=1:length(self.best_s)
+      	%for r = 1:size(data.best_s{k}, 1)
+      	% the first 5 are active objects
+      	for r = 1:5
+      		num_frames = size(self.best_s{k}, 2);
+      		for c = 1:num_frames
+      		
+      			if self.best_s{k}(r,c) > 0
+      				% reshape the location from 1x1x4 to 1x4
+      				loc = reshape(self.locs{k}(r,c,:), 1,4);
+      				
+      				% compute the centroid of the bounding box
+      				x = mean([loc(1) loc(3)]) / xlen;
+      				y = mean([loc(2) loc(4)]) / ylen;
+      				% the frame is the column in the best score matrix
+      				z = c / num_frames;
+      				locs = [locs; x,y,z];
+      			end
+      		end
+      	end
+      end
+      
+      bin_centers = [.05:.1:1];
+      
+      [bx, x] = hist(locs(:,1), bin_centers);
+      [by, y] = hist(locs(:,2), bin_centers);
+      [bz, z] = hist(locs(:,3), bin_centers);
+      
+      % normalize
+      distr.bx = bx / sum(bx);
+      distr.by = by / sum(by);
+      distr.bz = bz / sum(bz);
+		end
+
+	end % end public methods
 end

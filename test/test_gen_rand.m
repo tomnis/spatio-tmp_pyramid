@@ -1,7 +1,12 @@
 setup
-load tempfile;
-compute_scores;
-distr = compute_obj_distr(data);
+load loaded_data;
+
+object_type = 'active_passive';
+
+d = DataSet(data, frs, best_scores, locations, object_type);
+
+
+distr = d.compute_obj_distr(10);
 
 genrandx = RandDistr(distr.bx);
 
