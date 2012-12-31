@@ -13,18 +13,20 @@ function [stats] = boost_main(pool_size, num_itrs, train_inds, test_inds)
 
 
   dataset = DataSet(data, frs, best_scores, locations, object_type);
+	% get the train and test sets
+	traindata = dataset.sub(train_inds);
+	testdata = dataset.sub(test_inds);
+
 	accuracies = [];
 	for itr=1:num_itrs
 
 		% create the partition pool
 		pool = make_pool(pool_size, num_levels, protate, regular);
 
-		traindata = dataset.sub(train_inds);
 
 		f = boost(traindata, pool, target_accuracy, num_levels, dim, should_boost);
 
 		% now that we have the classifier, test on the test data
-		testdata = dataset.sub(test_inds);
 
 		% get application of each partition scheme to be used by the classifier
 		% todo this can be made more efficient
