@@ -21,11 +21,9 @@ classdef RandDistr
 
 	methods
 		% constructor
-		function self=RandDistr(varargin)
-			if nargin == 1
-				self.distr = varargin{1};
+		function self=RandDistr(distr)
+				self.distr = distr;
 				self.inv_distr = self.get_inv(self.distr);
-			end
 			self.psums = cumsum(self.inv_distr);
 			% assert distr sums to 1
 			assert(abs(self.psums(end) - 1) < .001)
