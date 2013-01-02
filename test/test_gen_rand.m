@@ -21,3 +21,17 @@ bin_centers = [.05:.1:1];
 [btest, test] = hist(obs, bin_centers);
 
 bar(test, btest);
+
+% test the uniform distribution
+genrandx = RandDistr([]);
+obs = zeros(num_itrs, 1);
+
+for i=1:num_itrs
+	obs(i) = genrandx.get();
+end
+
+bin_centers = [.05:.1:1];
+
+[btest, test] = hist(obs, bin_centers);
+figure
+bar(test, btest);
