@@ -17,7 +17,12 @@ num_partitions = 1;
 num_levels = 3;
 protate = 0;
 regular = 0;
-pool = make_pool(num_partitions, num_levels, protate, regular);
+randrs.x = RandDistr([]);
+randrs.y = RandDistr([]);
+randrs.z = RandDistr([]);
+
+
+pool = make_pool(num_partitions, num_levels, protate, regular, randrs);
 partition = pool{1};
 dim.xlen = 1280;
 dim.ylen = 960;

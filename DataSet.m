@@ -14,6 +14,7 @@ classdef DataSet
 		locs % cell; locations of objects in each clip
 
 		num_clips
+		valid_labels
 	end
 
 	methods (Access='private')
@@ -83,8 +84,9 @@ classdef DataSet
 
 			self = set_scores(self, frs, best_scores, locations, object_type);
 			% remap the label set
-			valid_labels = [1 2 3 4 5 6 9 10 12 13 14 15 17 20 22 23 24 27];
-			f1 = find(ismember(self.label, valid_labels));
+			self.valid_labels = [1 2 3 4 5 6 9 10 12 13 14 15 17 20 22 23 24 27];
+			self.valid_labels
+			f1 = find(ismember(self.label, self.valid_labels));
 			self = sub(self, f1, 2);
 			labels = unique(self.label);
 			n_label = length(labels);
@@ -227,6 +229,10 @@ classdef DataSet
 			  n = properties(self);
 			  for i = 1:length(n),
 			    f = n{i};
+					
+					if isequal(f, 'valid_labels')
+						continue;
+					end
 
 			    if isequal(class(self.(f)), 'double')
 						% scalar value, so subset doesnt make sense
