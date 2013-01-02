@@ -9,6 +9,7 @@ classdef RandDistr
 		distr = [1];
 		inv_distr = [1];
 		psums = [1];
+		uniform = 0;
 	end
 
 	methods (Access='private')
@@ -22,21 +23,43 @@ classdef RandDistr
 	methods
 		% constructor
 		function self=RandDistr(distr)
-				self.distr = distr;
-				self.inv_distr = self.get_inv(self.distr);
+			if length(distr) == 0
+				self.uniform = 1;
+				% TODO hacky at this point, should probably build a true distr
+				return;
+			end
+			self.distr = distr;
+			self.inv_distr = self.get_inv(self.distr);
 			self.psums = cumsum(self.inv_distr);
 			% assert distr sums to 1
 			assert(abs(self.psums(end) - 1) < .001)
 		end
 
 
+
+
+		% get a vector according to the current distribution
+		function as = getn(self, n)
+			as = zeros(1, n);
+			for i=1:n
+				as(i) = self.get();
+			end
+		end
+
+
+
+
 		% get the next number according to the current distribution
 		function a=get(self)
-			r = rand;
-			
+			a = rand;
+		
+			if self.uniform
+				return
+			end
+
 			% use psums to figure out which bin the result number should come from
 			b = 1;
-			while self.psums(b) < r
+			while self.psums(b) < a
 				b = b + 1;
 			end
 

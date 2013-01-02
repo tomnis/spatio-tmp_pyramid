@@ -1,4 +1,4 @@
-function [stats] = boost_main(pool_size, num_itrs, train_inds, test_inds)
+function [accuracies] = boost_main(pool_size, num_itrs, train_inds, test_inds, bias)
 	setup
 	load loaded_data
 
@@ -11,17 +11,31 @@ function [stats] = boost_main(pool_size, num_itrs, train_inds, test_inds)
 	dim = struct('start_frame', 1, 'end_frame', 1000, 'xlen', 1280, 'ylen', 960, 'protate', protate, 'spatial_cuts', spatial_cuts);
 	should_boost = 1;
 
-
   dataset = DataSet(data, frs, best_scores, locations, object_type);
 	% get the train and test sets
 	traindata = dataset.sub(train_inds);
 	testdata = dataset.sub(test_inds);
 
+	% TODO should i compute the distribution on the train, or all data?
+	if bias
+		distr = dataset.compute_obj_distrs(10);
+	else
+		distr.bx = [];
+		distr.by = [];
+		distr.bz = [];
+	end
+
+
+	distr
+	randrs.x = RandDistr(distr.bx);
+	randrs.y = RandDistr(distr.by);
+	randrs.z = RandDistr(distr.bz);
+
 	accuracies = [];
 	for itr=1:num_itrs
 
 		% create the partition pool
-		pool = make_pool(pool_size, num_levels, protate, regular);
+		pool = make_pool(pool_size, num_levels, protate, regular, randrs);
 
 
 		f = boost(traindata, pool, target_accuracy, num_levels, dim, should_boost);
@@ -45,8 +59,3 @@ function [stats] = boost_main(pool_size, num_itrs, train_inds, test_inds)
 		accuracy = mean(strong_class_indicator)
 		accuracies(itr) = accuracy;
 	end
-	
-	stats.avg = mean(accuracies);
-	stats.min = min(accuracies);
-	stats.max = max(accuracies);
-	stats.stddev = std(accuracies);
