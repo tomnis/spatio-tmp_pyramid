@@ -1,7 +1,6 @@
 clear
 setup
 load loaded_data
-
 object_type = 'active_passive';
 
 d = DataSet(data, frs, best_scores, locations, object_type);
