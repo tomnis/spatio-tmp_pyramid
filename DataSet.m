@@ -250,8 +250,8 @@ classdef DataSet
 
 
 
-
-    function [distr] = compute_obj_distr(self, num_bins)
+		% TODO implement the num_bins stuff
+    function [distr] = compute_obj_distrs(self, num_bins)
     
       distr = struct('bx', [], 'by', [], 'bz', []);
       
