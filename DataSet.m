@@ -85,7 +85,6 @@ classdef DataSet
 			self = set_scores(self, frs, best_scores, locations, object_type);
 			% remap the label set
 			self.valid_labels = [1 2 3 4 5 6 9 10 12 13 14 15 17 20 22 23 24 27];
-			self.valid_labels
 			f1 = find(ismember(self.label, self.valid_labels));
 			self = sub(self, f1, 2);
 			labels = unique(self.label);
