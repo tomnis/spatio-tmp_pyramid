@@ -2,17 +2,17 @@ setup
 load loaded_data
 object_type = 'active_passive';
 
-num_levels = 1;
-pool_size = 10;
+num_levels = 3;
+pool_size = 15;
 protate = 0;
 regular = 0;
 
 d = DataSet(data, frs, best_scores, locations, object_type);
 
-bias = 0;
+bias = 1;
 % TODO should i compute the distribution on the train, or all data?
 if bias
-	distr = dataset.compute_obj_distrs(10);
+	distr = d.compute_obj_distrs(10);
 else
 	distr.bx = [];
 	distr.by = [];

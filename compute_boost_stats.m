@@ -20,10 +20,11 @@ function [stats] = compute_boost_stats(pool_size, num_itrs, regular)
   
   for i=1:num_itrs
   	pool = make_pool(pool_size, num_levels, protate, regular);
-  	f = boost(dataset, pool, target_accuracy, num_levels, dim, should_boost);
+  	f = boost(dataset, pool, target_accuracy, dim, should_boost);
   	max_accuracies = [max_accuracies max(f.accuracies)];
   end
-  
+ 
+ 	stats.max_accuracies = max_accuracies;
   stats.avg = mean(max_accuracies);
   stats.stddev = std(max_accuracies);
   stats.min = min(max_accuracies);

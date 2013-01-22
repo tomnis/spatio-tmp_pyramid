@@ -1,7 +1,7 @@
 % data contains labels
 % output is strong classifier
 % should_boost determines whether we should simple return 
-function [f] = boost(dataset, partitions, target_accuracy, num_levels, dim, should_boost)
+function [f] = boost(dataset, partitions, target_accuracy, dim, should_boost)
   assert(should_boost == 0 || should_boost == 1);
 
   spatial_cuts = dim.spatial_cuts;
