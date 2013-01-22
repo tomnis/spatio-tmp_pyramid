@@ -1,5 +1,5 @@
 % leave one out train and test
-function [accuracy] = leave_one_out(dataset, pool, person_ids, show_confn)
+function [accuracy confn] = leave_one_out(dataset, pool, person_ids)
 %%% leave one out train and test
 
 
@@ -8,11 +8,9 @@ function [accuracy] = leave_one_out(dataset, pool, person_ids, show_confn)
 	dim = struct('start_frame', 0, 'end_frame', 1000, 'xlen', 1280, 'ylen', 960, 'protate', protate, 'spatial_cuts', spatial_cuts);
 
 
-% TODO shouldnt have to know about valid labels here
-valid_labels = [1 2 3 4 5 6 9 10 12 13 14 15 17 20 22 23 24 27];
 labels = unique(dataset.label);
 n_label = length(labels);
-assert(n_label == length(valid_labels));
+assert(n_label == length(dataset.valid_labels));
 
 conf = zeros(n_label, n_label);
 
@@ -37,7 +35,7 @@ for left_out = person_ids
     f2 = repmat(f1, [1 ceil(100/f1_n)]);
     f3 = [f3 f2(1:100)];
   end
-  traindata = traindata.sub(f3);
+	traindata = traindata.sub(f3);
 
 	% train...
 	f = boost(traindata, pool, .8, 3, dim, 1);
@@ -47,11 +45,11 @@ for left_out = person_ids
 		partition = pool{pool_num};
 		partitioned_feats{pool_num} = testdata.compute_histograms(partition, dim); 
 	end
-	
+
+
 	% now test
-	y_pred = strong_classify_all(f.alpha, f.min_class_classifiers, f.min_pat_inds, partitioned_feats, testdata.label);
- 	find(y_pred == 0)
-	keyboard
+	y_pred = strong_classify_all(f, partitioned_feats, dataset.valid_labels);
+	
   conf1 = zeros(n_label, n_label);
   
   for j = 1:length(y_test)
@@ -59,12 +57,8 @@ for left_out = person_ids
   end
   conf = conf + conf1;
   [left_out sum(diag(conf1))/sum(conf1(:))]
+	clear partitioned_feats;
 end
 
 confn = bsxfun(@rdivide, conf, sum(conf, 2) + eps); %% normalize the confusion matrix
 accuracy = sum(diag(confn)/sum(confn(:)))
-
-if show_confn
-	imagesc(confn)
-	colormap gray
-end

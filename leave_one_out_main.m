@@ -2,8 +2,8 @@ setup
 load loaded_data
 object_type = 'active_passive';
 
-num_levels = 3;
-pool_size = 1;
+num_levels = 1;
+pool_size = 10;
 protate = 0;
 regular = 0;
 
@@ -26,4 +26,4 @@ randrs.z = RandDistr(distr.bz);
 % create the partition pool
 pool = make_pool(pool_size, num_levels, protate, regular, randrs);
 
-accuracy = leave_one_out(d, pool, person_ids, 0);
+[accuracy confn] = leave_one_out(d, pool, person_ids);
