@@ -53,9 +53,16 @@ function [accuracies] = boost_main(pool_size, num_itrs, train_inds, test_inds, b
 		end
 
 
-		strong_classifications = strong_classify_all(f.alpha, f.min_class_classifiers, f.min_pat_inds, partitioned_feats, testdata.label);
+		strong_classifications = strong_classify_all(f, partitioned_feats, testdata.valid_labels);
+
+		size(strong_classifications)
+		size(testdata.label)
+		size(partitioned_feats)
+
+		assert(isequal(size(strong_classifications), size(testdata.label)));
 
 		strong_class_indicator = (strong_classifications == testdata.label);
 		accuracy = mean(strong_class_indicator)
 		accuracies(itr) = accuracy;
+		clear partitioned_feats;
 	end

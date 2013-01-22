@@ -72,7 +72,7 @@ function [f] = boost(dataset, partitions, target_accuracy, num_levels, dim, shou
   j = 0;
   accuracy = 0;
   accuracies = [];
-  while accuracy < target_accuracy && j < 10
+  while accuracy < target_accuracy && j < 5
   	
   	% for each clip, update the weight
   	weights = weights ./ sum(weights);
@@ -102,37 +102,23 @@ function [f] = boost(dataset, partitions, target_accuracy, num_levels, dim, shou
   	end
   
   	% compute the weight for the pattern with min error
-  	alpha(j) = log((1 - min_err) / min_err) + log(c - 1);
+  	f.alpha(j) = log((1 - min_err) / min_err) + log(c - 1);
   	% remember which svm gave the min error in the jth iteration
-  	min_class_classifiers(j) = classifiers(min_pat_ind);
-  	min_pat_inds(j) = min_pat_ind;
+  	f.min_class_classifiers(j) = classifiers(min_pat_ind);
+  	f.min_pat_inds(j) = min_pat_ind;
   
   	assert(length(weights) == length(min_indicator));
   
   	% recompute the weights
   	% note that indicator needs to be in the correct state
   	for i=1:length(weights)
-  		weights(i) = weights(i) * exp(alpha(j) * min_indicator(i));
+  		weights(i) = weights(i) * exp(f.alpha(j) * min_indicator(i));
   	end
   
   	% generate the strong classifier
-  	strong_classifications = strong_classify_all(alpha, min_class_classifiers, min_pat_inds, partitioned_feats, dataset.label);
+  	strong_classifications = strong_classify_all(f, partitioned_feats, dataset.valid_labels);
   	
-  	% compute its classification accuracy (percentage of correct classifications)
-  	strong_class_indicator = (strong_classifications == dataset.label);
-  	accuracy = mean(strong_class_indicator);
-  	accuracies(j) = accuracy;
-  end
-  
-  f.alpha = alpha;
-  f.min_class_classifiers = min_class_classifiers;
-  f.accuracies = accuracies;
-  f.min_pat_inds = min_pat_inds;
-  
-  
-  % basically, only perform one iteration
-  % TODO this can be controlled more intuitively via j passed as a param
-  if ~should_boost
-  	return
+		% compute its classification accuracy (percentage of correct classifications)
+  	f.accuracies(j) = mean(strong_classifications == dataset.label);
   end
 end
