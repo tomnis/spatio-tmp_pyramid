@@ -1,4 +1,4 @@
-w = whos
+disp 'adding paths...'
 
 addpath /u/tomas/thesis  %% root directory
 addpath /u/tomas/thesis/boost 
