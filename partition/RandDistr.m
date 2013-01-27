@@ -22,15 +22,25 @@ classdef RandDistr
 
 	methods
 		% constructor
-		function self=RandDistr(distr)
+		% distr is active object distribution
+		% inverse is whether we should use distr or its inverse
+		% using distr is cutting through active object regions
+		% inverse is cutting around active object regions
+		function self=RandDistr(distr, inverse)
 			if length(distr) == 0
 				self.uniform = 1;
 				% TODO hacky at this point, should probably build a true distr
 				return;
 			end
-			self.distr = distr;
-			self.inv_distr = self.get_inv(self.distr);
-			self.psums = cumsum(self.inv_distr);
+
+
+			if inverse
+				self.distr = self.get_inv(distr);
+			else 
+				self.distr = distr
+			end
+
+			self.psums = cumsum(self.distr);
 			% assert distr sums to 1
 			assert(abs(self.psums(end) - 1) < .001)
 		end
@@ -64,8 +74,8 @@ classdef RandDistr
 			end
 
 			% then generate a new random number coming from that bin range to return
-			low = (b-1) / length(self.inv_distr);
-			high = b / length(self.inv_distr);
+			low = (b-1) / length(self.distr);
+			high = b / length(self.distr);
 			% interval [low, high]
 			a = low + (high - low)*rand;
 		end
