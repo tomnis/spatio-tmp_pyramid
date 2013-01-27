@@ -7,8 +7,9 @@ addpath /u/tomas/thesis/matfiles
 addpath /u/tomas/thesis/partition
 addpath /u/tomas/thesis/read_data
 addpath /u/tomas/thesis/test
-addpath /u/tomas/thesis/vis 
+addpath /u/tomas/thesis/third_party/
 addpath /u/tomas/thesis/third_party/libsvm-mat-3.0-1
+addpath /u/tomas/thesis/vis 
 
 
 path0 = '/scratch/vision/luzheng/data/video_summarization/adl/';  %% root directory
