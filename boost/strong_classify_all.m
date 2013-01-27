@@ -1,5 +1,3 @@
-% classify all the data points
-% pass in all partitioned features
 function [labels] = strong_classify_all(classifier, partitioned_feats, valid_labels)
 	labels = [];
 	num_test = 0;
@@ -12,41 +10,36 @@ function [labels] = strong_classify_all(classifier, partitioned_feats, valid_lab
 			break
 		end
 	end
-	
+
 	assert(num_test > 0)
-	%keyboard
 
-	for i = 1:num_test
-		labels(i) = strong_classify(classifier, partitioned_feats, i, valid_labels);
+	% precompute classifications using all classifiers
+	% TODO this is recomputed every time, when all thats necessary is to 
+	% give the last ones and recompute the new ones, but not a big deal,
+	% pretty fast anyway
+	for m=1:length(classifier.alpha)
+		x_test = partitioned_feats{classifier.min_pat_inds(m)};
+		y_test = ones(1, size(x_test,2));
+		allpreds(:,m) = svmpredict(y_test', x_test', classifier.min_class_classifiers(m));
 	end
-end
 
-% strongly classify the ith data point
-% = argmax_c (sum_{m=1}^j alpha(m) * f_m(I) == c)
-% j = length(alpha)
-% feats
-function [label] = strong_classify(classifier, partitioned_feats, i, valid_labels)
-	cur_max_label = 0;
-	cur_max_score = intmin;
+	% now classify all the data points
+	% = argmax_c (sum_{m=1}^j alpha(m) * f_m(I) == c)
+	for i=1:num_test
+		cur_max_score = intmin;
+		cur_max_label = 0;
 
+		for c=1:length(valid_labels)
+			cur_test_label = valid_labels(c);
 
-	for j=1:length(valid_labels)
-		cur_score = 0;
-		cur_test_label = valid_labels(j);
-		
-		% compute the score for the current label
-		for m=1:length(classifier.alpha)
-			x_test = partitioned_feats{classifier.min_pat_inds(m)}(:,i);
-			y_test = cur_test_label;
+			cur_score = dot(classifier.alpha, (allpreds(i,:) == cur_test_label));
+
+			if cur_score > cur_max_score
+				cur_max_label = cur_test_label;
+				cur_max_score = cur_score;
+			end
 			
-			cur_label = svmpredict(y_test', x_test', classifier.min_class_classifiers(m));
-			cur_score = cur_score + classifier.alpha(m) * (cur_label == cur_test_label);
 		end
-		if cur_score > cur_max_score
-			cur_max_label = cur_label;
-			cur_max_score = cur_score;
-		end
+		labels(i) = cur_max_label;
+		assert(labels(i) > 0);
 	end
-	label = cur_max_label;
-	assert(label > 0);
-end
