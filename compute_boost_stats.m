@@ -5,7 +5,7 @@ function [stats] = compute_boost_stats(pool_size, num_itrs, regular)
   setup
   load loaded_data
   
-  num_levels = 3;
+  num_levels = 1;
   protate = 0;
   target_accuracy = .8;
   object_type = 'active_passive';
@@ -17,9 +17,25 @@ function [stats] = compute_boost_stats(pool_size, num_itrs, regular)
   
 	stats = struct('avg', [], 'stddev', [], 'min', [], 'max', []); 
   max_accuracies = [];
+
+	bias = 0;
+
+	if bias
+		distr = dataset.compute_obj_distrs(10);
+	else
+		distr.bx = [];
+		distr.by = [];
+		distr.bz = [];
+	end
+
+
+	distr
+	randrs.x = RandDistr(distr.bx);
+	randrs.y = RandDistr(distr.by);
+	randrs.z = RandDistr(distr.bz);
   
   for i=1:num_itrs
-  	pool = make_pool(pool_size, num_levels, protate, regular);
+  	pool = make_pool(pool_size, num_levels, protate, regular, randrs);
   	f = boost(dataset, pool, target_accuracy, dim, should_boost);
   	max_accuracies = [max_accuracies max(f.accuracies)];
   end
