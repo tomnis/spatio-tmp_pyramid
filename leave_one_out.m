@@ -38,7 +38,7 @@ for left_out = person_ids
 	traindata = traindata.sub(f3);
 
 	% train...
-	f = boost(traindata, pool, .8, dim, 1);
+	f = boost(traindata, pool, .8, dim, 'poly');
 	% get application of each partition scheme to be used by the classifier
 	for pat_ind = 1:length(f.min_pat_inds)
 		pool_num = f.min_pat_inds(pat_ind);
