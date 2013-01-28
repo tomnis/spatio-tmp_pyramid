@@ -1,8 +1,5 @@
 % given he feature histograms, compute the kernel to be used for svm training
 function [K] = compute_kernel(hist1, hist2, type)
-	hist1size = size(hist1)
-	hist2size = size(hist2)
-
 	if isequal(type, 'chisq')
 		K = chi_sq_dist(hist1, hist2);
 	elseif isequal(type, 'histintersect')
