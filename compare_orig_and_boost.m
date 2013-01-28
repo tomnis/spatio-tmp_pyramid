@@ -36,7 +36,7 @@ function [stats] = compare_orig_and_boost(pool_size, num_itrs, train_frac)
   %select the training examples to use
   x_train = x_train(:, f3);
   y_train = y_train(:, f3);
-	svm = svmtrain(y_train', x_train', '-c 1 -t 0');
+	svm = svmtrain(y_train', x_train', '-c 1 -t 0 -q');
 
 	x_test = rhists(:, test_inds);
 	y_test = d.label(:, test_inds);
