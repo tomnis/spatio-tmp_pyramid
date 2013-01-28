@@ -2,6 +2,7 @@ disp 'adding paths...'
 
 addpath /u/tomas/thesis  %% root directory
 addpath /u/tomas/thesis/boost 
+addpath /u/tomas/thesis/experiments 
 addpath /u/tomas/thesis/legacy 
 addpath /u/tomas/thesis/matfiles 
 addpath /u/tomas/thesis/partition
