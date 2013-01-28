@@ -1,11 +1,13 @@
 % compute the training error. 
 % similar to calling boost_main with all indices
-function [stats] = compute_boost_stats(pool_size, num_itrs, regular)
+function [stats] = compute_boost_stats(pool_size, num_itrs, bias_type, kernel_type)
 
   setup
   load loaded_data
-  
-  num_levels = 1;
+ 
+
+ 	regular = 0;
+  num_levels = 3;
   protate = 0;
   target_accuracy = .8;
   object_type = 'active_passive';
@@ -19,6 +21,7 @@ function [stats] = compute_boost_stats(pool_size, num_itrs, regular)
   max_accuracies = [];
 
 	bias = 0;
+
 
 	if bias
 		distr = dataset.compute_obj_distrs(10);
@@ -36,7 +39,7 @@ function [stats] = compute_boost_stats(pool_size, num_itrs, regular)
   
   for i=1:num_itrs
   	pool = make_pool(pool_size, num_levels, protate, regular, randrs);
-  	f = boost(dataset, pool, target_accuracy, dim, should_boost);
+  	f = boost(dataset, pool, target_accuracy, dim, kernel_type);
   	max_accuracies = [max_accuracies max(f.accuracies)];
   end
  

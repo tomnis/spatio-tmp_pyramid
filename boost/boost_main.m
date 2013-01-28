@@ -1,44 +1,21 @@
-function [accuracies] = boost_main(pool_size, num_itrs, train_inds, test_inds, bias)
-	setup
-	load loaded_data
+% call this to use the boosing classifier
+% pools is cell array of pools
+% traindata is a DataSet object
+% testdata is a DataSet object
+% kernel_type is 'poly', 'chisq', 'histintersect'
+function [accuracies] = boost_main(pools, traindata, testdata, kernel_type, dim)
+	num_itrs = length(pools);
 
-	num_levels = 3;
-	protate = 0;
 	target_accuracy = .8;
-	object_type = 'active_passive';
-	spatial_cuts = 1;
-	regular = 0;
-	dim = struct('start_frame', 1, 'end_frame', 1000, 'xlen', 1280, 'ylen', 960, 'protate', protate, 'spatial_cuts', spatial_cuts);
-	should_boost = 1;
-
-  dataset = DataSet(data, frs, best_scores, locations, object_type);
-	% get the train and test sets
-	traindata = dataset.sub(train_inds);
-	testdata = dataset.sub(test_inds);
-
-	% TODO should i compute the distribution on the train, or all data?
-	if bias
-		distr = dataset.compute_obj_distrs(10);
-	else
-		distr.bx = [];
-		distr.by = [];
-		distr.bz = [];
-	end
-
-
-	distr
-	randrs.x = RandDistr(distr.bx);
-	randrs.y = RandDistr(distr.by);
-	randrs.z = RandDistr(distr.bz);
 
 	accuracies = [];
 	for itr=1:num_itrs
-
+		disp (['boost_main trial ' num2str(itr) ' of ' num2str(num_itrs)])
 		% create the partition pool
-		pool = make_pool(pool_size, num_levels, protate, regular, randrs);
+		pool = pools{itr};
+	
 
-
-		f = boost(traindata, pool, target_accuracy, dim, should_boost);
+		f = boost(traindata, pool, target_accuracy, dim, kernel_type);
 
 		% now that we have the classifier, test on the test data
 
@@ -54,10 +31,6 @@ function [accuracies] = boost_main(pool_size, num_itrs, train_inds, test_inds, b
 
 
 		strong_classifications = strong_classify_all(f, partitioned_feats, testdata.valid_labels);
-
-		size(strong_classifications)
-		size(testdata.label)
-		size(partitioned_feats)
 
 		assert(isequal(size(strong_classifications), size(testdata.label)));
 

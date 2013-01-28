@@ -1,21 +1,21 @@
 % data contains labels
 % output is strong classifier
-% should_boost determines whether we should simple return 
-function [f] = boost(dataset, partitions, target_accuracy, dim, should_boost)
-  assert(should_boost == 0 || should_boost == 1);
-
+function [f] = boost(dataset, pool, target_accuracy, dim, kernel_type)
   spatial_cuts = dim.spatial_cuts;
-  
+
   labels = unique(dataset.label);
   n_label = length(labels);
-  
+ 
   % for each partition pattern
-  for prt_num = 1:length(partitions)
-  	partition = partitions{prt_num};
-  
+  for prt_num = 1:length(pool)
+		disp (['processing partition pattern ' num2str(prt_num) ' of ' num2str(length(pool))])
+  	partition = pool{prt_num};
+ 
+
   	% do we need to reset data to its prior state?
   	% represent each clip in the subset using partition pattern
   	% must be in the loop because the histogram will be different depending on the partition pattern
+		disp 'computing histograms...'
 		hists = dataset.compute_histograms(partition, dim);
   	partitioned_feats{prt_num} = hists;
   
@@ -43,8 +43,19 @@ function [f] = boost(dataset, partitions, target_accuracy, dim, should_boost)
   	% select the training examples to use
     x_train1 = x_train(:, f3);
     y_train1 = y_train(:, f3);
-  	
-  	classifiers(prt_num) = svmtrain(y_train1', x_train1', '-c 1 -t 0');
+ 
+		if isequal(kernel_type, 'poly')
+ 			disp 'training with polynomial kernel...'
+ 		  svm = svmtrain(y_train1', x_train1', '-c 1 -t 0 -q');
+		else 
+			disp (['precomputing the ' kernel_type ' kernel...']);
+			K = compute_kernel(x_train1', x_train1', kernel_type);
+ 			disp 'training...'
+			trains{prt_num} = x_train1;
+			svm = svmtrain(y_train1', K, '-q -t 4');
+		end
+		disp 'done.'
+		classifiers(prt_num) = svm;
   end
   
   % initialize the weight vector w
@@ -57,16 +68,6 @@ function [f] = boost(dataset, partitions, target_accuracy, dim, should_boost)
   for i=1:dataset.num_clips
   	weights(i) = 1 / (c * length(find(dataset.label == dataset.label(i))));
   end
-  
-  
-  % just compute accuracy using the initial weights
-  if ~should_boost
-  
-  
-  	return
-  end
-  
-  
   
   
   j = 0;
@@ -85,11 +86,18 @@ function [f] = boost(dataset, partitions, target_accuracy, dim, should_boost)
   	% compute the pattern which gives min err
   	min_err = length(weights);
   	min_pat_ind = 1;
-  	for pattern_ind = 1:length(partitions)
+  	for pattern_ind = 1:length(pool)
   		x_test = partitioned_feats{pattern_ind}';
   		
-  		y_pred = svmpredict(y_test, x_test, classifiers(pattern_ind));
-  		indicator = y_pred' ~= dataset.label;
+			
+			if isequal(kernel_type, 'poly')
+  			y_pred = svmpredict(y_test, x_test, classifiers(pattern_ind));
+			else
+				xtest = compute_kernel(x_test, trains{pattern_ind}', kernel_type);
+				y_pred = svmpredict(y_test, xtest, classifiers(pattern_ind));
+			end
+  		
+			indicator = y_pred' ~= dataset.label;
   		
   		cur_err = dot(weights, indicator);
   		
