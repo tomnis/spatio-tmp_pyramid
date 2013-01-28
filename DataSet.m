@@ -100,7 +100,7 @@ classdef DataSet
 		% given a partition, compute the resulting feature histograms for each clip
 		function hists=compute_histograms(self, partition, dim)
 			num_feat_types = size(self.best_s{1}, 1);
-			dum.num_feat_types = num_feat_types;
+			dim.num_feat_types = num_feat_types;
 			for k=1:self.num_clips
       	clear features
         i = self.person(k);
@@ -134,7 +134,7 @@ classdef DataSet
       
       	% apply the partition to the features
       	cut_eqs = apply_partition(partition, dim);
-				hists(:, k) = compute_hist(features, cut_eqs, num_feat_types);
+				hists(:, k) = compute_hist(features, cut_eqs, dim);
 			end
 			hists = bsxfun(@rdivide, hists, sum(hists, 1) + eps); %% normalizing
 
