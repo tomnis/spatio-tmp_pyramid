@@ -37,7 +37,7 @@ classdef RandDistr
 			if inverse
 				self.distr = self.get_inv(distr);
 			else 
-				self.distr = distr
+				self.distr = distr;
 			end
 
 			self.psums = cumsum(self.distr);
