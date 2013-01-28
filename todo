@@ -2,22 +2,13 @@
 
 -- much freedom in playing with partition generation
 
--- compute_obj_distr should be a method on the new object
-
 -- should all the datapoints, even those with invalid labels, participate in the object distribution calculation?
 
--- boost_main and compute_boost_stats are very similar
 --find out what is in datafile
-
--- compare ramanan and boosting
-
--- graph what happens to the accuracy as pool size increases
-
--- bias the creation of pool
 
 -- setting threshold to .012 ups the accuracy a bit.. should be investigated more
 maybe parameterized
 
 -- look at the creation of histograms... can it be improved, made more like R
 
--- training on 50/50 split using ramanan method always gives the same answer
+-- refactor so that make_pool takes varargin, make randrs optional param
