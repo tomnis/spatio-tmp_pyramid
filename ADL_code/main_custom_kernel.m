@@ -91,7 +91,7 @@ for left_out = person_ids
   y_test = map1(y_test+1);
   
   %%% repeat samples to be balenaced
-	num_repeat= 50;
+	num_repeat= 100;
   f3 = [];
   for i = 1:n_label
     f1 = find(y_train == i);
@@ -106,8 +106,8 @@ for left_out = person_ids
   x_train1 = x_train(:, f3);
   y_train1 = y_train(:, f3);
 
-	%type = 'chisq';
-	type = 'histintersect';
+	type = 'chisq';
+	%type = 'histintersect';
 
  	k = compute_kernel(x_train1', x_train1', type); 
 
