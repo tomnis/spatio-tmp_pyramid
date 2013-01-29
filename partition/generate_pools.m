@@ -5,9 +5,7 @@
 % num_levels -> number of levels in the pyramid
 % prorate -> probability of rotating cut planes
 % bias_Type -> 0, 1,2. unbiased, cut around active objects, cut through active objects
-function pools = generate_pools(num_pools, pool_size, num_levels, protate, bias_type, dataset)
-	regular = 0;
-	
+function pools = generate_pools(num_pools, pool_size, num_levels, protate, bias_type, regular, dataset)
 	
 	% TODO should i compute the distribution on the train, or all data?
 	if bias_type > 1

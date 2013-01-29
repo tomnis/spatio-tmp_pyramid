@@ -17,7 +17,7 @@ function [cut_eqs] = apply_partition(partition, dim)
 	zlen = end_frame - start_frame + 1;
 
 	% for each level in the partition scheme
-	for lvl = length(partition)
+	for lvl = 1:length(partition)
 		cut_eqs(lvl) = struct('xcuts', [], 'ycuts', [], 'zcuts', []);
 		
 		level = partition(lvl);

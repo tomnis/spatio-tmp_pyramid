@@ -46,6 +46,7 @@ function [cut_fracs] = make_cut_fracs(level, protate, regular, randrs)
 
 	% make regular cuts, bisecting the space
 	if regular
+		level
   	for i = 1:2:2^level
   		c = i / 2^level;
   		newxcut = [0 c c];

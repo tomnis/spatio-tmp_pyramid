@@ -10,9 +10,9 @@ function [accuracies] = highlevel(bias_type, kernel_type, num_trials)
 	dim = struct('start_frame', 1, 'end_frame', 1000, 'xlen', 1280, 'ylen', 960, 'protate', protate, 'spatial_cuts', spatial_cuts);
 
 	load split
-	load allpools
+	load allpoolslvl2
 
-	num_pools = 20;
+	num_pools = 2;
 
 	% TODO fix so that accuracies wont get overwritten
 	for i=1:num_trials
@@ -24,10 +24,11 @@ function [accuracies] = highlevel(bias_type, kernel_type, num_trials)
 
 		for j=1:num_pools
 			disp (['trying pool ' num2str(j) ' of ' num2str(num_pools)])
-			accuracies(:,j) = boost_main(allpools{bias_type}(j), traindata, testdata, kernel_type, dim);
+			trial_accuracies(:,j) = boost_main(allpools{bias_type}(j), traindata, testdata, kernel_type, dim);
 		end
-		mean(accuracies)
-
+		mean(trial_accuracies)
+		
+		accuracies(:,:,i) = trial_accuracies;
 	end
 
 	mean(mean(accuracies))

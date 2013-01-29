@@ -20,10 +20,11 @@ testdata = dataset.sub(test_inds);
 	
 
 kernel_type = 'poly';
-pool_size = 10;
-num_pools = 5;
+pool_size = 30;
+num_pools = 10;
+regular = 1;
 
-pools = generate_pools(num_pools, pool_size, num_levels, protate, bias_type, dataset);
+pools = generate_pools(num_pools, pool_size, num_levels, protate, bias_type, regular, dataset);
 
 accuracies = boost_main(pools, traindata, testdata, kernel_type, dim);
 mean(accuracies)
