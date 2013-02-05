@@ -11,8 +11,6 @@ function [f] = boost(dataset, pool, target_accuracy, dim, kernel_type)
 		disp (['processing partition pattern ' num2str(prt_num) ' of ' num2str(length(pool))])
   	partition = pool{prt_num};
  
-
-  	% do we need to reset data to its prior state?
   	% represent each clip in the subset using partition pattern
   	% must be in the loop because the histogram will be different depending on the partition pattern
 		disp 'computing histograms...'
@@ -59,7 +57,7 @@ function [f] = boost(dataset, pool, target_accuracy, dim, kernel_type)
   end
   
   % initialize the weight vector w
-  weights = zeros(length(dataset.label), 1);
+  weights = zeros(dataset.num_clips, 1);
   % c is the number of classes
   c = length(unique(dataset.label));
   
@@ -73,7 +71,7 @@ function [f] = boost(dataset, pool, target_accuracy, dim, kernel_type)
   j = 0;
   accuracy = 0;
   accuracies = [];
-  while accuracy < target_accuracy && j < 5
+  while accuracy < target_accuracy && j < 20
   	
   	% for each clip, update the weight
   	weights = weights ./ sum(weights);
@@ -129,4 +127,5 @@ function [f] = boost(dataset, pool, target_accuracy, dim, kernel_type)
 		% compute its classification accuracy (percentage of correct classifications)
   	f.accuracies(j) = mean(strong_classifications == dataset.label);
   end
+	f.accuracies
 end
