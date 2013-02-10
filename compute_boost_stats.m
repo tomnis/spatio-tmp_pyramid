@@ -7,9 +7,9 @@ function [stats] = compute_boost_stats(pool_size, num_itrs, bias_type, kernel_ty
  
 
  	regular = 0;
-  num_levels = 3;
+  num_levels = 2;
   protate = 0;
-  target_accuracy = .8;
+  target_accuracy = .6;
   object_type = 'active_passive';
   spatial_cuts = 1;
   dim = struct('start_frame', 1, 'end_frame', 1000, 'xlen', 1280, 'ylen', 960, 'protate', protate, 'spatial_cuts', spatial_cuts);
@@ -32,7 +32,6 @@ function [stats] = compute_boost_stats(pool_size, num_itrs, bias_type, kernel_ty
 	end
 
 
-	distr
 	randrs.x = RandDistr(distr.bx);
 	randrs.y = RandDistr(distr.by);
 	randrs.z = RandDistr(distr.bz);
@@ -40,7 +39,7 @@ function [stats] = compute_boost_stats(pool_size, num_itrs, bias_type, kernel_ty
   for i=1:num_itrs
   	pool = make_pool(pool_size, num_levels, protate, regular, randrs);
   	f = boost(dataset, pool, target_accuracy, dim, kernel_type);
-  	max_accuracies = [max_accuracies max(f.accuracies)];
+  	max_accuracies = [max_accuracies max(f.accuracies)]
   end
  
  	stats.max_accuracies = max_accuracies;
