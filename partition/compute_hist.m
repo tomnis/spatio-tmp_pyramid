@@ -1,7 +1,6 @@
 % given a set of features extracted from a clip and a partition scheme
 % compute the feature histogram
 % cut_eqs => array of structs. 
-% num_feat types
 function [hist] = compute_hist(feats, cut_eqs, dim)
 	hist = [];
 
