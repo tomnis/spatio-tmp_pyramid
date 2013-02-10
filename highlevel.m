@@ -10,9 +10,9 @@ function [accuracies] = highlevel(bias_type, kernel_type, num_trials)
 	dim = struct('start_frame', 1, 'end_frame', 1000, 'xlen', 1280, 'ylen', 960, 'protate', protate, 'spatial_cuts', spatial_cuts);
 
 	load split
-	load allpoolslvl2
+	load allpoolslvls2-3size100
 
-	num_pools = 2;
+	num_pools = 50;
 
 	% TODO fix so that accuracies wont get overwritten
 	for i=1:num_trials
