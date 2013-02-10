@@ -8,19 +8,22 @@ function [f] = boost(dataset, pool, target_accuracy, dim, kernel_type)
  
   % for each partition pattern
   for prt_num = 1:length(pool)
-		disp (['processing partition pattern ' num2str(prt_num) ' of ' num2str(length(pool))])
+		fprintf(1, '\rpattern %d of %d...', prt_num, length(pool));
   	partition = pool{prt_num};
  
   	% represent each clip in the subset using partition pattern
   	% must be in the loop because the histogram will be different depending on the partition pattern
-		disp 'computing histograms...'
+		fprintf(1, ' computing histograms...');
 		hists = dataset.compute_histograms(partition, dim);
   	partitioned_feats{prt_num} = hists;
   
   	% randomly sample a subset of the clips
-		num_sample_clips = randi(dataset.num_clips);
-  	sampleinds = sort(randsample(dataset.num_clips, num_sample_clips));
-  
+		%num_sample_clips = randi(dataset.num_clips);
+  	%sampleinds = sort(randsample(dataset.num_clips, num_sample_clips));
+  	% changed 2/6 4pm:
+		% remove the randomness from training on random subsets
+		sampleinds = 1:dataset.num_clips;
+
   	% train an svm classifier on the subset
   	x_train = hists(:, sampleinds);
   	y_train = dataset.label(sampleinds);
@@ -43,16 +46,16 @@ function [f] = boost(dataset, pool, target_accuracy, dim, kernel_type)
     y_train1 = y_train(:, f3);
  
 		if isequal(kernel_type, 'poly')
- 			disp 'training with polynomial kernel...'
+ 			fprintf(1, ' training... (polynomial kernel,  ex:%d) ', length(sampleinds));
  		  svm = svmtrain(y_train1', x_train1', '-c 1 -t 0 -q');
 		else 
-			disp (['precomputing the ' kernel_type ' kernel...']);
+			fprintf(1, ' precomputing %s kernel...', kernel_type);
 			K = compute_kernel(x_train1', x_train1', kernel_type);
- 			disp 'training...'
+ 			fprintf(1, ' training... (ex:%d)', length(sampleinds));
 			trains{prt_num} = x_train1;
 			svm = svmtrain(y_train1', K, '-q -t 4');
 		end
-		disp 'done.'
+		fprintf(1, ' done.');
 		classifiers(prt_num) = svm;
   end
   
@@ -62,7 +65,7 @@ function [f] = boost(dataset, pool, target_accuracy, dim, kernel_type)
   c = length(unique(dataset.label));
   
   % each w_i = 1 / (c * number of clips with label c_i)
-  % inversely proportional to class size, to prevent unbalanced sample sizes
+  % inversely proportional to class size, to prevent a problem from unbalanced sample sizes
   for i=1:dataset.num_clips
   	weights(i) = 1 / (c * length(find(dataset.label == dataset.label(i))));
   end
@@ -71,7 +74,7 @@ function [f] = boost(dataset, pool, target_accuracy, dim, kernel_type)
   j = 0;
   accuracy = 0;
   accuracies = [];
-  while accuracy < target_accuracy && j < 20
+  while accuracy < target_accuracy && j < 30
   	
   	% for each clip, update the weight
   	weights = weights ./ sum(weights);
@@ -123,9 +126,9 @@ function [f] = boost(dataset, pool, target_accuracy, dim, kernel_type)
   
   	% generate the strong classifier
   	strong_classifications = strong_classify_all(f, partitioned_feats, dataset.valid_labels);
-  	
 		% compute its classification accuracy (percentage of correct classifications)
-  	f.accuracies(j) = mean(strong_classifications == dataset.label);
+  	accuracy = mean(strong_classifications == dataset.label);	
+  	f.accuracies(j) = accuracy;
   end
 	f.accuracies
 end

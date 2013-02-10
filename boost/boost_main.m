@@ -6,7 +6,7 @@
 function [accuracies] = boost_main(pools, traindata, testdata, kernel_type, dim)
 	num_itrs = length(pools);
 
-	target_accuracy = .8;
+	target_accuracy = .6;
 
 	accuracies = [];
 	for itr=1:num_itrs
