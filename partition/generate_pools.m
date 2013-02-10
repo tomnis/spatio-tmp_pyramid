@@ -26,5 +26,8 @@ function pools = generate_pools(num_pools, pool_size, num_levels, protate, bias_
 	randrs.z = RandDistr(distr.bz, inverse);
 
 	for itr=1:num_pools
-		pools{itr} = make_pool(pool_size, num_levels, protate, regular, randrs);
+		pool1 = make_pool(1, 1, 0, 0, randrs);
+		pool2 = make_pool(pool_size / 2, 2, protate, regular, randrs);
+		pool3 = make_pool(pool_size / 2, 3, protate, regular, randrs);
+		pools{itr} = [pool1, pool2, pool3];
 	end
