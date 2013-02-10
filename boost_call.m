@@ -4,7 +4,7 @@ load loaded_data
 train_inds = [1:203];
 test_inds = [1:203];
 
-bias_type = 0;
+bias_type = 1;
 
 num_levels = 3;
 protate = 0;
@@ -20,9 +20,8 @@ testdata = dataset.sub(test_inds);
 	
 
 kernel_type = 'poly';
-pool_size = 30;
-num_pools = 10;
-regular = 1;
+pool_size = 1;
+num_pools = 1;
 
 pools = generate_pools(num_pools, pool_size, num_levels, protate, bias_type, regular, dataset);
 
