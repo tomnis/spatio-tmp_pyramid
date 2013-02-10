@@ -108,13 +108,20 @@ for left_out = person_ids
 
 	type = 'chisq';
 	%type = 'histintersect';
+	%type = 'poly';
 
- 	k = compute_kernel(x_train1', x_train1', type); 
+	if isequal(type, 'poly')
+		svm1 = svmtrain(y_train1', x_train1', '-c 1 -t 0');
+		xtest = x_test';
+  	y_pred = svmpredict(y_test', x_test', svm1);
+	else
+ 		k = compute_kernel(x_train1', x_train1', type); 
 
-  svm1 = svmtrain(y_train1', k, '-t 4');
-	xtest = compute_kernel(x_test', x_train1', type);
+  	svm1 = svmtrain(y_train1', k, '-t 4');
+		xtest = compute_kernel(x_test', x_train1', type);
+	  y_pred = svmpredict(y_test', xtest, svm1);
 
-  y_pred = svmpredict(y_test', xtest, svm1);
+	end
   
   conf1 = zeros(n_label, n_label);
   
