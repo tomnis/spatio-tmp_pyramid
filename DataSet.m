@@ -13,6 +13,8 @@ classdef DataSet
 		best_s % cell; best scoring overall, computed in compute_scores
 		locs % cell; locations of objects in each clip
 
+		features;% featurebojects
+
 		num_clips
 		valid_labels
 	end
@@ -58,7 +60,37 @@ classdef DataSet
 		end
 
 
+		% compute the x,y,z locations of observed objects
+		function self=set_features(self)
+			for k=1:self.num_clips
+				i = self.person(k);
+      	
+				f = struct('person', [], 'x', [], 'y', [], 'z', [], 'label',[]);
+      	f_ind = 0;
+      	
+				for r = 1:size(self.best_s{k}, 1)
+      		for c = 1:size(self.best_s{k}, 2)
+      			if self.best_s{k}(r,c) > 0
+      				f_ind = f_ind + 1;
+      				
+      				% reshape the location from 1x1x4 to 1x4
+      				loc = reshape(self.locs{k}(r,c,:), 1,4);
+      				
+      				f.person(f_ind) = i;
+      				% compute the centroid of the bounding box
+      				f.x(f_ind) = mean([loc(1) loc(3)]);
+      				f.y(f_ind) = mean([loc(2) loc(4)]);
+      				% the frame is the column in the best score matrix
+      				f.z(f_ind) = c;
+      				% the object label is the row in the best score matrix
+      				f.label(f_ind) = r;
+      			end
+      		end
+      	end
 
+				self.features{k} = f;
+			end
+		end
 
 
 	end
@@ -81,7 +113,7 @@ classdef DataSet
 			self.best_s = cell(1, self.num_clips);
 			self.locs = cell(1, self.num_clips);
 
-
+			% compute the scores
 			self = set_scores(self, frs, best_scores, locations, object_type);
 			% remap the label set
 			self.valid_labels = [1 2 3 4 5 6 9 10 12 13 14 15 17 20 22 23 24 27];
@@ -92,6 +124,8 @@ classdef DataSet
 			%% mapping the action labels to a new label set.
 			map1(labels+1) = [1:n_label]; 
 			self.label = map1(self.label+1);
+
+			self = set_features(self);
 		end
 
 
@@ -101,40 +135,19 @@ classdef DataSet
 		function hists=compute_histograms(self, partition, dim)
 			num_feat_types = size(self.best_s{1}, 1);
 			dim.num_feat_types = num_feat_types;
+
 			for k=1:self.num_clips
-      	clear features
         i = self.person(k);
       
       	% set the start and end frames of the current clip, used in compute_hist
       	dim.start_frame = self.frs{k}(1);
       	dim.end_frame = self.frs{k}(end);
       
-      	features = struct('person', [], 'x', [], 'y', [], 'z', [], 'label',[]);
-      	features_ind = 0;
-      
-      	for r = 1:size(self.best_s{k}, 1)
-      		for c = 1:size(self.best_s{k}, 2)
-      			if self.best_s{k}(r,c) > 0
-      				features_ind = features_ind + 1;
-      				
-      				% reshape the location from 1x1x4 to 1x4
-      				loc = reshape(self.locs{k}(r,c,:), 1,4);
-      				
-      				features.person(features_ind) = i;
-      				% compute the centroid of the bounding box
-      				features.x(features_ind) = mean([loc(1) loc(3)]);
-      				features.y(features_ind) = mean([loc(2) loc(4)]);
-      				% the frame is the column in the best score matrix
-      				features.z(features_ind) = c;
-      				% the object label is the row in the best score matrix
-      				features.label(features_ind) = r;
-      			end
-      		end
-      	end
-      
+
       	% apply the partition to the features
+				% the following must be in the loop. dim.start_frame and end_frame vary depending on clip
       	cut_eqs = apply_partition(partition, dim);
-				hists(:, k) = compute_hist(features, cut_eqs, dim);
+				hists(:, k) = compute_hist(self.features{k}, cut_eqs, dim);
 			end
 			hists = bsxfun(@rdivide, hists, sum(hists, 1) + eps); %% normalizing
 
@@ -232,14 +245,15 @@ classdef DataSet
 					
 					if isequal(f, 'valid_labels')
 						continue;
-					end
 
-			    if isequal(class(self.(f)), 'double')
+			    elseif isequal(class(self.(f)), 'double')
 						% scalar value, so subset doesnt make sense
-						if length(self.(f)) == 1
+						% also handle the case where f has not been computed yet
+						if length(self.(f)) < 2
 							continue;
+			      else
+							self.(f) = self.(f)(I);
 						end
-			      self.(f) = self.(f)(I);
 
 			    elseif isequal(class(self.(f)), 'cell')
 						tmp = cell(1,length(I));
