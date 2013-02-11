@@ -3,7 +3,7 @@ load loaded_data
 
 bias_type = 0;
 
-num_levels = 3;
+num_levels = 2;
 protate = 0;
 object_type = 'active_passive';
 spatial_cuts = 1;
@@ -14,10 +14,10 @@ dim = struct('start_frame', 1, 'end_frame', 1000, 'xlen', 1280, 'ylen', 960, 'pr
 dataset = DataSet(data, frs, best_scores, locations, object_type);
 
 
-num_pools = 20;
-pool_size = 100;
+num_pools = 10;
+pool_size = 300;
 
-pools = generate_pools(num_pools, pool_size, num_levels, protate, bias_type, dataset);
+pools = generate_pools(num_pools, pool_size, num_levels, protate, bias_type, regular, dataset);
 
 load split;
 
@@ -26,7 +26,7 @@ testdata = dataset.sub(split.test{1});
 
 pool_size_for_train= 1;
 
-pool_sizes = [1, 10:10:100];
+pool_sizes = [1, 10:10:pool_size];
 
 for i=1:length(pool_sizes)
 	pool_size_for_train = pool_sizes(i)
