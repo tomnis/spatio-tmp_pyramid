@@ -3,7 +3,7 @@ load loaded_data
 
 bias_type = 0;
 
-num_levels = 2;
+num_levels = 3;
 protate = 0;
 object_type = 'active_passive';
 spatial_cuts = 1;
