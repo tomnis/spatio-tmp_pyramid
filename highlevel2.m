@@ -24,11 +24,7 @@ function [accuracies] = highlevel2(bias_type, kernel_type, num_trials, boost_rou
 
 		for j=1:num_pools
 			disp (['trying pool ' num2str(j) ' of ' num2str(num_pools)])
-			clear t
-			t = boost_main2(allpools{bias_type}(j), traindata, testdata, kernel_type, dim, boost_rounds);
-			size(t)
-			trial_accuracies(:,j) = t;
-			size(trial_accuracies)
+			trial_accuracies(:,j) = boost_main2(allpools{bias_type}(j), traindata, testdata, kernel_type, dim, boost_rounds);
 		end
 		mean_trial_accs = mean(trial_accuracies)
 		
