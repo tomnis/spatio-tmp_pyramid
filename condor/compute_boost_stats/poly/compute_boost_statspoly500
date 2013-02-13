@@ -1,0 +1,14 @@
++Group = "UNDER"
++Project = "AI_ROBOTICS" 
++ProjectDescription = "use a huge pool size for boosting"
+
+Requirements = Memory >= 4000 && InMastodon 
+Error = err.$(Process)
+Output = out.$(Process)
+Log = cbs.log
+
+executable = /bin/sh
+arguments = "/u/tomas/thesis/experiments/compute_boost_stats.sh poly"
+
+Notification = Always
+Queue

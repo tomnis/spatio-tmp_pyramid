@@ -1,0 +1,14 @@
++Group = "UNDER"
++Project = "AI_ROBOTICS" 
++ProjectDescription = "vary the size of the pool. weak classifiers are trained on all data"
+
+Requirements = Memory >= 4000 && InMastodon 
+Error = err.$(Process)
+Output = out.$(Process)
+Log = vp.log
+
+executable = /bin/sh
+arguments = "/u/tomas/thesis/experiments/vary_poolsize.sh poly"
+
+Notification = Always
+Queue
