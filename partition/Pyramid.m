@@ -3,6 +3,7 @@ classdef Pyramid
 
 	properties (GetAccess='public', SetAccess='private')
 		randrs = [];
+		regular = 0;
 		num_pyramid_levels = 0;
 		num_kdtree_levels = 0;
 		kdtree = [];
@@ -10,19 +11,20 @@ classdef Pyramid
 
 	methods (Access='private')
 		function self = setup_tree_helper(self, ind, constraints)
-			fprintf(1, '%d: %d\n', ind, self.get_dimension(ind));
-
-			% use the passed in struct(dim0_min, dim0_max...)
+			%fprintf(1, '%d: %d\n', ind, self.get_dimension(ind));
+			% use the constraints
 			% to generate a random number in the appropriate interval
 			dim_ind = self.get_dimension(ind) + 1;
 			rmin = constraints(dim_ind, 1);
 			rmax = constraints(dim_ind, 2);
+			
+			if self.regular
+				r = rmin + (rmax - rmin) / 2;
+			else
+				r = rmin + (rmax - rmin) * rand;
+			end
 
-			r = rmin + (rmax - rmin) * rand;
-
-			% store in self.kdtree
 			self.kdtree(ind) = r;
-			% create new structs to be passed on to the recursive calls
 
 			left_child = self.get_left_child_ind(ind);
 			if left_child <= length(self.kdtree)
@@ -30,6 +32,7 @@ classdef Pyramid
 				c_left(dim_ind, 2) = r;
 				self = self.setup_tree_helper(left_child, c_left);
 			end
+			
 			right_child = self.get_right_child_ind(ind);
 			if right_child <= length(self.kdtree)
 				c_right = zeros(size(constraints)) + constraints;
@@ -43,6 +46,8 @@ classdef Pyramid
 	methods
 		function self = Pyramid(num_levels, randrs)
 			self.randrs = randrs;
+			self.regular = length(randrs) == 0;
+
 			self.num_pyramid_levels = num_levels;
 
 			% levels in the kd tree. need 3 kdtree levels for each pyramid level
