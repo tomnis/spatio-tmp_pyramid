@@ -57,6 +57,10 @@ classdef RandDistr
 		end
 
 
+		
+		function a = get_range(self, low, high)
+			a = low + (high-low)*rand;
+		end
 
 
 		% get the next number according to the current distribution
