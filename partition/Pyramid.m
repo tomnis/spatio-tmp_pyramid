@@ -10,6 +10,12 @@ classdef Pyramid
 	end
 
 	methods (Access='private')
+		function self = setup_tree(self)
+			constraints = [ 0, 1; 0, 1; 0, 1];
+			self = self.setup_tree_helper(1, constraints);
+		end
+		
+		
 		function self = setup_tree_helper(self, ind, constraints)
 			%fprintf(1, '%d: %d\n', ind, self.get_dimension(ind));
 			% use the constraints
@@ -59,9 +65,14 @@ classdef Pyramid
 		end
 	
 		
-		function self = setup_tree(self)
-			constraints = [ 0, 1; 0, 1; 0, 1];
-			self = self.setup_tree_helper(1, constraints);
+
+		function self = apply_partition(self, dim)
+			dims = [dim.xlen, dim.ylen, dim.end_frame - dim.start_frame + 1];
+
+			for i = 0:self.num_kdtree_levels-1
+				level_inds = self.get_kdlevel_inds(i);
+				self.kdtree(level_inds) = self.kdtree(level_inds) .* dims(mod(i, 3)+1);
+			end
 		end
 
 
@@ -122,11 +133,6 @@ classdef Pyramid
 		% return the data stored at inds parent child
 		function [parent_child_data] = get_parent_data(self, ind)
 			parent_child_data = self.kdtree(get_parent_ind(ind));
-		end
-
-		% modify the root of the tree
-		function [self] = set_root(self, data)
-			self.kdtree(1) = data;
 		end
 
 		% set data to be the left child of ind

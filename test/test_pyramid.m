@@ -18,12 +18,6 @@ assert(p.get_kdlevel(11) == 3)
 assert(p.get_kdlevel(16) == 4)
 fprintf(1, 'passed get_kdlevel()\n');
 
-% test set root
-p = Pyramid(3, []);
-p = p.set_root(1);
-assert(p.kdtree(1) == 1);
-fprintf(1, 'passed set_root()\n');
-
 % test set entire level
 p = Pyramid(3, []);
 p = p.set_kdlevel_data(2, 2);
@@ -58,3 +52,15 @@ assert(p.bin(h, l, h) == 5);
 assert(p.bin(h, h, l) == 6);
 assert(p.bin(h, h, h) == 7);
 fprintf(1, 'passed bin()\n');
+
+% test apply partition
+p = Pyramid(2, []);
+dim = struct('start_frame', 1, 'end_frame', 1000, 'xlen', 1280, 'ylen', 960);
+
+ex_old = p.kdtree;
+p2 = p.apply_partition(dim);
+ex_new = [640, 480, 480, 500, 500, 500, 500]';
+
+assert(isequal(ex_old, p.kdtree));
+assert(isequal(ex_new, p2.kdtree));
+fprintf(1, 'passed apply_partition()\n');
