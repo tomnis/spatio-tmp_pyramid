@@ -120,31 +120,6 @@ classdef Pyramid
 			parent_ind = floor(ind / 2);
 		end
 
-		% return the data stored at inds left child
-		function [left_child_data] = get_left_child_data(self, ind)
-			left_child_data = self.kdtree(get_left_child_ind(ind));
-		end
-		
-		% return the data stored at inds right child
-		function [right_child_data] = get_right_child_data(self, ind)
-			right_child_data = self.kdtree(get_right_child_ind(ind));
-		end
-		
-		% return the data stored at inds parent child
-		function [parent_child_data] = get_parent_data(self, ind)
-			parent_child_data = self.kdtree(get_parent_ind(ind));
-		end
-
-		% set data to be the left child of ind
-		function [self] = set_left_child(self, ind, data)
-			self.kdtree(get_left_child_ind(ind)) = data;
-		end
-
-		% set data to be the right child of ind
-		function [self] = set_right_child(self, ind, data)
-			self.kdtree(get_right_child_ind(ind)) = data;
-		end
-
 		% given a kdlevel, return all the indices that make up that level
 		function [kdlevel_inds] = get_kdlevel_inds(self, kdlevel)
 			kdlevel_inds = [2^kdlevel:2^(kdlevel+1) - 1];
