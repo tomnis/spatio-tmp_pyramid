@@ -77,9 +77,21 @@ classdef Pyramid
 		end
 
 		% return the region num that the point (dim0, dim1, dim2) lies in
-		function [bin_num] = bin(dim0, dim1, dim2)
-			bin_num = 0;
+		function [bin_num] = bin(self, dim0, dim1, dim2)
 			node_ind = 1;
+
+			p = [dim0, dim1, dim2];
+
+			while node_ind <= length(self.kdtree)
+				dim_ind = self.get_dimension(node_ind) + 1;
+				
+				if p(dim_ind) <= self.kdtree(node_ind)
+					node_ind = self.get_left_child_ind(node_ind);
+				else
+					node_ind = self.get_right_child_ind(node_ind);	
+				end
+			end
+			bin_num = mod(node_ind, length(self.kdtree) + 1);
 		end
 
 		% return the index of inds left child	

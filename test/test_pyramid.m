@@ -44,3 +44,17 @@ for i=1:length(p.kdtree)
 	assert(p.kdtree(i) == .5);
 end
 fprintf(1, 'passed regular pyramid()\n');
+
+% test binning in 2 level regular pyramid
+p = Pyramid(2, []);
+l = .25;
+h = .75;
+assert(p.bin(l, l, l) == 0);
+assert(p.bin(l, l, h) == 1);
+assert(p.bin(l, h, l) == 2);
+assert(p.bin(l, h, h) == 3);
+assert(p.bin(h, l, l) == 4);
+assert(p.bin(h, l, h) == 5);
+assert(p.bin(h, h, l) == 6);
+assert(p.bin(h, h, h) == 7);
+fprintf(1, 'passed bin()\n');
