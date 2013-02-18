@@ -92,8 +92,13 @@ classdef DataSet
 			end
 		end
 
+		function hists = normalize_and_clip(hists)
+			hists = bsxfun(@rdivide, hists, sum(hists, 1) + eps); %% normalizing
 
-	end
+			thr = 0.01;
+			hists(hists > thr) = thr;   %% clipping features
+		end
+	end % end private methods
 
 	methods 
 		% constructor
@@ -132,7 +137,7 @@ classdef DataSet
 
 
 		% given a partition, compute the resulting feature histograms for each clip
-		function hists=compute_histograms(self, partition, dim)
+		function hists = compute_histograms(self, partition, dim)
 			num_feat_types = size(self.best_s{1}, 1);
 			dim.num_feat_types = num_feat_types;
 
@@ -142,17 +147,20 @@ classdef DataSet
       	% set the start and end frames of the current clip, used in compute_hist
       	dim.start_frame = self.frs{k}(1);
       	dim.end_frame = self.frs{k}(end);
-      
-
-      	% apply the partition to the features
-				% the following must be in the loop. dim.start_frame and end_frame vary depending on clip
-      	cut_eqs = apply_partition(partition, dim);
-				hists(:, k) = compute_hist(self.features{k}, cut_eqs, dim);
+     		
+				% the partition is a pyramid type
+				if (isequal(class(partition), 'Pyramid'))
+					applied_pyramid = pyramid.apply_partition(dim);
+					hists(:, k) = applied_pyramid.compute_hist(self.features{k}, dim);
+				% the partition is set of cut_eqs
+				else
+					% apply the partition to the features
+					% the following must be in the loop. dim.start_frame and end_frame vary depending on clip
+					cut_eqs = apply_partition(partition, dim);
+					hists(:, k) = compute_hist(self.features{k}, cut_eqs, dim);
+				end
 			end
-			hists = bsxfun(@rdivide, hists, sum(hists, 1) + eps); %% normalizing
-
-			thr = 0.01;
-			hists(hists > thr) = thr;   %% clipping features
+			hists = normalize_and_clip(hists);
 		end
 
 
@@ -175,11 +183,8 @@ classdef DataSet
          	hists(:, k) = [sum(self.best_s{k}, 2); sum(self.best_s{k}(:, f1), 2); sum(self.best_s{k}(:, f2), 2)] / n_frs;
         end
         
-      end
-      hists = bsxfun(@rdivide, hists, sum(hists, 1) + eps); %% normalizing
-      
-      thr = 0.01;
-      hists(hists > thr) = thr;   %% clipping features
+			end
+			hists = normalize_and_clip(hists);
 		end
 
 

@@ -63,7 +63,13 @@ classdef Pyramid
 
 			self = self.setup_tree();
 		end
-	
+
+		
+		% compute the histograms for the features of a single clip
+		function hist = compute_hist(feats, dim)
+		
+		end
+
 		
 
 		function self = apply_partition(self, dim)
