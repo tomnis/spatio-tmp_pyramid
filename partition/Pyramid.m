@@ -9,6 +9,7 @@ classdef Pyramid
 	methods (Access='private')
 	end
 
+	
 	methods
 		function self = Pyramid(num_levels, randrs)
 			% levels in the kd tree. need 3 kdtree levels for each pyramid level
@@ -16,7 +17,7 @@ classdef Pyramid
 			% the 'heap' of cuts
 			self.kdtree = zeros(2^self.num_kdtree_levels - 1, 1);
 		end
-
+		
 		% return the x,y, or z dimension split by the cut at ind
 		% return 0, 1, 2
 		function [dimension] = get_dimension(self, ind)
@@ -28,8 +29,8 @@ classdef Pyramid
 			kdlevel = floor(log2(ind));
 		end
 
-		% return the region num that the point (x,y,z) lies in
-		function [bin_num] = bin(x,y,z)
+		% return the region num that the point (dim0, dim1, dim2) lies in
+		function [bin_num] = bin(dim0, dim1, dim2)
 			bin_num = 0;
 			node_ind = 1;
 		end
