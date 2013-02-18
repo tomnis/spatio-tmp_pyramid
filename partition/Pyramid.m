@@ -2,22 +2,64 @@
 classdef Pyramid
 
 	properties (GetAccess='public', SetAccess='private')
-		kdtree = [];
+		randrs = [];
+		num_pyramid_levels = 0;
 		num_kdtree_levels = 0;
+		kdtree = [];
 	end
 
 	methods (Access='private')
+		function self = setup_tree_helper(self, ind, constraints)
+			fprintf(1, '%d: %d\n', ind, self.get_dimension(ind));
+
+			% use the passed in struct(dim0_min, dim0_max...)
+			% to generate a random number in the appropriate interval
+			dim_ind = self.get_dimension(ind) + 1;
+			rmin = constraints(dim_ind, 1);
+			rmax = constraints(dim_ind, 2);
+
+			r = rmin + (rmax - rmin) * rand;
+
+			% store in self.kdtree
+			self.kdtree(ind) = r;
+			% create new structs to be passed on to the recursive calls
+
+			left_child = self.get_left_child_ind(ind);
+			if left_child <= length(self.kdtree)
+				c_left = zeros(size(constraints)) + constraints;
+				c_left(dim_ind, 2) = r;
+				self = self.setup_tree_helper(left_child, c_left);
+			end
+			right_child = self.get_right_child_ind(ind);
+			if right_child <= length(self.kdtree)
+				c_right = zeros(size(constraints)) + constraints;
+				c_right(dim_ind, 1) = r;
+				self = self.setup_tree_helper(right_child, c_right);
+			end
+		end
 	end
 
 	
 	methods
 		function self = Pyramid(num_levels, randrs)
+			self.randrs = randrs;
+			self.num_pyramid_levels = num_levels;
+
 			% levels in the kd tree. need 3 kdtree levels for each pyramid level
 			self.num_kdtree_levels = (num_levels - 1) * 3;
 			% the 'heap' of cuts
 			self.kdtree = zeros(2^self.num_kdtree_levels - 1, 1);
+
+			self = self.setup_tree();
 		end
+	
 		
+		function self = setup_tree(self)
+			constraints = [ 0, 1; 0, 1; 0, 1];
+			self = self.setup_tree_helper(1, constraints);
+		end
+
+
 		% return the x,y, or z dimension split by the cut at ind
 		% return 0, 1, 2
 		function [dimension] = get_dimension(self, ind)

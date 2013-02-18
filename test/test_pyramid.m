@@ -27,3 +27,10 @@ p = p.set_kdlevel_data(2, 2);
 p = p.set_kdlevel_data(3, 3);
 assert(isequal(p.kdtree(4:7), zeros(4,1) + 2));
 assert(isequal(p.kdtree(8:15), zeros(8,1) + 3));
+
+
+randrs.x = RandDistr([], 0);
+randrs.y = RandDistr([], 0);
+randrs.z = RandDistr([], 0);
+p = Pyramid(3, randrs);
+p.kdtree'
