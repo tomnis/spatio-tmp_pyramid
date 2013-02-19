@@ -1,4 +1,3 @@
-
 classdef Pyramid
 
 	properties (GetAccess='public', SetAccess='private')
@@ -16,6 +15,7 @@ classdef Pyramid
 		end
 		
 		
+
 		function self = setup_tree_helper(self, ind, constraints)
 			%fprintf(1, '%d: %d\n', ind, self.get_dimension(ind));
 			% use the constraints
@@ -46,9 +46,29 @@ classdef Pyramid
 				self = self.setup_tree_helper(right_child, c_right);
 			end
 		end
-	end
 
+
+
+		% compute the histogram for a single level
+		function [level_hist] = compute_curlvl_hist(self, feats, level, dim)
+			num_regions = 8^level;
+
+			level_hist = zeros(num_regions * dim.num_feat_types, 1);
+
+			for i = 1:length(feats.x)
+				region_num = self.bin_level(feats.x(i), feats.y(i), feats.z(i), level);
+				assert(region_num >= 0 && region_num < num_regions);
+
+				idx = region_num * dim.num_feat_types + feats.label(i);
+
+				% finally, increment the appropriate position
+				level_hist(idx) = level_hist(idx) + 1;
+			end
+		end
+	end % end private methods
 	
+
+
 	methods
 		function self = Pyramid(num_levels, randrs)
 			self.randrs = randrs;
@@ -65,21 +85,29 @@ classdef Pyramid
 		end
 
 		
+
 		% compute the histograms for the features of a single clip
-		function hist = compute_hist(feats, dim)
-		
+		% TODO add a way for the caller to specify which levels should be included in the final
+		% histogram
+		function hist = compute_hist(self, feats, dim)
+			hist = [];
+
+			for level = 0:self.num_pyramid_levels-1
+				hist = [hist; self.compute_curlvl_hist(feats, level, dim)];
+			end
 		end
 
-		
+
 
 		function self = apply_partition(self, dim)
 			dims = [dim.xlen, dim.ylen, dim.end_frame - dim.start_frame + 1];
 
-			for i = 0:self.num_kdtree_levels-1
-				level_inds = self.get_kdlevel_inds(i);
-				self.kdtree(level_inds) = self.kdtree(level_inds) .* dims(mod(i, 3)+1);
+			for level = 0:self.num_kdtree_levels-1
+				level_inds = self.get_kdlevel_inds(level);
+				self.kdtree(level_inds) = self.kdtree(level_inds) .* dims(mod(level, 3)+1);
 			end
 		end
+
 
 
 		% return the x,y, or z dimension split by the cut at ind
@@ -88,18 +116,25 @@ classdef Pyramid
 			dimension = mod(self.get_kdlevel(ind), 3);
 		end
 
+		
+
 		% return the level in the kd-tree that cut lies on
 		function [kdlevel] = get_kdlevel(self, ind)
 			kdlevel = floor(log2(ind));
 		end
 
+
+
 		% return the region num that the point (dim0, dim1, dim2) lies in
-		function [bin_num] = bin(self, dim0, dim1, dim2)
+		% pyramid_level is in 0...num_pyramid_levels -1
+		function [bin_num] = bin_level(self, dim0, dim1, dim2, pyramid_level)
+			assert(pyramid_level >= 0 && pyramid_level < self.num_pyramid_levels);
 			node_ind = 1;
-
 			p = [dim0, dim1, dim2];
+			% how deep we should go in the tree
+			depth = 3 * pyramid_level;
 
-			while node_ind <= length(self.kdtree)
+			while node_ind <= length(self.kdtree) && depth > 0
 				dim_ind = self.get_dimension(node_ind) + 1;
 				
 				if p(dim_ind) <= self.kdtree(node_ind)
@@ -107,30 +142,47 @@ classdef Pyramid
 				else
 					node_ind = self.get_right_child_ind(node_ind);	
 				end
+				depth = depth -1;
 			end
-			bin_num = mod(node_ind, length(self.kdtree) + 1);
+			bin_num = mod(node_ind, 8^pyramid_level);
 		end
+
+		
+
+		function [bin_num] = bin(self, dim0, dim1, dim2)
+			bin_num = self.bin_level(dim0, dim1, dim2, self.num_pyramid_levels-1);
+		end
+
+
 
 		% return the index of inds left child	
 		function [left_child_ind] = get_left_child_ind(self, ind)
 			left_child_ind = 2 * ind;
 		end
 
+
+
 		% return the index of inds right child
 		function [right_child_ind] = get_right_child_ind(self, ind)
 			right_child_ind = 2 * ind + 1;
 		end
 		
+
+
 		% return the index of inds parent node
 		function [parent_ind] = get_parent_ind(self, ind)
 			parent_ind = floor(ind / 2);
 		end
+
+
 
 		% given a kdlevel, return all the indices that make up that level
 		function [kdlevel_inds] = get_kdlevel_inds(self, kdlevel)
 			kdlevel_inds = [2^kdlevel:2^(kdlevel+1) - 1];
 		end
 		
+
+
 		% set all the values at a certain level in the kdtree to data
 		function [self] = set_kdlevel_data(self, kdlevel, data)
 			self.kdtree(self.get_kdlevel_inds(kdlevel)) = data;

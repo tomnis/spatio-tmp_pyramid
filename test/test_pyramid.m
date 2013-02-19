@@ -53,6 +53,25 @@ assert(p.bin(h, h, l) == 6);
 assert(p.bin(h, h, h) == 7);
 fprintf(1, 'passed bin()\n');
 
+
+% test selective binning in 3 level regular pyramid
+p = Pyramid(3, []);
+
+% consider only the top level, the entire clip
+assert(p.bin_level(h, h, h, 0) == 0);
+% consider level 1
+assert(p.bin_level(l, l, l, 1) == 0);
+assert(p.bin_level(l, l, h, 1) == 1);
+assert(p.bin_level(l, h, l, 1) == 2);
+assert(p.bin_level(l, h, h, 1) == 3);
+assert(p.bin_level(h, l, l, 1) == 4);
+assert(p.bin_level(h, l, h, 1) == 5);
+assert(p.bin_level(h, h, l, 1) == 6);
+assert(p.bin_level(h, h, h, 1) == 7);
+fprintf(1, 'passed bin_level()\n');
+
+
+
 % test apply partition
 p = Pyramid(2, []);
 dim = struct('start_frame', 1, 'end_frame', 1000, 'xlen', 1280, 'ylen', 960);

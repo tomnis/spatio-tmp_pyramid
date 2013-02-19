@@ -19,6 +19,8 @@ classdef DataSet
 		valid_labels
 	end
 
+
+
 	methods (Access='private')
 	
 		function self=set_scores(self, frs, best_scores, locations, object_type)
@@ -92,9 +94,9 @@ classdef DataSet
 			end
 		end
 
-		function hists = normalize_and_clip(hists)
-			hists = bsxfun(@rdivide, hists, sum(hists, 1) + eps); %% normalizing
 
+		function hists = normalize_and_clip(self, hists)
+			hists = bsxfun(@rdivide, hists, sum(hists, 1) + eps); %% normalizing
 			thr = 0.01;
 			hists(hists > thr) = thr;   %% clipping features
 		end
@@ -150,7 +152,7 @@ classdef DataSet
      		
 				% the partition is a pyramid type
 				if (isequal(class(partition), 'Pyramid'))
-					applied_pyramid = pyramid.apply_partition(dim);
+					applied_pyramid = partition.apply_partition(dim);
 					hists(:, k) = applied_pyramid.compute_hist(self.features{k}, dim);
 				% the partition is set of cut_eqs
 				else
@@ -160,7 +162,7 @@ classdef DataSet
 					hists(:, k) = compute_hist(self.features{k}, cut_eqs, dim);
 				end
 			end
-			hists = normalize_and_clip(hists);
+			hists = self.normalize_and_clip(hists);
 		end
 
 
@@ -184,7 +186,7 @@ classdef DataSet
         end
         
 			end
-			hists = normalize_and_clip(hists);
+			hists = DataSet.normalize_and_clip(hists);
 		end
 
 
