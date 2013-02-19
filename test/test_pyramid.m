@@ -32,6 +32,14 @@ randrs.z = RandDistr([], 0);
 p = Pyramid(2, randrs);
 fprintf(1, 'passed RandDistr pyramid()\n');
 
+
+% test the empty pyramid
+p = Pyramid(1, []);
+assert(length(p.kdtree) == 0);
+assert(p.bin(.5, .5, .5) == 0)
+fprintf(1, 'passed empty pyramid (one level)\n');
+
+
 % we get a regular pyramid by passing in an empty distribution
 p = Pyramid(2, []);
 for i=1:length(p.kdtree)
@@ -51,6 +59,7 @@ fprintf(1, 'passed get_pyramid_level()\n');
 
 
 % test binning in 2 level regular pyramid
+% this is dependent on the permutation used
 p = Pyramid(2, []);
 l = .25;
 h = .75;
@@ -66,7 +75,7 @@ fprintf(1, 'passed bin()\n');
 
 
 % test selective binning in 3 level regular pyramid
-p = Pyramid(3, []);
+p = Pyramid(3, []); 
 
 % consider only the top level, the entire clip
 assert(p.bin_level(h, h, h, 0) == 0);
@@ -94,3 +103,10 @@ ex_new = [640, 480, 480, 500, 500, 500, 500]';
 assert(isequal(ex_old, p.kdtree));
 assert(isequal(ex_new, p2.kdtree));
 fprintf(1, 'passed apply_partition()\n');
+
+
+% test custom permutation of dimensions
+perm = [3,2,1];
+p = Pyramid(2, [], perm);
+assert(isequal(p.perm, perm));
+fprintf(1, 'passed custom permutation of dimensions\n');

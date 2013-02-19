@@ -6,6 +6,7 @@ classdef Pyramid
 		num_pyramid_levels = 0;
 		num_kdtree_levels = 0;
 		kdtree = [];
+		perm = [1,2,3];
 	end
 
 	methods (Access='private')
@@ -26,6 +27,9 @@ classdef Pyramid
 			
 			if self.regular
 				r = rmin + (rmax - rmin) / 2;
+			% TODO bias the top level here
+			elseif self.get_pyramid_level(ind) == 1
+				r = rmin + (rmax - rmin) * rand;
 			else
 				r = rmin + (rmax - rmin) * rand;
 			end
@@ -70,18 +74,26 @@ classdef Pyramid
 
 
 	methods
-		function self = Pyramid(num_levels, randrs)
+		function self = Pyramid(num_levels, randrs, perm)
+			assert(num_levels > 0);
+
 			self.randrs = randrs;
 			self.regular = length(randrs) == 0;
-
 			self.num_pyramid_levels = num_levels;
+			if exist('perm')
+				self.perm = perm;
+			end
 
 			% levels in the kd tree. need 3 kdtree levels for each pyramid level
 			self.num_kdtree_levels = (num_levels - 1) * 3;
+			if num_levels == 1
+				self.num_kdtree_levels = 0;
+			end
 			% the 'heap' of cuts
 			self.kdtree = zeros(2^self.num_kdtree_levels - 1, 1);
-
-			self = self.setup_tree();
+			if num_levels > 1
+				self = self.setup_tree();
+			end
 		end
 
 		
@@ -101,7 +113,7 @@ classdef Pyramid
 
 		function self = apply_partition(self, dim)
 			dims = [dim.xlen, dim.ylen, dim.end_frame - dim.start_frame + 1];
-
+			dims = dims(self.perm);
 			for level = 0:self.num_kdtree_levels-1
 				level_inds = self.get_kdlevel_inds(level);
 				self.kdtree(level_inds) = self.kdtree(level_inds) .* dims(mod(level, 3)+1);
@@ -138,6 +150,7 @@ classdef Pyramid
 			assert(pyramid_level >= 0 && pyramid_level < self.num_pyramid_levels);
 			node_ind = 1;
 			p = [dim0, dim1, dim2];
+			p = p(self.perm);
 			% how deep we should go in the tree
 			depth = 3 * pyramid_level;
 
