@@ -39,6 +39,17 @@ for i=1:length(p.kdtree)
 end
 fprintf(1, 'passed regular pyramid()\n');
 
+
+% test get the pyramid level
+p = Pyramid(4, []);
+assert(p.get_pyramid_level(1) == 1);
+assert(p.get_pyramid_level(3) == 1);
+assert(p.get_pyramid_level(4) == 1);
+assert(p.get_pyramid_level(8) == 2);
+assert(p.get_pyramid_level(127) == 3);
+fprintf(1, 'passed get_pyramid_level()\n');
+
+
 % test binning in 2 level regular pyramid
 p = Pyramid(2, []);
 l = .25;

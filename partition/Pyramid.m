@@ -125,6 +125,13 @@ classdef Pyramid
 
 
 
+		% return the level in the pyramid that kd-tree ind contributes to
+		% recall that pyramid levels start counting at 0
+		function [pyramid_level] = get_pyramid_level(self, ind)
+			pyramid_level = floor(self.get_kdlevel(ind) / 3) + 1;
+		end
+
+
 		% return the region num that the point (dim0, dim1, dim2) lies in
 		% pyramid_level is in 0...num_pyramid_levels -1
 		function [bin_num] = bin_level(self, dim0, dim1, dim2, pyramid_level)
