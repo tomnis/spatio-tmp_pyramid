@@ -186,7 +186,7 @@ classdef DataSet
         end
         
 			end
-			hists = DataSet.normalize_and_clip(hists);
+			hists = self.normalize_and_clip(hists);
 		end
 
 
