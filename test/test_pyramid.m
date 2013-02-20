@@ -26,11 +26,12 @@ assert(isequal(p.kdtree(4:7), zeros(4,1) + 2));
 assert(isequal(p.kdtree(8:15), zeros(8,1) + 3));
 fprintf(1, 'passed set_level()\n');
 
+% test uniform distribution
 randrs.x = RandDistr([], 0);
 randrs.y = RandDistr([], 0);
 randrs.z = RandDistr([], 0);
 p = Pyramid(2, randrs);
-fprintf(1, 'passed RandDistr pyramid()\n');
+fprintf(1, 'passed RandDistr pyramid() (uniform distribution)\n');
 
 
 % test the empty pyramid
@@ -116,3 +117,8 @@ assert(isequal(p.perm, [1,2,3]));
 p = p.set_perm(perm);
 assert(isequal(p.perm, perm));
 fprintf(1, 'passed set_perm()\n');
+
+
+% test passing an empty permutation
+p = Pyramid(2, [], []);
+assert(isequal(p.perm, [1,2,3]));

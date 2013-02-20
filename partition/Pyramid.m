@@ -27,9 +27,15 @@ classdef Pyramid
 			
 			if self.regular
 				r = rmin + (rmax - rmin) / 2;
-			% TODO bias the top level here
+			% bias the top level
 			elseif self.get_pyramid_level(ind) == 1
-				r = rmin + (rmax - rmin) * rand;
+				assert(rmin == 0);
+				assert(rmax == 1);
+				% get the right distribution to use. this is dependent on which is the primary dimension
+				randr = self.randrs(self.perm(dim_ind));
+				r = randr.get();
+			% TODO once we can get number in an arbitrary range from the 
+			% biased distribution, we can bias all the levels
 			else
 				r = rmin + (rmax - rmin) * rand;
 			end
@@ -77,10 +83,17 @@ classdef Pyramid
 		function self = Pyramid(num_levels, randrs, perm)
 			assert(num_levels > 0);
 
-			self.randrs = randrs;
-			self.regular = length(randrs) == 0;
+			if length(randrs) == 0
+				self.regular = 1;
+				self.randrs = randrs;
+			% put the distributions into a format that is more easily permutable
+			else
+				self.randrs = [randrs.x, randrs.y, randrs.z];
+			end
+
 			self.num_pyramid_levels = num_levels;
-			if exist('perm')
+			if exist('perm') && length(perm > 0)
+				assert(length(perm) == 3)
 				self.perm = perm;
 			end
 
