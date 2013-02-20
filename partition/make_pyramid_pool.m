@@ -4,7 +4,7 @@ function [pyramid_pool] = make_pyramid_pool(num_pyramids, num_levels, randrs, pe
 	assert(num_levels > 0)
 
 	if ~exist('perm')
-		perm = []
+		perm = [];
 	end
 
 	for i=1:num_pyramids
