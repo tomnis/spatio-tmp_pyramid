@@ -97,7 +97,7 @@ function [f mean_vecs] = boost_pca(dataset, pool, target_accuracy, dim, kernel_t
   j = 0;
   accuracy = 0;
   accuracies = [];
-  while accuracy < target_accuracy && j < 5
+  while accuracy < target_accuracy && j < 30
   	
   	% for each clip, update the weight
   	weights = weights ./ sum(weights);
