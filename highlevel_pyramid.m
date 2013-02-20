@@ -1,4 +1,4 @@
-function [accuracies] = highlevel_pyramid(bias_type, kernel_type, num_trials)
+function [accuracies] = highlevel_pyramid(bias_type, kernel_type, num_trials, perm)
 	setup
 	load loaded_data
 
@@ -11,10 +11,17 @@ function [accuracies] = highlevel_pyramid(bias_type, kernel_type, num_trials)
 
 	load split
 	load allpyramids
+	%load allpyramids4lvl
 
-	num_pools = length(allpyramids{bias_type});
+	pyramids = allpyramids{bias_type};
+	num_pools = length(pyramids);
 
-	% TODO fix so that accuracies wont get overwritten
+	for i=1:num_pools
+		for j=1:length(pyramids{i})
+			pyramids{i}{j} = pyramids{i}{j}.set_perm(perm);
+		end
+	end
+
 	for i=1:num_trials
 		disp (['trial ' num2str(i) ' of ' num2str(num_trials)])
 
@@ -24,7 +31,7 @@ function [accuracies] = highlevel_pyramid(bias_type, kernel_type, num_trials)
 
 		for j=1:num_pools
 			disp (['trying pool ' num2str(j) ' of ' num2str(num_pools)])
-			trial_accuracies(:,j) = boost_main(allpyramids{bias_type}(j), traindata, testdata, kernel_type, dim);
+			trial_accuracies(:,j) = boost_main(pyramids(j), traindata, testdata, kernel_type, dim);
 		end
 		mean(trial_accuracies)
 		
