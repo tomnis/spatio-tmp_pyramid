@@ -112,12 +112,6 @@ p = Pyramid(2, [], perm);
 assert(isequal(p.perm, perm));
 fprintf(1, 'passed custom permutation of dimensions\n');
 
-p = Pyramid(2, []);
-assert(isequal(p.perm, [1,2,3]));
-p = p.set_perm(perm);
-assert(isequal(p.perm, perm));
-fprintf(1, 'passed set_perm()\n');
-
 
 % test passing an empty permutation
 p = Pyramid(2, [], []);

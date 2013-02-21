@@ -110,12 +110,6 @@ classdef Pyramid
 		end
 
 
-		% set the dimension permutation	
-		function self = set_perm(self, perm)
-			self.perm = perm;
-		end
-
-
 
 		% compute the histograms for the features of a single clip
 		% TODO add a way for the caller to specify which levels should be included in the final

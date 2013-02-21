@@ -1,4 +1,4 @@
-function [accuracies] = highlevel_pyramid(bias_type, kernel_type, num_trials, perm)
+function [accuracies] = highlevel_pyramid(bias_type, kernel_type, num_trials)
 	setup
 	load loaded_data
 
@@ -15,12 +15,6 @@ function [accuracies] = highlevel_pyramid(bias_type, kernel_type, num_trials, pe
 
 	pyramids = allpyramids{bias_type};
 	num_pools = length(pyramids);
-
-	for i=1:num_pools
-		for j=1:length(pyramids{i})
-			pyramids{i}{j} = pyramids{i}{j}.set_perm(perm);
-		end
-	end
 
 	for i=1:num_trials
 		disp (['trial ' num2str(i) ' of ' num2str(num_trials)])
