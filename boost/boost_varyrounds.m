@@ -1,6 +1,6 @@
 % data contains labels
 % output is strong classifier
-function [f] = boost2(dataset, pool, target_accuracy, dim, kernel_type, boost_rounds)
+function [f] = boost_varyrounds(dataset, pool, target_accuracy, dim, kernel_type, boost_rounds)
   spatial_cuts = dim.spatial_cuts;
 
   labels = unique(dataset.label);

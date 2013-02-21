@@ -3,7 +3,7 @@
 % traindata is a DataSet object
 % testdata is a DataSet object
 % kernel_type is 'poly', 'chisq', 'histintersect'
-function [accuracies] = boost_main2(pools, traindata, testdata, kernel_type, dim, boost_rounds)
+function [accuracies] = boost_main_vary_boostrounds(pools, traindata, testdata, kernel_type, dim, boost_rounds)
 	num_itrs = length(pools);
 
 	target_accuracy = .6;
