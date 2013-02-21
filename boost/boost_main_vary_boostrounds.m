@@ -15,7 +15,7 @@ function [accuracies] = boost_main_vary_boostrounds(pools, traindata, testdata, 
 		pool = pools{itr};
 	
 
-		f = boost2(traindata, pool, target_accuracy, dim, kernel_type, boost_rounds);
+		f = boost_varyrounds(traindata, pool, target_accuracy, dim, kernel_type, boost_rounds);
 
 		% now that we have the classifier, test on the test data
 
