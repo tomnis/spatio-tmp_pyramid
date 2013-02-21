@@ -1,0 +1,25 @@
+>> stats = boost_main(100, 50, [1:203], [1:203])
+
+run 1:
+avg: 0.3666
+min: 0.0640
+max: 0.6305
+stddev: 0.1225
+
+run 2:
+avg: 0.3317
+min: 0.0887
+max: 0.5665
+stddev: 0.1100
+
+
+>> compute_boost_stats(30, 5)
+avg: 0.5931
+stddev: 0.0227
+min: 0.5714
+max: 0.6305
+
+avg: 0.6049
+stddev: 0.0172
+min: 0.5862
+max: 0.6256
