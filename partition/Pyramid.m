@@ -124,6 +124,15 @@ classdef Pyramid
 
 
 
+		function hist = compute_hist_nobase(self, feats, dim)
+			hist = [];
+
+			for level = 1:self.num_pyramid_levels-1
+				hist = [hist; self.compute_curlvl_hist(feats, level, dim)];
+			end
+		end
+
+
 		function self = apply_partition(self, dim)
 			dims = [dim.xlen, dim.ylen, dim.end_frame - dim.start_frame + 1];
 			dims = dims(self.perm);

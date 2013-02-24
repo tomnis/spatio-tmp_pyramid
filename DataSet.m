@@ -139,7 +139,7 @@ classdef DataSet
 
 
 		% given a partition, compute the resulting feature histograms for each clip
-		function hists = compute_histograms(self, partition, dim)
+		function hists = compute_histograms(self, partition, dim, base)
 			num_feat_types = size(self.best_s{1}, 1);
 			dim.num_feat_types = num_feat_types;
 
@@ -153,7 +153,11 @@ classdef DataSet
 				% the partition is a pyramid type
 				if (isequal(class(partition), 'Pyramid'))
 					applied_pyramid = partition.apply_partition(dim);
-					hists(:, k) = applied_pyramid.compute_hist(self.features{k}, dim);
+					if ~exist('base') || ~base
+						hists(:, k) = applied_pyramid.compute_hist(self.features{k}, dim);
+					else
+						hists(:, k) = applied_pyramid.compute_hist_nobase(self.features{k}, dim);
+					end
 				% the partition is set of cut_eqs
 				else
 					% apply the partition to the features
