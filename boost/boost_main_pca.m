@@ -3,7 +3,7 @@
 % traindata is a DataSet object
 % testdata is a DataSet object
 % kernel_type is 'poly', 'chisq', 'histintersect'
-function [accuracies] = boost_main_pca(pools, traindata, testdata, kernel_type, num_eigenvecs, dim)
+function [d] = boost_main_pca(pools, traindata, testdata, kernel_type, num_eigenvecs, dim)
 	num_itrs = length(pools);
 	dim.num_eigenvecs = num_eigenvecs;
 	target_accuracy = .8;
@@ -33,14 +33,18 @@ function [accuracies] = boost_main_pca(pools, traindata, testdata, kernel_type, 
 			partitioned_feats{pool_num} = testdata.compute_histograms(partition, dim); 
 		end
 
-
-
 		strong_classifications = strong_classify_all(f, partitioned_feats, testdata.valid_labels);
 
 		assert(isequal(size(strong_classifications), size(testdata.label)));
 
 		strong_class_indicator = (strong_classifications == testdata.label);
-		accuracy = mean(strong_class_indicator)
-		accuracies(itr) = accuracy;
+		boost_main_accuracy = mean(strong_class_indicator)
+		accuracies(itr) = boost_main_accuracy;
+
+		confn = confusionmat(testdata.label, strong_classifications);
+		confns{itr} = confn;
+
 		clear partitioned_feats;
 	end
+	d.accuracies = accuracies;
+	d.confns = confns;

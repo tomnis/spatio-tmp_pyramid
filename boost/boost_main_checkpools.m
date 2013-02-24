@@ -3,10 +3,10 @@
 % traindata is a DataSet object
 % testdata is a DataSet object
 % kernel_type is 'poly', 'chisq', 'histintersect'
-function [accuracies] = boost_main_checkpools(pools, traindata, testdata, kernel_type, dim)
+function [d] = boost_main_checkpools(pools, traindata, testdata, kernel_type, dim)
 	num_itrs = length(pools);
 
-	target_accuracy = .6;
+	target_accuracy = .8;
 
 	accuracies = [];
 	for itr=1:num_itrs
@@ -30,14 +30,21 @@ function [accuracies] = boost_main_checkpools(pools, traindata, testdata, kernel
 		end
 
 		fs{itr} = f;
-
+		
 		strong_classifications = strong_classify_all(f, partitioned_feats, testdata.valid_labels);
 
 		assert(isequal(size(strong_classifications), size(testdata.label)));
 
 		strong_class_indicator = (strong_classifications == testdata.label);
-		accuracy = mean(strong_class_indicator)
-		accuracies(itr) = accuracy;
+		boost_main_accuracy = mean(strong_class_indicator)
+		accuracies(itr) = boost_main_accuracy;
+
+		confn = confusionmat(testdata.label, strong_classifications);
+		confns{itr} = confn;
+
 		clear partitioned_feats;
 	end
 	save('fsright.mat', 'fs');
+	
+	d.accuracies = accuracies;
+	d.confns = confns;

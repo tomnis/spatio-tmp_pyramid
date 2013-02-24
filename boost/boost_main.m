@@ -3,7 +3,9 @@
 % traindata is a DataSet object
 % testdata is a DataSet object
 % kernel_type is 'poly', 'chisq', 'histintersect'
-function [accuracies] = boost_main(pools, traindata, testdata, kernel_type, dim)
+
+% return something containing the accuracies as well as the confusion matrices
+function [d] = boost_main(pools, traindata, testdata, kernel_type, dim)
 	num_itrs = length(pools);
 
 	target_accuracy = .8;
@@ -35,7 +37,14 @@ function [accuracies] = boost_main(pools, traindata, testdata, kernel_type, dim)
 		assert(isequal(size(strong_classifications), size(testdata.label)));
 
 		strong_class_indicator = (strong_classifications == testdata.label);
-		accuracy = mean(strong_class_indicator)
-		accuracies(itr) = accuracy;
+		boost_main_accuracy = mean(strong_class_indicator)
+		accuracies(itr) = boost_main_accuracy;
+
+		confn = confusionmat(testdata.label, strong_classifications);
+		confns{itr} = confn;
+
 		clear partitioned_feats;
 	end
+
+	d.accuracies = accuracies;
+	d.confns = confns;
