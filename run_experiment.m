@@ -1,6 +1,7 @@
-function [accuracies] = highlevel2(bias_type, kernel_type, num_trials, boost_rounds)
-	setup
-	load loaded_data
+% intended to replace all the highlevel* functions
+% which are now deprecated and marked for deletion
+function [accuracies, all_confns] = run_experiment(allpools, bias_type, kernel_type, num_trials)
+	load loaded_data;
 
 	object_type = 'active_passive';
 	dataset = DataSet(data, frs, best_scores, locations, object_type);
@@ -10,11 +11,11 @@ function [accuracies] = highlevel2(bias_type, kernel_type, num_trials, boost_rou
 	dim = struct('start_frame', 1, 'end_frame', 1000, 'xlen', 1280, 'ylen', 960, 'protate', protate, 'spatial_cuts', spatial_cuts);
 
 	load split
-	load allpoolslvls2-3size100
 
-	num_pools = length(allpools{bias_type});
+	pools = allpools{bias_type};
+	
+	num_pools = length(pools);
 
-	% TODO fix so that accuracies wont get overwritten
 	for i=1:num_trials
 		disp (['trial ' num2str(i) ' of ' num2str(num_trials)])
 
@@ -24,12 +25,16 @@ function [accuracies] = highlevel2(bias_type, kernel_type, num_trials, boost_rou
 
 		for j=1:num_pools
 			disp (['trying pool ' num2str(j) ' of ' num2str(num_pools)])
-			trial_accuracies(:,j) = boost_main2(allpools{bias_type}(j), traindata, testdata, kernel_type, dim, boost_rounds);
+			d = boost_main(pools(j), traindata, testdata, kernel_type, dim);
+			trial_accuracies(:,j) = d.accuracies;
+			confns{j} = d.confns;
 		end
-		mean_trial_accs = mean(trial_accuracies)
+		mean(trial_accuracies)
 		
 		accuracies(:,:,i) = trial_accuracies;
+		all_confns{i} = confns;
 		clear trial_accuracies;
+		clear confns;
 	end
 
 	mean(mean(accuracies))
