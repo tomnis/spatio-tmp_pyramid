@@ -5,8 +5,12 @@
 % kernel_type is 'poly', 'chisq', 'histintersect'
 
 % return something containing the accuracies as well as the confusion matrices
-function [d] = boost_main(pools, traindata, testdata, kernel_type, dim)
+function [d] = boost_main(pools, traindata, testdata, kernel_type, dim, omit_base)
 	num_itrs = length(pools);
+
+	if ~exist('omit_base')
+		omit_base = 0;
+	end
 
 	target_accuracy = .8;
 
@@ -17,18 +21,15 @@ function [d] = boost_main(pools, traindata, testdata, kernel_type, dim)
 		pool = pools{itr};
 	
 
-		f = boost(traindata, pool, target_accuracy, dim, kernel_type);
+		f = boost(traindata, pool, target_accuracy, dim, kernel_type, omit_base);
 
 		% now that we have the classifier, test on the test data
 
 		% get application of each partition scheme to be used by the classifier
-		% todo this can be made more efficient
-		% this is also compute in boost.m i believe
-		% TODO only use the max here?
 		for pat_ind = 1:length(f.min_pat_inds)
 			pool_num = f.min_pat_inds(pat_ind);
 			partition = pool{pool_num};
-			partitioned_feats{pool_num} = testdata.compute_histograms(partition, dim); 
+			partitioned_feats{pool_num} = testdata.compute_histograms(partition, dim, omit_base); 
 		end
 
 

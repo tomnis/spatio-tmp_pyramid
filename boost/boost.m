@@ -1,11 +1,17 @@
 % data contains labels
 % output is strong classifier
-function [f] = boost(dataset, pool, target_accuracy, dim, kernel_type)
+function [f] = boost(dataset, pool, target_accuracy, dim, kernel_type, omit_base)
   spatial_cuts = dim.spatial_cuts;
+
+	if ~exist('omit_base')
+		omit_base = 0;
+	end
 
   labels = unique(dataset.label);
   n_label = length(labels);
- 
+
+	
+
   % for each partition pattern
   for prt_num = 1:length(pool)
 		fprintf(1, '\rpattern %d of %d...', prt_num, length(pool));
@@ -14,7 +20,7 @@ function [f] = boost(dataset, pool, target_accuracy, dim, kernel_type)
   	% represent each clip in the subset using partition pattern
   	% must be in the loop because the histogram will be different depending on the partition pattern
 		fprintf(1, ' computing histograms...');
-		hists = dataset.compute_histograms(partition, dim);
+		hists = dataset.compute_histograms(partition, dim, omit_base);
   	partitioned_feats{prt_num} = hists;
   
   	% randomly sample a subset of the clips
@@ -89,19 +95,25 @@ function [f] = boost(dataset, pool, target_accuracy, dim, kernel_type)
   	min_pat_ind = 1;
   	for pattern_ind = 1:length(pool)
   		x_test = partitioned_feats{pattern_ind}';
-  		
-			
-			if isequal(kernel_type, 'poly')
-  			y_pred = svmpredict(y_test, x_test, classifiers(pattern_ind));
+  	
+			% first boosting round we compute the and cache the indicators
+			if j == 1
+				if isequal(kernel_type, 'poly')
+					y_pred = svmpredict(y_test, x_test, classifiers(pattern_ind));
+				else
+					xtest = compute_kernel(x_test, trains{pattern_ind}', kernel_type);
+					y_pred = svmpredict(y_test, xtest, classifiers(pattern_ind));
+				end
+				
+				indicator = y_pred' ~= dataset.label;
+				cur_err = dot(weights, indicator);
+				
+				% cache the indicator to be used in later iterations
+				indicators{pattern_ind} = indicator;	
 			else
-				xtest = compute_kernel(x_test, trains{pattern_ind}', kernel_type);
-				y_pred = svmpredict(y_test, xtest, classifiers(pattern_ind));
+				cur_err = dot(weights, indicators{pattern_ind});
 			end
-  		
-			indicator = y_pred' ~= dataset.label;
-  		
-  		cur_err = dot(weights, indicator);
-  		
+
   		% if we find a new minimum, store the error, pattern, and indicator
   		if cur_err <= min_err
   			min_err = cur_err;
@@ -125,10 +137,10 @@ function [f] = boost(dataset, pool, target_accuracy, dim, kernel_type)
   	end
   
   	% generate the strong classifier
-  	strong_classifications = strong_classify_all(f, partitioned_feats, dataset.valid_labels);
+  	%strong_classifications = strong_classify_all(f, partitioned_feats, dataset.valid_labels);
 		% compute its classification accuracy (percentage of correct classifications)
-  	accuracy = mean(strong_classifications == dataset.label);	
-  	f.accuracies(j) = accuracy;
+  	%accuracy = mean(strong_classifications == dataset.label);	
+  	%f.accuracies(j) = accuracy;
   end
-	f.accuracies
+	%f.accuracies
 end

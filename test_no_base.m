@@ -29,7 +29,7 @@ function [accuracies, all_confns, nb_accuracies, all_nb_confns] = test_no_base(a
 			confns{j} = d.confns;
 
 
-			e = boost_main_nobase(pools(j), traindata, testdata, kernel_type, dim);
+			e = boost_main(pools(j), traindata, testdata, kernel_type, dim, 1);
 			nb_trial_accuracies(:, j) = e.accuracies;
 			nb_confns{j} = e.confns;
 		end
