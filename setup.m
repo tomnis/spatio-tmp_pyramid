@@ -7,6 +7,7 @@ addpath /u/tomas/thesis/legacy
 addpath /u/tomas/thesis/matfiles 
 addpath /u/tomas/thesis/partition
 addpath /u/tomas/thesis/read_data
+addpath /u/tomas/thesis/results
 addpath /u/tomas/thesis/test
 addpath /u/tomas/thesis/third_party/
 addpath /u/tomas/thesis/third_party/libsvm-mat-3.0-1
