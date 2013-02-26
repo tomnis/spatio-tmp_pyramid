@@ -1,0 +1,14 @@
++Group = "UNDER"
++Project = "AI_ROBOTICS" 
++ProjectDescription = "try the megapool"
+
+Requirements = Memory >= 4000
+Error = err.$(Process)
+Output = out.$(Process)
+Log = mg.log
+
+executable = /bin/sh
+arguments = "/u/tomas/thesis/experiments/megapool.sh"
+
+Notification = Always
+Queue

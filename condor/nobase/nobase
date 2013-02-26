@@ -1,0 +1,14 @@
++Group = "UNDER"
++Project = "AI_ROBOTICS" 
++ProjectDescription = "try omitting the histogram for lvl 0"
+
+Requirements = Memory >= 4000
+Error = err.$(Process)
+Output = out.$(Process)
+Log = vp.log
+
+executable = /bin/sh
+arguments = "/u/tomas/thesis/experiments/test_nobase.sh"
+
+Notification = Always
+Queue

@@ -1,0 +1,14 @@
++Group = "UNDER"
++Project = "AI_ROBOTICS" 
++ProjectDescription = "try the pool of lvl4 pyramids, size 300"
+
+Requirements = Memory >= 4000 && InMastodon 
+Error = err.$(Process)
+Output = out.$(Process)
+Log = vp.log
+
+executable = /bin/sh
+arguments = "/u/tomas/thesis/experiments/lvl4pyramidsize300.sh"
+
+Notification = Always
+Queue
