@@ -1,4 +1,3 @@
-% TODO need to implement the bias type
 function [pyramid_pools] = generate_pyramid_pools(num_pools, pool_size, num_levels, bias_type, regular,  dataset, perm)
 
 	if bias_type > 1
