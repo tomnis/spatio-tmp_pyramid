@@ -112,8 +112,6 @@ classdef Pyramid
 
 
 		% compute the histograms for the features of a single clip
-		% TODO add a way for the caller to specify which levels should be included in the final
-		% histogram
 		function hist = compute_hist(self, feats, dim)
 			hist = [];
 
