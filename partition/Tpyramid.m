@@ -11,17 +11,24 @@ classdef Tpyramid
 
 	methods (Access='private')
 		function self = setup_cuts(self)
+
+
 			% TODO handle the regular case here
 			self.ltcuts = zeros(self.num_cuts, 1);
 			self.rtcuts = zeros(self.num_cuts, 1);
 			
 			for i=1:self.num_cuts
-				self.ltcuts(i) = self.randr.get();
-				% do rotation here if necessary
-				if rand <= self.protate
-					self.rtcuts(i) = self.randr.get();
+				if self.regular
+					self.ltcuts(i) = i / (self.num_cuts + 1);
+					self.rtcuts(i) = i / (self.num_cuts + 1);
 				else
-					self.rtcuts(i) = self.ltcuts(i);
+					self.ltcuts(i) = self.randr.get();
+					% do rotation here if necessary
+					if rand <= self.protate
+						self.rtcuts(i) = self.randr.get();
+					else
+						self.rtcuts(i) = self.ltcuts(i);
+					end
 				end
 			end
 		end

@@ -23,3 +23,13 @@ tprime = t.apply_partition(dim);
 assert(isequal(oldlcuts, t.ltcuts))
 assert(isequal(oldrcuts, t.rtcuts))
 tprime.cut_eqs
+
+% test regular
+t = Tpyramid([], 1, 0);
+t.ltcuts
+t.rtcuts
+
+t = Tpyramid([], 3, 0);
+t.ltcuts
+t.rtcuts
+
