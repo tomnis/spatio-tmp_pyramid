@@ -1,22 +1,27 @@
 % given a space-time feature f = (x,y,z) and a set of planar cuts, determine 
 % which unique region f is located in by determining where f is relative to each of the cuts
-function [bin_label] = bin(f, cut_eqs, dim)
+function [bin_label] = bin(f, cut_eqs, dim, zonly)
 	assert(isequal(size(f), [1 3]));
 	bin_label = 0;
 	
-	% x := 2x or x := 2x +1 as necessary
-	for i=1:size(cut_eqs.xcuts,1)
-		bin_label = 2 * bin_label + compare(f, cut_eqs.xcuts(i,:), dim);
-	end
+	if exist('zonly') && zonly
+		for i=1:size(cut_eqs)
+			bin_label = 2 * bin_label + compare(f, cut_eqs(i,:), dim);
+		end
+	else
+		% x := 2x or x := 2x +1 as necessary
+		for i=1:size(cut_eqs.xcuts,1)
+			bin_label = 2 * bin_label + compare(f, cut_eqs.xcuts(i,:), dim);
+		end
 
-	for i=1:size(cut_eqs.ycuts,1)
-		bin_label = 2 * bin_label + compare(f, cut_eqs.ycuts(i,:), dim);
-	end
-	
-	for i=1:size(cut_eqs.zcuts,1)
-		bin_label = 2 * bin_label + compare(f, cut_eqs.zcuts(i,:), dim);
-	end
-
+		for i=1:size(cut_eqs.ycuts,1)
+			bin_label = 2 * bin_label + compare(f, cut_eqs.ycuts(i,:), dim);
+		end
+		
+		for i=1:size(cut_eqs.zcuts,1)
+			bin_label = 2 * bin_label + compare(f, cut_eqs.zcuts(i,:), dim);
+		end
+  end
 	bin_label;
 end
 

@@ -36,20 +36,17 @@ classdef Tpyramid
 			self = self.setup_cuts();
 		end
 
-		function hist = compute_hist(self, feats, dim)
-			hist = [];
+		function histogram = compute_hist(self, feats, dim)
 
-			if ~self.protate
-				num_regions = self.num_cuts + 1;
-			else
-				num_regions = (self.num_cuts * (self.num_cuts + 1) / 2) + 1
-			end
+			num_regions = 2^self.num_cuts;
+			
+			histogram = zeros(num_regions * (dim.num_feat_types + 1), 1);
 
 			for i=1:length(feats.x)
 				f = [feats.x(i), feats.y(i), feats.z(i)];
-				region_num = bin(f, self.cut_eqs, dim);
+				region_num = bin(f, self.cut_eqs, dim, 1);
 				idx = region_num * dim.num_feat_types + feats.label(i);
-				hist(idx) = hist(idx) + 1;
+				histogram(idx) = histogram(idx) + 1;
 			end
 		end
 

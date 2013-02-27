@@ -4,7 +4,7 @@ load loaded_data
 num_pools = 1
 pool_size = 10
 protate = 0;
-num_cuts = 10;
+num_cuts = 5;
 object_type = 'active_passive';
 dataset = DataSet(data, frs, best_scores, locations, object_type);
 regular = 0;

@@ -158,6 +158,9 @@ classdef DataSet
 					else
 						hists(:, k) = applied_pyramid.compute_hist_nobase(self.features{k}, dim);
 					end
+				elseif (isequal(class(partition), 'Tpyramid'))
+					applied_pyramid = partition.apply_partition(dim);
+					hists(:, k) = applied_pyramid.compute_hist(self.features{k}, dim);
 				% the partition is set of cut_eqs
 				else
 					% apply the partition to the features
