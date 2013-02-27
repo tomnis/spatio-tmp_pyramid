@@ -32,4 +32,3 @@ t.rtcuts
 t = Tpyramid([], 3, 0);
 t.ltcuts
 t.rtcuts
-
