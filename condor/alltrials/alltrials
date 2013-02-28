@@ -1,0 +1,14 @@
++Group = "UNDER"
++Project = "AI_ROBOTICS" 
++ProjectDescription = "try to quickly compute the results for all trials"
+
+Requirements = Memory >= 10000
+Error = err.$(Process)
+Output = out.$(Process)
+Log = mg.log
+
+executable = /bin/sh
+arguments = "/u/tomas/thesis/experiments/run_trial.sh $(Process)"
+
+Notification = Always
+Queue 100
