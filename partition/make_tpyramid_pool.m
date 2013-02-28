@@ -5,8 +5,9 @@ function [tpyramid_pool] = make_tpyramid_pool(pool_size, randr, num_cuts, protat
 
 	for i=1:pool_size
 		tpyramid_pool{i} = Tpyramid(randr, num_cuts, protate);
+		tpyramid_pool{i+pool_size} = Tpyramid(randr, num_cuts*2, protate);
 	end
-
+	% add some special pyramids
 	for i=1:4
 		tpyramid_pool{length(tpyramid_pool) + 1} = Tpyramid([], i, 0);
 	end

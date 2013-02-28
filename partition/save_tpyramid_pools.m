@@ -2,7 +2,7 @@ setup
 load loaded_data
 
 num_pools = 1
-pool_size = 10
+pool_size = 50
 protate = .5;
 num_cuts = 5;
 object_type = 'active_passive';
