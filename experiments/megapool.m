@@ -1,5 +1,5 @@
 setup;
-load megapoolequal
+load megapoollvl3-4unequal
 
 % a bit of dirty hacking.. run experiment expects an extra level of nesting because of 
 % bias type
