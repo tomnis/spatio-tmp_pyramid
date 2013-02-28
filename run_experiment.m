@@ -1,6 +1,6 @@
 % intended to replace all the highlevel* functions
 % which are now deprecated and marked for deletion
-function [accuracies, all_confns] = run_experiment(allpools, bias_type, kernel_type, num_trials)
+function [accuracies, all_confns] = run_experiment(allpools, bias_type, kernel_type, trials)
 	load loaded_data;
 
 	object_type = 'active_passive';
@@ -16,11 +16,12 @@ function [accuracies, all_confns] = run_experiment(allpools, bias_type, kernel_t
 	
 	num_pools = length(pools);
 
-	for i=1:num_trials
-		disp (['trial ' num2str(i) ' of ' num2str(num_trials)])
+	for i=1:length(trials)
+		cur_trial = trials(i)
+		disp (['trial ' num2str(i) ' of ' num2str(length(trials))])
 
-		traindata = dataset.sub(split.train{i});
-		testdata = dataset.sub(split.test{i});
+		traindata = dataset.sub(split.train{cur_trial});
+		testdata = dataset.sub(split.test{cur_trial});
 
 
 		for j=1:num_pools
@@ -31,8 +32,8 @@ function [accuracies, all_confns] = run_experiment(allpools, bias_type, kernel_t
 		end
 		mean(trial_accuracies)
 		
-		accuracies(:,:,i) = trial_accuracies;
-		all_confns{i} = confns;
+		accuracies(:,:,cur_trial) = trial_accuracies;
+		all_confns{cur_trial} = confns;
 		clear trial_accuracies;
 		clear confns;
 	end
