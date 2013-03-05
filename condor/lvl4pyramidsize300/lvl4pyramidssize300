@@ -8,7 +8,7 @@ Output = out.$(Process)
 Log = vp.log
 
 executable = /bin/sh
-arguments = "/u/tomas/thesis/experiments/lvl4pyramidsize300.sh"
+arguments = "/u/tomas/thesis/experiments/lvl4pyramidsize300.sh $(Process)"
 
-Notification = Always
-Queue
+Notification = Complete 
+Queue 100

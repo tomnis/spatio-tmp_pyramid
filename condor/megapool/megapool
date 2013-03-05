@@ -2,13 +2,13 @@
 +Project = "AI_ROBOTICS" 
 +ProjectDescription = "try the megapool"
 
-Requirements = Memory >= 4000
+Requirements = Memory >= 10000
 Error = err.$(Process)
 Output = out.$(Process)
 Log = mg.log
 
 executable = /bin/sh
-arguments = "/u/tomas/thesis/experiments/megapool.sh"
+arguments = "/u/tomas/thesis/experiments/megapool.sh $(Process)"
 
 Notification = Always
-Queue
+Queue 100
