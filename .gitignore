@@ -4,4 +4,5 @@
 *.aux
 err*
 out*
+*.log
 results/
