@@ -4,3 +4,4 @@
 *.aux
 err*
 out*
+results/
