@@ -44,7 +44,7 @@ function [d] = boost_main_checkpools(pools, traindata, testdata, kernel_type, di
 
 		clear partitioned_feats;
 	end
-	save('fsright.mat', 'fs');
 	
 	d.accuracies = accuracies;
 	d.confns = confns;
+	d.fs = fs;
