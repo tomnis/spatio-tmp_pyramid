@@ -1,6 +1,6 @@
 % data contains labels
 % output is strong classifier
-function [f] = boost(dataset, pool, target_accuracy, dim, kernel_type, omit_base)
+function [f] = boost_mult_pats(dataset, pool, target_accuracy, dim, kernel_type, omit_base)
   spatial_cuts = dim.spatial_cuts;
 
 	if ~exist('omit_base')
@@ -10,7 +10,7 @@ function [f] = boost(dataset, pool, target_accuracy, dim, kernel_type, omit_base
   labels = unique(dataset.label);
   n_label = length(labels);
 
-	
+	fprintf(1, 'multiple pattern mode enabled\n');	
 
   % for each partition pattern
   for prt_num = 1:length(pool)
@@ -80,6 +80,7 @@ function [f] = boost(dataset, pool, target_accuracy, dim, kernel_type, omit_base
   j = 0;
   accuracy = 0;
   accuracies = [];
+	f.min_pat_inds = [];
   while accuracy < target_accuracy && j < 30
   	
   	% for each clip, update the weight
@@ -91,8 +92,9 @@ function [f] = boost(dataset, pool, target_accuracy, dim, kernel_type, omit_base
   	y_test = dataset.label';
   	
   	% compute the pattern which gives min err
-  	min_err = length(weights);
-  	min_pat_ind = 1;
+		% store the errs for each partition
+		pool_errs = zeros(length(pool), 1);
+
   	for pattern_ind = 1:length(pool)
   		x_test = partitioned_feats{pattern_ind}';
   	
@@ -114,14 +116,23 @@ function [f] = boost(dataset, pool, target_accuracy, dim, kernel_type, omit_base
 				cur_err = dot(weights, indicators{pattern_ind});
 			end
 
-  		% if we find a new minimum, store the error, pattern, and indicator
-  		if cur_err <= min_err
-  			min_err = cur_err;
-  			min_pat_ind = pattern_ind;
-  			min_indicator = indicators{pattern_ind};
-  		end
+			pool_errs(pattern_ind) = cur_err;
   	end
   
+		%%%% 
+		% now find the pattern with min error, subjet to the constraint that it
+		% has not been picked before
+		[sorted_errs, ix] = sort(pool_errs);
+		i = 1;
+		while length(find(f.min_pat_inds == ix(i)) > 0)
+			i = i+1;
+		end
+
+		min_pat_ind = ix(i);
+		min_err = sorted_errs(i);
+		min_indicator = indicators{ix(i)};
+		%%%%
+		
   	% compute the weight for the pattern with min error
   	f.alpha(j) = log((1 - min_err) / min_err) + log(c - 1);
   	% remember which svm gave the min error in the jth iteration
