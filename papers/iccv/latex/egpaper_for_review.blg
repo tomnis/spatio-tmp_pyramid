@@ -1,0 +1,49 @@
+This is BibTeX, Version 0.99c (Web2C 7.5.7)
+The top-level auxiliary file: egpaper_for_review.aux
+The style file: ieee.bst
+Database file #1: egbib.bib
+Warning--empty year in Laptev08
+Warning--empty year in Marszalek09
+Warning--empty year in Ramanan12
+You've used 10 entries,
+            2120 wiz_defined-function locations,
+            568 strings with 5886 characters,
+and the built_in function-call counts, 4527 in all, are:
+= -- 427
+> -- 290
+< -- 5
++ -- 116
+- -- 104
+* -- 358
+:= -- 753
+add.period$ -- 30
+call.type$ -- 10
+change.case$ -- 79
+chr.to.int$ -- 0
+cite$ -- 13
+duplicate$ -- 152
+empty$ -- 274
+format.name$ -- 104
+if$ -- 929
+int.to.chr$ -- 0
+int.to.str$ -- 10
+missing$ -- 10
+newline$ -- 53
+num.names$ -- 20
+pop$ -- 77
+preamble$ -- 1
+purify$ -- 69
+quote$ -- 0
+skip$ -- 127
+stack$ -- 0
+substring$ -- 257
+swap$ -- 53
+text.length$ -- 5
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 40
+warning$ -- 3
+while$ -- 38
+width$ -- 12
+write$ -- 108
+(There were 3 warnings)

@@ -1,0 +1,66 @@
+\begin{thebibliography}{10}\itemsep=-1pt
+
+\bibitem{Catz97}
+A.~Catz, M.~Itzkovich, E.~Agranov, H.~Ring, A.~Tamir, et~al.
+\newblock Scim--spinal cord independence measure: a new disability scale for
+  patients with spinal cord lesions.
+\newblock {\em Spinal Cord}, 35(12):850, 1997.
+
+\bibitem{Fathi12}
+A.~Fathi, Y.~Li, and J.~M. Rehg.
+\newblock Learning to recognize daily actions using gaze.
+\newblock {\em Proceedings of the 12th European conference on Computer Vision -
+  Volume Part II}, 2012.
+
+\bibitem{Itzkovich07}
+M.~Itzkovich, I.~Gelernter, F.~Biering-Sorensen, C.~Weeks, M.~Laramee,
+  B.~Craven, M.~Tonack, S.~Hitzig, E.~Glaser, G.~Zeilig, et~al.
+\newblock The spinal cord independence measure (scim) version iii: reliability
+  and validity in a multi-center international study.
+\newblock {\em Disability \& Rehabilitation}, 29(24):1926--1933, 2007.
+
+\bibitem{Jiang12}
+Y.~Jiang, J.~Yuan, and G.~Yu.
+\newblock Randomized spatial partition for scene recognition.
+\newblock {\em Proceedings of the 12th European conference on Computer Vision -
+  Volume Part II}, pages 730--743, 2012.
+
+\bibitem{Kopp97}
+B.~Kopp, A.~Kunkel, H.~Flor, T.~Platz, U.~Rose, K.-H. Mauritz, K.~Gresser,
+  K.~L. McCulloch, E.~Taub, et~al.
+\newblock The arm motor ability test: reliability, validity, and sensitivity to
+  change of an instrument for assessing disabilities in activities of daily
+  living.
+\newblock {\em Archives of physical medicine and rehabilitation}, 78(6):615,
+  1997.
+
+\bibitem{Laptev08}
+I.~Laptev, M.~Marszalek, C.~Schmid, and B.~Rozenfeld.
+\newblock Learning realistic human actions from movies.
+\newblock {\em Computer Vision and Pattern Recognition, 2008.}, pages 1--8.
+
+\bibitem{Marszalek09}
+M.~Marszalek, I.~Laptev, and C.~Schmid.
+\newblock Actions in context.
+\newblock {\em Computer Vision and Pattern Recognition, 2009.}, pages
+  2929--2936.
+
+\bibitem{Ramanan12}
+H.~Pirsiavash and D.~Ramanan.
+\newblock Detecting activities of daily living in first-person camera views.
+\newblock {\em Computer Vision and Pattern Recognition, 2012.}, pages
+  2847--2854.
+
+\bibitem{Sellen07}
+A.~J. Sellen, A.~Fogg, M.~Aitken, S.~Hodges, C.~Rother, and K.~Wood.
+\newblock Do life-logging technologies support memory for the past?: an
+  experimental study using sensecam.
+\newblock {\em Proceedings of the SIGCHI Conference on Human Factors in
+  Computing Systems}, pages 81--90, 2007.
+
+\bibitem{Zhu06}
+J.~Zhu, S.~Rosset, H.~Zou, and T.~Hastie.
+\newblock Multi-class adaboost.
+\newblock {\em Ann Arbor}, 1001(48109):1612, 2006.
+
+\end{thebibliography}
