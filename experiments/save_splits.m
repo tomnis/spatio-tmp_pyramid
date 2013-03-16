@@ -4,7 +4,7 @@ load loaded_data
 object_type = 'active_passive';
 dataset = DataSet(data, frs, best_scores, locations, object_type);
 
-train_frac = .5;
+train_frac = .6;
 num_trials = 100;
 
 for i=1:num_trials
@@ -16,4 +16,4 @@ end
 split.train = train;
 split.test = test;
 
-save('split.mat', 'split')
+save('split60.mat', 'split')
