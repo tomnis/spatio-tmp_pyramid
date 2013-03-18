@@ -1,19 +1,10 @@
-function [combined_accuracies, all_confns] = combine_results(directory)
+function [combined]= combine_results(directory)
 
 files = dir(directory);
 files = files(3:end);
-
-for i = 1:100
-	if i == 16
-		continue
-	end
-	if i == 52
-		continue
-	end
-	if i == 94
-		continue
-	end
-	load([directory, '/acc_and_confntrial', num2str(i)]);
-	
-	combined_accuracies(i) = accuracies(i)
+for i = 1:length(files)
+	load([directory, '/', files(i).name]);
+	combined.accuracies(i) = accuracies(length(accuracies));
+	combined.confns(i, :, :) = all_confns{length(all_confns)}{1}{1}; 
+	combined.fs{i} = fs{length(fs)}{1}{1};
 end
