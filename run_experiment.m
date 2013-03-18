@@ -1,6 +1,6 @@
 % intended to replace all the highlevel* functions
 % which are now deprecated and marked for deletion
-function [accuracies, all_confns, all_fs] = run_experiment(allpools, bias_type, kernel_type, trials)
+function [accuracies, all_confns, all_fs] = run_experiment(allpools, bias_type, kernel_type, trials,split60)
 	load loaded_data;
 
 	object_type = 'active_passive';
@@ -10,7 +10,11 @@ function [accuracies, all_confns, all_fs] = run_experiment(allpools, bias_type, 
 	spatial_cuts = 1;
 	dim = struct('start_frame', 1, 'end_frame', 1000, 'xlen', 1280, 'ylen', 960, 'protate', protate, 'spatial_cuts', spatial_cuts);
 
-	load split
+	if exist('split60') && split60 == 1
+		load split60
+	else
+		load split
+	end
 
 	pools = allpools{bias_type};
 	
@@ -26,7 +30,7 @@ function [accuracies, all_confns, all_fs] = run_experiment(allpools, bias_type, 
 
 		for j=1:num_pools
 			disp (['trying pool ' num2str(j) ' of ' num2str(num_pools)])
-			d = boost_main_checkpools(pools(j), traindata, testdata, kernel_type, dim);
+			d = boost_main(pools(j), traindata, testdata, kernel_type, dim);
 			trial_accuracies(:,j) = d.accuracies;
 			confns{j} = d.confns;
 			fs{j} = d.fs;

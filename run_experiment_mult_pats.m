@@ -1,6 +1,6 @@
 % intended to replace all the highlevel* functions
 % which are now deprecated and marked for deletion
-function [accuracies, all_confns, all_fs] = run_experiment_mult_pats(allpools, bias_type, kernel_type, trials)
+function [accuracies, all_confns, all_fs] = run_experiment_mult_pats(allpools, bias_type, kernel_type, trials, split60)
 	load loaded_data;
 
 	object_type = 'active_passive';
@@ -10,7 +10,12 @@ function [accuracies, all_confns, all_fs] = run_experiment_mult_pats(allpools, b
 	spatial_cuts = 1;
 	dim = struct('start_frame', 1, 'end_frame', 1000, 'xlen', 1280, 'ylen', 960, 'protate', protate, 'spatial_cuts', spatial_cuts);
 
-	load split
+	if exist('split60') && split60 == 1
+		load split60
+	else
+		load split
+	end
+	
 
 	pools = allpools{bias_type};
 	
