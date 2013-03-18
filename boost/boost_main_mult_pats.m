@@ -29,7 +29,7 @@ function [d] = boost_main_mult_pats(pools, traindata, testdata, kernel_type, dim
 			partitioned_feats{pool_num} = testdata.compute_histograms(partition, dim); 
 		end
 
-		fs{itr} = f;
+		fs{itr} = f.min_pat_inds;
 		
 		strong_classifications = strong_classify_all(f, partitioned_feats, testdata.valid_labels);
 
