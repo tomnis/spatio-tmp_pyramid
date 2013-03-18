@@ -2,7 +2,7 @@ function [giga_pool] = generate_giga_pool(dataset, perm)
 	% 50 of each bias type and levels would be total size 300
 	giga_pool = {};
 
-	bias_sizes = [1000, 250, 2000];
+	bias_sizes = [500, 250, 1000];
 
 	for bias_type = 1:3
 		if bias_type > 1

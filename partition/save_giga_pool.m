@@ -8,4 +8,4 @@ perm = [1,3,2];
 
 gigapool = generate_giga_pool(dataset, perm);
 
-save('/u/tomas/thesis/matfiles/gigapool', 'gigapool')
+save('/u/tomas/thesis/matfiles/gigapool3', 'gigapool')

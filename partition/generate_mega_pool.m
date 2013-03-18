@@ -27,7 +27,7 @@ function [mega_pool] = generate_mega_pool(dataset, perm)
 		% now we have the correct distributions, loop over the number of levels
 		for num_levels = 3:4
 			pool_size = bias_sizes(bias_type);
-			current_pool = make_pyramid_pool(pool_size, num_levels, randrs, perm);
+			current_pool = make_pyramid_pool(pool_size, num_levels, randrs, perm, 1);
 			mega_pool = cat(2, mega_pool, current_pool);
 		end
 		clear randrs;
