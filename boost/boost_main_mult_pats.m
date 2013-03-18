@@ -3,7 +3,7 @@
 % traindata is a DataSet object
 % testdata is a DataSet object
 % kernel_type is 'poly', 'chisq', 'histintersect'
-function [d] = boost_main_checkpools(pools, traindata, testdata, kernel_type, dim)
+function [d] = boost_main_mult_pats(pools, traindata, testdata, kernel_type, dim)
 	num_itrs = length(pools);
 
 	target_accuracy = .8;
@@ -15,7 +15,7 @@ function [d] = boost_main_checkpools(pools, traindata, testdata, kernel_type, di
 		pool = pools{itr};
 	
 
-		f = boost(traindata, pool, target_accuracy, dim, kernel_type);
+		f = boost_mult_pats(traindata, pool, target_accuracy, dim, kernel_type);
 
 		% now that we have the classifier, test on the test data
 

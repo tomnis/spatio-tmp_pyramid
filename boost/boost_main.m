@@ -3,14 +3,8 @@
 % traindata is a DataSet object
 % testdata is a DataSet object
 % kernel_type is 'poly', 'chisq', 'histintersect'
-
-% return something containing the accuracies as well as the confusion matrices
-function [d] = boost_main(pools, traindata, testdata, kernel_type, dim, omit_base)
+function [d] = boost_main(pools, traindata, testdata, kernel_type, dim)
 	num_itrs = length(pools);
-
-	if ~exist('omit_base')
-		omit_base = 0;
-	end
 
 	target_accuracy = .8;
 
@@ -21,18 +15,22 @@ function [d] = boost_main(pools, traindata, testdata, kernel_type, dim, omit_bas
 		pool = pools{itr};
 	
 
-		f = boost(traindata, pool, target_accuracy, dim, kernel_type, omit_base);
+		f = boost(traindata, pool, target_accuracy, dim, kernel_type);
 
 		% now that we have the classifier, test on the test data
 
 		% get application of each partition scheme to be used by the classifier
+		% todo this can be made more efficient
+		% this is also compute in boost.m i believe
+		% TODO only use the max here?
 		for pat_ind = 1:length(f.min_pat_inds)
 			pool_num = f.min_pat_inds(pat_ind);
 			partition = pool{pool_num};
-			partitioned_feats{pool_num} = testdata.compute_histograms(partition, dim, omit_base); 
+			partitioned_feats{pool_num} = testdata.compute_histograms(partition, dim); 
 		end
 
-
+		fs{itr} = f;
+		
 		strong_classifications = strong_classify_all(f, partitioned_feats, testdata.valid_labels);
 
 		assert(isequal(size(strong_classifications), size(testdata.label)));
@@ -46,6 +44,7 @@ function [d] = boost_main(pools, traindata, testdata, kernel_type, dim, omit_bas
 
 		clear partitioned_feats;
 	end
-
+	
 	d.accuracies = accuracies;
 	d.confns = confns;
+	d.fs = fs;
