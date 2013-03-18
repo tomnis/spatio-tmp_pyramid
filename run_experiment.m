@@ -1,6 +1,6 @@
 % intended to replace all the highlevel* functions
 % which are now deprecated and marked for deletion
-function [accuracies, all_confns] = run_experiment(allpools, bias_type, kernel_type, trials)
+function [accuracies, all_confns, all_fs] = run_experiment(allpools, bias_type, kernel_type, trials)
 	load loaded_data;
 
 	object_type = 'active_passive';
@@ -26,16 +26,19 @@ function [accuracies, all_confns] = run_experiment(allpools, bias_type, kernel_t
 
 		for j=1:num_pools
 			disp (['trying pool ' num2str(j) ' of ' num2str(num_pools)])
-			d = boost_main(pools(j), traindata, testdata, kernel_type, dim);
+			d = boost_main_checkpools(pools(j), traindata, testdata, kernel_type, dim);
 			trial_accuracies(:,j) = d.accuracies;
 			confns{j} = d.confns;
+			fs{j} = d.fs;
 		end
 		mean(trial_accuracies)
 		
 		accuracies(:,:,cur_trial) = trial_accuracies;
 		all_confns{cur_trial} = confns;
+		all_fs{cur_trial} = fs;
 		clear trial_accuracies;
 		clear confns;
+		clear fs;
 	end
 
 	mean(mean(accuracies))
