@@ -7,6 +7,8 @@ function [pyramid_pool] = make_pyramid_pool(num_pyramids, num_levels, randrs, pe
 		perm = [];
 	end
 
+	pyramid_pool = {};
+
 	% add the temporal only cuts
 	if exist('addT') && addT
 		pyramid_pool{1} = Tpyramid([], 1, 0);

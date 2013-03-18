@@ -3,7 +3,7 @@ load loaded_data
 
 num_pools = 1
 num_levels = 3
-pool_size = 10
+pool_size = 500
 protate = 0;
 regular = 0;
 
