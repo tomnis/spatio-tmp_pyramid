@@ -33,4 +33,4 @@ pool = make_pool(pool_size, num_levels, protate, regular, randrs);
 
 [accuracy confn] = leave_one_out(d, pool, person_ids);
 
-save('/u/tomas/thesis/results/leave_one_out/leav_one_out', 'accuracy', 'confn')
+save('/u/tomas/thesis/results/leave_one_out/leave_one_out', 'accuracy', 'confn')
