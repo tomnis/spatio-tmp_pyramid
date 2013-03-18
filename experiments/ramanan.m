@@ -1,4 +1,4 @@
-function [accuracies] = ramanan(kernel_type, num_trials)
+function [accuracies] = ramanan(kernel_type, num_trials, split60)
 	setup
 	load loaded_data
 
@@ -10,9 +10,11 @@ function [accuracies] = ramanan(kernel_type, num_trials)
 	spatial_cuts = 1;
 	dim = struct('start_frame', 1, 'end_frame', 1000, 'xlen', 1280, 'ylen', 960, 'protate', protate, 'spatial_cuts', spatial_cuts);
 
-	load split
-	load allpools
-
+	if exist('split60') && split60 == 1
+		load split60
+	else
+		load split
+	end
 
 	for i=1:num_trials
 		disp (['trial ' num2str(i) ' of ' num2str(num_trials)])
