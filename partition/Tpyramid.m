@@ -11,9 +11,6 @@ classdef Tpyramid
 
 	methods (Access='private')
 		function self = setup_cuts(self)
-
-
-			% TODO handle the regular case here
 			self.ltcuts = zeros(self.num_cuts, 1);
 			self.rtcuts = zeros(self.num_cuts, 1);
 			
