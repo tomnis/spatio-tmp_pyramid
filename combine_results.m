@@ -8,3 +8,4 @@ for i = 1:length(files)
 	combined.confns(i, :, :) = all_confns{length(all_confns)}{1}{1}; 
 	combined.fs{i} = fs{length(fs)}{1}{1};
 end
+mean_acc = mean(combined.accuracies)
