@@ -5,45 +5,45 @@ Database file #1: egbib.bib
 Warning--empty year in Laptev08
 Warning--empty year in Marszalek09
 Warning--empty year in Ramanan12
-You've used 10 entries,
+You've used 12 entries,
             2120 wiz_defined-function locations,
-            568 strings with 5886 characters,
-and the built_in function-call counts, 4527 in all, are:
-= -- 427
-> -- 290
-< -- 5
-+ -- 116
-- -- 104
-* -- 358
-:= -- 753
-add.period$ -- 30
-call.type$ -- 10
-change.case$ -- 79
+            581 strings with 6235 characters,
+and the built_in function-call counts, 5481 in all, are:
+= -- 531
+> -- 321
+< -- 7
++ -- 128
+- -- 114
+* -- 413
+:= -- 887
+add.period$ -- 36
+call.type$ -- 12
+change.case$ -- 90
 chr.to.int$ -- 0
-cite$ -- 13
-duplicate$ -- 152
-empty$ -- 274
-format.name$ -- 104
-if$ -- 929
+cite$ -- 15
+duplicate$ -- 196
+empty$ -- 345
+format.name$ -- 114
+if$ -- 1150
 int.to.chr$ -- 0
-int.to.str$ -- 10
-missing$ -- 10
-newline$ -- 53
-num.names$ -- 20
-pop$ -- 77
+int.to.str$ -- 12
+missing$ -- 12
+newline$ -- 63
+num.names$ -- 24
+pop$ -- 88
 preamble$ -- 1
-purify$ -- 69
+purify$ -- 78
 quote$ -- 0
-skip$ -- 127
+skip$ -- 172
 stack$ -- 0
-substring$ -- 257
-swap$ -- 53
-text.length$ -- 5
+substring$ -- 346
+swap$ -- 77
+text.length$ -- 7
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 40
+type$ -- 48
 warning$ -- 3
-while$ -- 38
-width$ -- 12
-write$ -- 108
+while$ -- 47
+width$ -- 14
+write$ -- 130
 (There were 3 warnings)

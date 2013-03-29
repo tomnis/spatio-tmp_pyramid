@@ -1,13 +1,15 @@
 \backcite {Ramanan12}{{1}{(document)}{Doc-Start}}
 \backcite {Ramanan12}{{1}{1}{section.1}}
-\backcite {Sellen07}{{1}{1.1}{subsection.1.1}}
-\backcite {Kopp97, Catz97, Itzkovich07}{{1}{1.1}{subsection.1.1}}
-\backcite {Laptev08}{{1}{1.2}{subsection.1.2}}
-\backcite {Marszalek09}{{1}{1.2}{subsection.1.2}}
-\backcite {Fathi12}{{2}{1.2}{subsection.1.2}}
-\backcite {Ramanan12}{{2}{1.2}{subsection.1.2}}
-\backcite {Ramanan12}{{2}{1.2}{subsection.1.2}}
-\backcite {Jiang12}{{2}{1.2}{figure.1}}
+\backcite {Sellen07}{{1}{1}{section.1}}
+\backcite {Kopp97, Catz97, Itzkovich07}{{1}{1}{section.1}}
+\backcite {Laptev08}{{1}{1.1}{subsection.1.1}}
+\backcite {Marszalek09}{{1}{1.1}{subsection.1.1}}
+\backcite {Fathi12}{{2}{1.1}{subsection.1.1}}
+\backcite {Ramanan12}{{2}{1.1}{subsection.1.1}}
+\backcite {Ramanan12}{{2}{1.1}{subsection.1.1}}
+\backcite {Jiang12}{{2}{1.1}{figure.1}}
+\backcite {Lee12}{{2}{1.1}{figure.1}}
 \backcite {Jiang12}{{2}{2}{section.2}}
 \backcite {Zhu06}{{2}{2}{section.2}}
+\backcite {Chang11}{{2}{2}{section.2}}
 \backcite {Ramanan12}{{3}{3}{section.3}}

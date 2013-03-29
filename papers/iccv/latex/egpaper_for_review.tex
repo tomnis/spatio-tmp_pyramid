@@ -49,20 +49,26 @@ University of Texas at Austin\\
 \begin{abstract}
 	Egocentric video and wearable computing have become increasingly
 	prevalent in the past decade, resulting in a huge explosion in the amount
-	of video content. In this paper, we develop a novel approach for
+	of video content. In this paper, we present a novel approach for
 	activity recognition using the UC Irvine ADL (Activities of Daily Living)
 	dataset \cite{Ramanan12}. The ADL dataset consists of hundreds of egocentric video clips
-	for dozens of people performing various everyday activities in their own
+	captured by dozens of people while performing various everyday activities in their own
 	homes, often related to hygeine or food preparation. Frames in the dataset
-	are annotated with bounding boxes for detected objects and hand positions, 
-	activity labels, and each object is marked as active or passive depending
+	are annotated with activity labels and bounding boxes for detected objects and hand positions, 
+	Additionally, each object is tagged as active or passive depending
 	on whether it is being interacted with. We partition video clips into
-	3-dimensional cuboids, based on many different multi-level partitioning
+	3-dimensional cuboids, based on many different multi-level randomized partitioning
 	schemes,then concatenate object histograms
 	over multiple levels to form feature vectors which we use to train a pool
-	of weak SVM classifiers. Finally, we use a boosting algorithm to form a
-	final strong classifier with performance similar to the current state of
-	the art.
+	of weak SVM classifiers. 
+	Finally, we use a boosting algorithm to learn the most discriminative
+	partitions and form a
+	final strong classifier with accuracy outperforming that of the current state of
+	the art. Our main novel contribution is a method for
+	creating biased partition schemes based on observed distributions of
+	active object locations across each dimension of the dataset.
+	Strong classifiers trained using pools of biased partitions tend to outperform 
+	those which are trained using unbiased partitions.
 \end{abstract}
 
 %%%%%%%%% BODY TEXT
@@ -81,16 +87,18 @@ University of Texas at Austin\\
 	consisted of actors performing scripted activities in a static and at
 	times artificial environment, yet in order to develop robust and effective
 	methods, we need datasets that are more organic in the sense that they
-	depict unscripted activities in a natural environment such as the home of
-	a subject \cite{Ramanan12}. 
+	depict unscripted activities in a natural environment such as a home or
+	apartment.
+	\cite{Ramanan12}. 
 	% similarity of problems, occlusion, clutter
 	However, activity recognition and object recognition do share some
 	similar properties. For instance, occlusion and background clutter are
 	problems that arise in both problems.
 
-\subsection{Applications}
 	% application to life logging
-	A recent trend in wearable computing is so-called life logging which can
+	A robust and accurate method for egocentric activity recognition would have 
+	many practical applications. For instance,
+	a recent trend in wearable computing is so-called life logging which can
 	assist patients suffering from memory loss \cite{Sellen07}. However, with
 	such large amounts of video, it becomes necessary to have a system for
 	efficiently browsing video. A robust egocentric activity recognition
@@ -141,6 +149,9 @@ University of Texas at Austin\\
 	roughly 10 hours of video in total, collected from 20 people performing
 	18 types of unscripted actions in their own homes. There are 26 different 
 	types of detected objects, including 5 active and 21 passive objects. 
+  Ramanan compares the well known bag-of-words approach with a strict hard coded
+  2-level temporal pyramid. The temporal pyramid is simple and outperforms a 
+  classifier trained on bag-of-words histograms.
 	The crucial contribution of
 	\cite{Ramanan12} is that egocentric activity recognition is ``all about
 	the objects'', particularly the objects being iteracted with, as
@@ -161,6 +172,11 @@ University of Texas at Austin\\
 	similar boosting approach with randomized spatial pyramids for 2D images, 
 	leading to increased robustness to intra-class variation. The proposed
 	method is benchmarked on three public datasets.
+	
+	The video collected for the ADL dataset is available in a temporally
+	presegmented format; the shots have been segmented into clips depicting
+	activities. The work presented in \cite{Lee12} includes a method for
+	temporally segmenting egocentric video into events.
 
 	% yong jae segmentation
 	% work from other researchers on segmentation
@@ -169,7 +185,26 @@ University of Texas at Austin\\
 
 \section{Approach}
 	Our algorithm was inspired by the work of \cite{Jiang12}. We use a
-	version of the SAMME Ada-boost algorithm \cite{Zhu06}, as follows:
+	version of the SAMME Ada-boost algorithm \cite{Zhu06} to learn the most
+	discriminative candidate partitions.
+
+
+	% TODO english description of algorithm
+	Our boosting algorithm takes as input a collection of labeled training videos
+	and a pool of candidate partition patterns. We train a separate weak SVM 
+  (using LIBSVM \cite{Chang11})
+	classifier on the feature vectors resulting from representing the training
+	data using each candidate partition pattern. We set a weight for each
+	training point $p_i$ that is inversely proportional to the number of points
+	with the same class as $p_i$. During each round of boosting we select the
+	candidate partition $\theta_j$ that is most discriminative (has minimum training
+	error), compute a weight for $\theta_j$, and compute accuracy for the
+	current version of the final strong classifier. 
+	We set the number of boosting rounds to 30, noting that additional boosting
+	rounds only give a marginal boost to performance. Additionally, with a
+	larger number of boosting rounds, overfitting becomes a possibility.\\
+
+	
 
 	\textbf{Algorithm 1} Training RSTP Classifier via Boosting \\
 	\textbf{INPUT:} 
@@ -218,10 +253,11 @@ University of Texas at Austin\\
 			\end{enumerate}
 	\end{itemize}
 	
-	The original version of the SAMME algorithm has each $f_\theta$ trained on
+	The original version of the SAMME algorithm has each weak classifier
+	$f_\theta$ trained on
 	a randomly selected subset of the training dataset, but we train each of
 	our weak classifiers on the full training dataset in order to reduce the
-	number of randomized portions of our method, making it somewhat easier to
+	number of randomized portions of our method, making it easier to
 	reason about.
 
 \subsection{Partitions}
@@ -244,7 +280,7 @@ University of Texas at Austin\\
 			  \includegraphics[width=1.0\linewidth]{/u/tomas/thesis/figures/active_obj_distr_y.png}
 			  \includegraphics[width=1.0\linewidth]{/u/tomas/thesis/figures/active_obj_distr_z.png}
 		\end{center}
-		   \caption{Counts of active objects across all 3 dimensions}
+		   \caption{Histograms of counts of active objects across all 3 dimensions}
 				\label{fig:long}
 				\label{fig:onecol}
 	\end{figure}
@@ -301,8 +337,10 @@ University of Texas at Austin\\
 	pyramids, and 4-level pyramids are often preferred to 3-level pyramids. 
 	
 \section{Conclusion and Future Work}
-	We have presented a novel application of the well-known boosting framework
-	with results comparable to the current state of the art. 
+	We have presented an application of the well-known boosting framework
+	with results outperforming the current state of the art. 
+	Our main novel contribution is a method for generating biased partition
+	schemes.
 	Future work could incorporate different types of biases when generating
 	partitions. The ADL dataset also includes annotations for hand positions,
 	which we have incorporated implicitly through our generation of partitions

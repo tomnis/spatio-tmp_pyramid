@@ -6,6 +6,11 @@ A.~Catz, M.~Itzkovich, E.~Agranov, H.~Ring, A.~Tamir, et~al.
   patients with spinal cord lesions.
 \newblock {\em Spinal Cord}, 35(12):850, 1997.
 
+\bibitem{Chang11}
+C.-C. Chang and C.-J. Lin.
+\newblock Libsvm: A library for support vector machines.
+\newblock {\em ACM Trans. Intell. Syst. Technol.}, pages 27:1--27:27, 2011.
+
 \bibitem{Fathi12}
 A.~Fathi, Y.~Li, and J.~M. Rehg.
 \newblock Learning to recognize daily actions using gaze.
@@ -38,6 +43,13 @@ B.~Kopp, A.~Kunkel, H.~Flor, T.~Platz, U.~Rose, K.-H. Mauritz, K.~Gresser,
 I.~Laptev, M.~Marszalek, C.~Schmid, and B.~Rozenfeld.
 \newblock Learning realistic human actions from movies.
 \newblock {\em Computer Vision and Pattern Recognition, 2008.}, pages 1--8.
+
+\bibitem{Lee12}
+Y.~J. Lee, J.~Ghosh, and K.~Grauman.
+\newblock Discovering important people and objects for egocentric video
+  summarization.
+\newblock {\em Computer Vision and Pattern Recognition (CVPR), 2012 IEEE
+  Conference on}, pages 1346--1353, 2012.
 
 \bibitem{Marszalek09}
 M.~Marszalek, I.~Laptev, and C.~Schmid.
