@@ -5,7 +5,6 @@ classdef DataSet
 		person % person filming each clip
 		fr_start % start frames of each clip
 		fr_end % end frames of each clip
-		label % action labels of each clip
 		
 		frs % cell; frames in each clip
 		best_s_active % cell; best scoring active objects in each clip
@@ -18,7 +17,11 @@ classdef DataSet
 		num_clips
 		valid_labels
 	end
-
+  
+  
+  properties (GetAccess='public', SetAccess='public')
+		label % action labels of each clip
+  end
 
 
 	methods (Access='private')
@@ -134,7 +137,6 @@ classdef DataSet
 
 			self = set_features(self);
 		end
-
 
 
 
