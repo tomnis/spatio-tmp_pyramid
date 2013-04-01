@@ -7,6 +7,8 @@ for i = 1:length(files)
 	load([directory, '/', files(i).name]);
 	combined.accuracies(i) = accuracy;
 	combined.confns(i, :, :) = confn;
-	combined.fs{i} = f;
+  if i == length(files)
+  	combined.fs = f;
+  end
 end
 mean_acc = mean(combined.accuracies)
