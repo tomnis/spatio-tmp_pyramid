@@ -1,16 +1,18 @@
-function [labels] = strong_classify_all(classifier, partitioned_feats, valid_labels)
+function [labels] = strong_classify_all(classifier, partitioned_feats, valid_labels, num_test)
 	labels = [];
-	num_test = 0;
+  
+  if ~exist('num_test')
+    num_test = 0;
 
-	% figure out how many test examples there are
-	% some of partitioned_feats may be empty
-	for i = 1:length(partitioned_feats)
-		num_test = size(partitioned_feats{i}, 2);
-		if num_test
-			break
-		end
-	end
-
+    % figure out how many test examples there are
+    % some of partitioned_feats may be empty
+    for i = 1:length(partitioned_feats)
+      num_test = size(partitioned_feats{i}, 2);
+      if num_test
+        break
+      end
+    end
+  end
 	assert(num_test > 0)
 
 	% precompute classifications using all classifiers
@@ -32,14 +34,17 @@ function [labels] = strong_classify_all(classifier, partitioned_feats, valid_lab
 		for c=1:length(valid_labels)
 			cur_test_label = valid_labels(c);
 
+      allpreds(i, :) == cur_test_label;
+      classifier.alpha;
 			cur_score = dot(classifier.alpha, (allpreds(i,:) == cur_test_label));
 
 			if cur_score > cur_max_score
 				cur_max_label = cur_test_label;
 				cur_max_score = cur_score;
 			end
-			
 		end
 		labels(i) = cur_max_label;
-		assert(labels(i) > 0);
+    % below commented out on 3/21 5pm. we are dealing with +/- 1 labels
+    % now for the 1 vs all version
+		% assert(labels(i) > 0);
 	end
