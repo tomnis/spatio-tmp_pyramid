@@ -27,7 +27,7 @@
 %%%%%%%%% TITLE
 \title{Randomized Spatio-Temporal Pyramids for Egocentric Activity Recognition}
 
-\author{Tomas McCandless, Kristen Grauman\\
+\author{Tomas McCandless and Kristen Grauman\\
 University of Texas at Austin\\
 {\tt\small \{tomas, grauman\}@cs.utexas.edu}
 % For a paper whose authors are all at the same institution,
@@ -51,12 +51,7 @@ University of Texas at Austin\\
 	prevalent in the past decade, resulting in a huge explosion in the amount
 	of video content. In this paper, we present a novel approach for
 	activity recognition using the UC Irvine ADL (Activities of Daily Living)
-	dataset \cite{Ramanan12}. The ADL dataset consists of hundreds of egocentric video clips
-	captured by dozens of people while performing various everyday activities in their own
-	homes, often related to hygeine or food preparation. Frames in the dataset
-	are annotated with activity labels and bounding boxes for detected objects and hand positions, 
-	Additionally, each object is tagged as active or passive depending
-	on whether it is being interacted with. We partition video clips into
+	dataset \cite{Ramanan12}.  We partition video clips into
 	3-dimensional cuboids, based on many different multi-level randomized partitioning
 	schemes,then concatenate object histograms
 	over multiple levels to form feature vectors which we use to train a pool
@@ -67,8 +62,10 @@ University of Texas at Austin\\
 	the art. Our main novel contribution is a method for
 	creating biased partition schemes based on observed distributions of
 	active object locations across each dimension of the dataset.
-	Strong classifiers trained using pools of biased partitions tend to outperform 
-	those which are trained using unbiased partitions.
+  We found that partitions which cut through spatio-temporal regions that
+  tend to contain active objects are often more discriminative than
+  unbiased partitions and 
+  partitions that cut around such active object regions.
 \end{abstract}
 
 %%%%%%%%% BODY TEXT
@@ -118,7 +115,28 @@ University of Texas at Austin\\
 	would also eliminate the need for patients to commute to a hospital to have
 	evaluations done, thus reducing cognitive and physical burden on patients.
 	
-	% TODO application to law enforcement
+	% TODO application to law enforcement?
+
+  Previous work in activity recognition has employed a single strict
+  hand-coded partition scheme \cite{Ramanan12}, which may not be particularly robust to
+  inter and intra-class variation. The work of \cite{Laptev08} uses multiple
+  candidate spatio-temporal grids for the task of activity recognition (but
+  not in an egocentric setting), however each grid is hand-coded and only 24
+  candidate grids are considered. The work presented in \cite{Kovashka10}
+  describes an effective method for learning the shapes of spatio-temporal
+  regions on a per-class basis, but is not applied in an egocentric setting.
+
+  Spatial pooling of features in a learned way has been thoroughly
+  explored \cite{Sharma11}, but to our knowledge there has been little work
+  on learning the best way to pool spatio-temporal features.
+  
+  Our method, however, builds on existing work by creating a larger number
+  of candidate partitioning schemes in a randomized way. Our main novel contribution is
+  the ability to bias this randomization step so that partitions in the
+  resulting pool have a high probability of cutting through or around
+  spatio-temporal regions which tend to contain active objects.
+  We then pool spatio-temporal features in a
+  learned way, selecting partitioning schemes that are most discriminative.
 
 %-------------------------------------------------------------------------
 \subsection{Related Work}
@@ -126,7 +144,8 @@ University of Texas at Austin\\
 
 	In \cite{Laptev08}, Laptev \etal investigate aligning movie scripts with
 	video for the purpose of annotating human actions, and achieve 91.8\%
-	accuracy on the KTH dataset.
+	accuracy on the KTH dataset. The method presented in this paper uses a
+  relatively small number of hard-coded schemes for spatio-temporal binning.
 	
 	In \cite{Marszalek09}, Marszalek \etal released a novel dataset based on
 	Hollywood movies that contains twelve types of activities and ten
@@ -145,12 +164,24 @@ University of Texas at Austin\\
 	
 	The main work related to our own is that carried out in \cite{Ramanan12}. 
 	In this work the ADL dataset is introduced as well as detailed analysis of
-	performance of several different classifiers. The ADL dataset consists of
-	roughly 10 hours of video in total, collected from 20 people performing
-	18 types of unscripted actions in their own homes. There are 26 different 
+	performance of several different classifiers. 
+
+  
+  The ADL dataset consists of hundreds of egocentric video clips
+	(roughly 10 hours of video in total) collected from 20 people performing
+	18 types of unscripted actions in their own homes. These unscripted
+  actions are often related to hygeine or food preparation and are more
+  varied than actions presented in previous datasets such as that presented
+  in \cite{Fathi11}.
+  There are 26 different 
 	types of detected objects, including 5 active and 21 passive objects. 
-  Ramanan compares the well known bag-of-words approach with a strict hard coded
-  2-level temporal pyramid. The temporal pyramid is simple and outperforms a 
+	Each frame in the dataset
+	is annotated with activity labels and bounding boxes for detected objects and hand positions, 
+	Additionally, each object is tagged as active or passive depending
+	on whether it is being interacted with.
+  A comparison of the well known bag-of-words approach with a strict hard-coded
+  2-level temporal pyramid is presented. The temporal pyramid makes no cuts along the
+  spatial dimensions, but is easy to implement, simple, and outperforms a 
   classifier trained on bag-of-words histograms.
 	The crucial contribution of
 	\cite{Ramanan12} is that egocentric activity recognition is ``all about
@@ -169,9 +200,11 @@ University of Texas at Austin\\
 	\end{figure}
 	
 	Our algorithm is inspired by the work of \cite{Jiang12}, which uses a
-	similar boosting approach with randomized spatial pyramids for 2D images, 
-	leading to increased robustness to intra-class variation. The proposed
-	method is benchmarked on three public datasets.
+  a version of the SAMME Ada-boost algorithm \cite{Zhu06}
+  with randomized spatial pyramids for 2D images, 
+	leading to increased robustness to intra-class variation. However, the
+  randomized pyramids are not biased in any way. The method
+  introduced by \cite{Jiang12} is benchmarked on three public datasets.
 	
 	The video collected for the ADL dataset is available in a temporally
 	presegmented format; the shots have been segmented into clips depicting
@@ -184,10 +217,6 @@ University of Texas at Austin\\
 	% sensor data
 
 \section{Approach}
-	Our algorithm was inspired by the work of \cite{Jiang12}. We use a
-	version of the SAMME Ada-boost algorithm \cite{Zhu06} to learn the most
-	discriminative candidate partitions.
-
 
 	% TODO english description of algorithm
 	Our boosting algorithm takes as input a collection of labeled training videos
@@ -261,12 +290,11 @@ University of Texas at Austin\\
 	reason about.
 
 \subsection{Partitions}
-	We develop two different representations of partition schemes: the first
-	is simply a list of 4-tuples representing planar equations in video space.
-	Each plane is independently rotated according to a parameterized
-	probability.
-	The second is an implementation of a kd-tree, where each level in the tree
-	represents a set of cuts along a certain dimension.
+	We use k-d trees to represent partition schemes, where each level in the tree
+	represents a set of cuts along a certain dimension, and we generate cuts
+  in a round robin manner over dimensions $(x, y, t)$ across levels in the
+  tree.
+  Cuts for child nodes are generated independently. 
 	Initially, all randomized partitions were computed according to a uniform
 	distribution. However, in an attempt to avoid generating partition schemes
 	that are not sufficiently discriminative, we bias the partition generation
@@ -294,7 +322,21 @@ University of Texas at Austin\\
 	contain active objects (denoted as bias type 2), or we can choose to prefer 
 	cutting through regions that tend to contain active objects (denoted as bias type 3). 
 	We denote by bias type 1 the method of using completely uniform
-	distributions to generate partitions.
+	distributions to generate partitions. For biased partitions, we generate
+  the first cut along each dimension according to a weighted distribution
+  corresponding to the observed active object regions in the training data,
+  and we generate all subsequent child cuts using a uniform distribution.
+  
+
+  \begin{figure}[t]
+    \begin{center}
+		 \includegraphics[width=1.0\linewidth]{/u/tomas/thesis/figures/lvl3.png}
+    \end{center}
+		   \caption{An example partitioning scheme corresponding to a 3-level
+       pyramid}
+			\label{fig:long}
+			\label{fig:onecol}
+  \end{figure}
 	
 \section{Results}
 \textit{Mostly TODO at this point, but I want to discuss the following:}
@@ -329,7 +371,7 @@ University of Texas at Austin\\
 	\end{table}
 	
 	The results shown in Table 1 are computed using a form of cross
-	validation (use the video clips from person $i$ as a validation set, and
+	validation (use the video clips from person $i$ as a held out validation set, and
 	train on the video clips from the remaining people).
 	
 	We create a heterogenous pool containing partitions of differing number of
@@ -349,11 +391,12 @@ University of Texas at Austin\\
 	positions to obtain better classification results.
 	Additionally, it may be worthwhile to investigate the performance of other
 	variants of the boosting algorithm.
-	The partitions we focus on are ``linear'' in the sense that each cut is a
-	linear equation of 3 variables, but it is also possible to carve up the
+	The partitions we focus on contain cuts that are
+  planar and axis-aligned, but it is also possible to carve up the
 	video volume in non-linear ways. Such a method would involve more
 	sophisticated computational geometry, but may yield a more discriminative
 	partitioning scheme that could lead to better classification accuracy.
+  
 
 {\small
 \bibliographystyle{ieee}

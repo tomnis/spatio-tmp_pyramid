@@ -17,6 +17,12 @@ A.~Fathi, Y.~Li, and J.~M. Rehg.
 \newblock {\em Proceedings of the 12th European conference on Computer Vision -
   Volume Part II}, 2012.
 
+\bibitem{Fathi11}
+A.~Fathi, X.~Ren, and J.~Rehg.
+\newblock Learning to recognize objects in egocentric activities.
+\newblock {\em Computer Vision and Pattern Recognition (CVPR), 2011 IEEE
+  Conference on}, pages 3281--3288, 2011.
+
 \bibitem{Itzkovich07}
 M.~Itzkovich, I.~Gelernter, F.~Biering-Sorensen, C.~Weeks, M.~Laramee,
   B.~Craven, M.~Tonack, S.~Hitzig, E.~Glaser, G.~Zeilig, et~al.
@@ -38,6 +44,12 @@ B.~Kopp, A.~Kunkel, H.~Flor, T.~Platz, U.~Rose, K.-H. Mauritz, K.~Gresser,
   living.
 \newblock {\em Archives of physical medicine and rehabilitation}, 78(6):615,
   1997.
+
+\bibitem{Kovashka10}
+A.~Kovashka and K.~Grauman.
+\newblock Learning a hierarchy of discriminative space-time neighborhood
+  features for human action recognition.
+\newblock 2010.
 
 \bibitem{Laptev08}
 I.~Laptev, M.~Marszalek, C.~Schmid, and B.~Rozenfeld.
@@ -69,6 +81,12 @@ A.~J. Sellen, A.~Fogg, M.~Aitken, S.~Hodges, C.~Rother, and K.~Wood.
   experimental study using sensecam.
 \newblock {\em Proceedings of the SIGCHI Conference on Human Factors in
   Computing Systems}, pages 81--90, 2007.
+
+\bibitem{Sharma11}
+G.~Sharma and F.~Jurie.
+\newblock {Learning discriminative spatial representation for image
+  classification}.
+\newblock {\em {British Machine Vision Conference (BMVC)}}, 2011.
 
 \bibitem{Zhu06}
 J.~Zhu, S.~Rosset, H.~Zou, and T.~Hastie.

@@ -2,48 +2,49 @@ This is BibTeX, Version 0.99c (Web2C 7.5.7)
 The top-level auxiliary file: egpaper_for_review.aux
 The style file: ieee.bst
 Database file #1: egbib.bib
+Warning--empty journal in Kovashka10
 Warning--empty year in Laptev08
 Warning--empty year in Marszalek09
 Warning--empty year in Ramanan12
-You've used 12 entries,
+You've used 15 entries,
             2120 wiz_defined-function locations,
-            581 strings with 6235 characters,
-and the built_in function-call counts, 5481 in all, are:
-= -- 531
-> -- 321
-< -- 7
-+ -- 128
-- -- 114
-* -- 413
-:= -- 887
-add.period$ -- 36
-call.type$ -- 12
-change.case$ -- 90
+            598 strings with 6830 characters,
+and the built_in function-call counts, 6443 in all, are:
+= -- 627
+> -- 365
+< -- 8
++ -- 145
+- -- 128
+* -- 466
+:= -- 1045
+add.period$ -- 45
+call.type$ -- 15
+change.case$ -- 106
 chr.to.int$ -- 0
-cite$ -- 15
-duplicate$ -- 196
-empty$ -- 345
-format.name$ -- 114
-if$ -- 1150
+cite$ -- 19
+duplicate$ -- 238
+empty$ -- 414
+format.name$ -- 128
+if$ -- 1357
 int.to.chr$ -- 0
-int.to.str$ -- 12
-missing$ -- 12
-newline$ -- 63
-num.names$ -- 24
-pop$ -- 88
+int.to.str$ -- 15
+missing$ -- 15
+newline$ -- 78
+num.names$ -- 30
+pop$ -- 106
 preamble$ -- 1
-purify$ -- 78
+purify$ -- 91
 quote$ -- 0
-skip$ -- 172
+skip$ -- 210
 stack$ -- 0
-substring$ -- 346
-swap$ -- 77
-text.length$ -- 7
+substring$ -- 397
+swap$ -- 90
+text.length$ -- 8
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 48
-warning$ -- 3
-while$ -- 47
-width$ -- 14
-write$ -- 130
-(There were 3 warnings)
+type$ -- 60
+warning$ -- 4
+while$ -- 55
+width$ -- 17
+write$ -- 160
+(There were 4 warnings)
