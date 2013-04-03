@@ -8,4 +8,4 @@ perm = [1,3,2];
 
 megapool = generate_mega_pool(dataset, perm);
 
-save('/u/tomas/thesis/matfiles/megapool_almost_giga_tpyramids', 'megapool')
+save('/u/tomas/thesis/matfiles/megapooleq', 'megapool')
