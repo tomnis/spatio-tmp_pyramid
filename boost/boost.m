@@ -10,8 +10,6 @@ function [f] = boost(dataset, pool, target_accuracy, dim, kernel_type, omit_base
   labels = unique(dataset.label);
   n_label = length(labels);
 
-	
-
   % for each partition pattern
   for prt_num = 1:length(pool)
 		fprintf(1, '\rpattern %d of %d...', prt_num, length(pool));
@@ -37,7 +35,8 @@ function [f] = boost(dataset, pool, target_accuracy, dim, kernel_type, omit_base
     %%% repeat samples to be balanced
     f3 = [];
     for j = 1:n_label
-      f1 = find(y_train == j);
+      l = labels(j);
+      f1 = find(y_train == l);
       f1_n = length(f1);
       if f1_n == 0
         continue
@@ -50,14 +49,17 @@ function [f] = boost(dataset, pool, target_accuracy, dim, kernel_type, omit_base
   	% select the training examples to use
     x_train1 = x_train(:, f3);
     y_train1 = y_train(:, f3);
- 
+    
+    size(y_train1)
+    size(x_train1)
+
 		if isequal(kernel_type, 'poly')
- 			fprintf(1, ' training... (polynomial kernel,  ex:%d) ', length(sampleinds));
+ 			fprintf(1, ' training... (polynomial kernel,  ex:%d) ', length(y_train1));
  		  svm = svmtrain(y_train1', x_train1', '-c 1 -t 0 -q');
 		else 
 			fprintf(1, ' precomputing %s kernel...', kernel_type);
 			K = compute_kernel(x_train1', x_train1', kernel_type);
- 			fprintf(1, ' training... (ex:%d)', length(sampleinds));
+ 			fprintf(1, ' training... (ex:%d)', length(y_train1));
 			trains{prt_num} = x_train1;
 			svm = svmtrain(y_train1', K, '-q -t 4');
 		end
