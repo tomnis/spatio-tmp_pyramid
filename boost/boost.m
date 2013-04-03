@@ -49,9 +49,6 @@ function [f] = boost(dataset, pool, target_accuracy, dim, kernel_type, omit_base
   	% select the training examples to use
     x_train1 = x_train(:, f3);
     y_train1 = y_train(:, f3);
-    
-    size(y_train1)
-    size(x_train1)
 
 		if isequal(kernel_type, 'poly')
  			fprintf(1, ' training... (polynomial kernel,  ex:%d) ', length(y_train1));
