@@ -24,6 +24,9 @@ left_out = person_ids(left_out_ind);
 	testdata = dataset.sub(f1);
   y_test = testdata.label;
 
+
+  % 4/3 we don't need this, sample repetition is also done in boost
+  %{
   %%% repeat samples to be balanced
   f3 = [];
   for i = 1:n_label
@@ -37,6 +40,7 @@ left_out = person_ids(left_out_ind);
     f3 = [f3 f2(1:100)];
   end
 	traindata = traindata.sub(f3);
+  %}
 
 	% train...
 	f = boost(traindata, pool, .8, dim, 'poly');
