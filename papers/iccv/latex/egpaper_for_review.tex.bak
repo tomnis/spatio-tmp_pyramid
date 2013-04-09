@@ -164,7 +164,7 @@ University of Texas at Austin\\
 	with any correlations they may have with human activity.
 	
 	In \cite{Fathi12}, Fathi \etal focus on the relationship between gaze and
-	activity recognition in an egocentric setting and develop methods to
+	activity recognition in an egocentric settting and develop methods to
 	predict activity given gaze, gaze given activity, and to predict both
 	activity and gaze. The activities in this
 	published dataset are primarily related to food preparation. 
@@ -177,7 +177,7 @@ University of Texas at Austin\\
   The ADL dataset consists of hundreds of egocentric video clips
 	(roughly 10 hours of video in total) collected from 20 people performing
 	18 types of unscripted actions in their own homes. These unscripted
-  actions are often related to hygiene or food preparation and are more
+  actions are often related to hygeine or food preparation and are more
   varied than actions presented in previous datasets such as that presented
   in \cite{Fathi11}.
   There are 26 different 
@@ -192,7 +192,7 @@ University of Texas at Austin\\
   classifier trained on bag-of-words histograms.
 	The crucial contribution of
 	\cite{Ramanan12} is that egocentric activity recognition is ``all about
-	the objects'', particularly the objects being interacted with, as
+	the objects'', particularly the objects being iteracted with, as
 	recognition accuracy increases dramatically when ground truth object
 	locations rather than detected locations are used to train the classifier. 
 
@@ -395,7 +395,7 @@ University of Texas at Austin\\
   a single cut along the temporal dimension) are both presented in \cite{Ramanan12}.
   
   For this experiment we used a pool consisting of 100 4-level partitioning schemes. 
-  Each partitioning scheme was of bias type 3, meaning the cuts for level 1
+  Each paritioning scheme was of bias type 3, meaning the cuts for level 1
   were biased such that they had a tendency to cut through regions containing
   active objects, and the cuts for levels 2 and 3 were drawn from a uniform
   distribution. The work of \cite{Jiang12}, which uses a similar
@@ -428,8 +428,8 @@ University of Texas at Austin\\
   % which partitions got selected
   
   To support our claim that 4-level biased pyramids tend to be most
-  discriminative, we created a heterogeneous pool containing partitions of
-  different types. Specifically, the heterogeneous pool contains 30 2-level
+  discriminative, we created a heterogenous pool containing partitions of
+  different types. Specifically, the heterogenous pool contains 30 2-level
   partitions of each bias type, 30 3-level partitions of each bias type, and
   30 4-level partitions of each bias type, for a total of 270 partitions.
   We generated 20 random 50/50 train/test splits, fixed the number of
@@ -443,7 +443,7 @@ University of Texas at Austin\\
   time. 2-level and 4-level unbiased pyramids were never selected. Thus,
   biased partition schemes that cut through regions that tend to contain
   active objects are clearly more discriminative than other types of
-  partition schemes, especially those which are unbiased.
+  paritition schemes, especially those which are unbiased.
 	
 \section{Conclusion and Future Work}
 	We have presented an application of the well-known boosting framework
