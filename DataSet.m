@@ -57,7 +57,10 @@ classdef DataSet
 				elseif isequal(object_type, 'passive')
 			    self.best_s{k} = [self.best_s_passive{k}]; 
 					self.locs{k} = [locs_passive{i}(:, f1, :)];
-			  end
+			  elseif isequal(object_type, 'active')
+			    self.best_s{k} = [self.best_s_active{k}]; 
+					self.locs{k} = [locs_active{i}(:, f1, :)];
+        end
 			end
 
 			% sanity check, should have locations for each score
@@ -108,7 +111,7 @@ classdef DataSet
 	methods 
 		% constructor
 		% (data, frs, best_scores, locations, object_type)
-		function self=DataSet(data, frs, best_scores, locations, object_type)
+		function self=DataSet(data, frs, best_scores, locations, object_type, gatech)
 			% TODO add some error checking here
 			self.person = data.person;
 			self.fr_start = data.fr_start;
@@ -125,15 +128,19 @@ classdef DataSet
 
 			% compute the scores
 			self = set_scores(self, frs, best_scores, locations, object_type);
-			% remap the label set
-			self.valid_labels = [1 2 3 4 5 6 9 10 12 13 14 15 17 20 22 23 24 27];
-			f1 = find(ismember(self.label, self.valid_labels));
-			self = sub(self, f1, 2);
-			labels = unique(self.label);
-			n_label = length(labels);
-			%% mapping the action labels to a new label set.
-			map1(labels+1) = [1:n_label]; 
-			self.label = map1(self.label+1);
+      if exist('gatech') && gatech
+        self.valid_labels = [1:7]
+      else
+        % remap the label set
+        self.valid_labels = [1 2 3 4 5 6 9 10 12 13 14 15 17 20 22 23 24 27];
+        f1 = find(ismember(self.label, self.valid_labels));
+        self = sub(self, f1, 2);
+        labels = unique(self.label);
+        n_label = length(labels);
+        %% mapping the action labels to a new label set.
+        map1(labels+1) = [1:n_label]; 
+        self.label = map1(self.label+1);
+      end
 
 			self = set_features(self);
 		end
