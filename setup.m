@@ -18,7 +18,7 @@ addpath /u/tomas/thesis/vis
 path0 = '/scratch/vision/luzheng/data/video_summarization/adl/';  %% root directory
 
 %person_ids = [1:6];  %% persons used in action recognition
-person_ids = [7:20];  %% persons used in action recognition
+%person_ids = [7:20];  %% persons used in action recognition
 %person_ids = [7:7];  %% persons used in action recognition
 
 path1 = [path0 'ADL_annotations/action_annotation/'];     %% action annottaion
