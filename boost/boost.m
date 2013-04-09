@@ -121,6 +121,11 @@ function [f] = boost(dataset, pool, target_accuracy, dim, kernel_type, omit_base
   		end
   	end
   
+    % we can have cases where the min_err is 0, 
+    % that makes log undefined and can lead to complex weights
+    if min_err == 0
+      min_err = eps;
+    end
   	% compute the weight for the pattern with min error
   	f.alpha(j) = log((1 - min_err) / min_err) + log(c - 1);
   	% remember which svm gave the min error in the jth iteration
