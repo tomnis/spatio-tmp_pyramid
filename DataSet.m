@@ -16,6 +16,7 @@ classdef DataSet
 
 		num_clips
 		valid_labels
+    adl % bool for gatech or adl
 	end
   
   
@@ -57,6 +58,7 @@ classdef DataSet
 				elseif isequal(object_type, 'passive')
 			    self.best_s{k} = [self.best_s_passive{k}]; 
 					self.locs{k} = [locs_passive{i}(:, f1, :)];
+        %% active objects only
 			  elseif isequal(object_type, 'active')
 			    self.best_s{k} = [self.best_s_active{k}]; 
 					self.locs{k} = [locs_active{i}(:, f1, :)];
@@ -111,7 +113,7 @@ classdef DataSet
 	methods 
 		% constructor
 		% (data, frs, best_scores, locations, object_type)
-		function self=DataSet(data, frs, best_scores, locations, object_type, gatech)
+		function self=DataSet(data, frs, best_scores, locations, object_type)
 			% TODO add some error checking here
 			self.person = data.person;
 			self.fr_start = data.fr_start;
@@ -128,8 +130,10 @@ classdef DataSet
 
 			% compute the scores
 			self = set_scores(self, frs, best_scores, locations, object_type);
-      if exist('gatech') && gatech
+      % hacky...
+      if length(unique(self.label)) == 7
         self.valid_labels = [1:7]
+        self.adl = 0;
       else
         % remap the label set
         self.valid_labels = [1 2 3 4 5 6 9 10 12 13 14 15 17 20 22 23 24 27];
@@ -140,6 +144,7 @@ classdef DataSet
         %% mapping the action labels to a new label set.
         map1(labels+1) = [1:n_label]; 
         self.label = map1(self.label+1);
+        self.adl = 1;
       end
 
 			self = set_features(self);
@@ -178,7 +183,9 @@ classdef DataSet
 					hists(:, k) = compute_hist(self.features{k}, cut_eqs, dim);
 				end
 			end
-			hists = self.normalize_and_clip(hists);
+      if self.adl
+        hists = self.normalize_and_clip(hists);
+      end
 		end
 
 
@@ -202,7 +209,9 @@ classdef DataSet
         end
         
 			end
-			hists = self.normalize_and_clip(hists);
+      if self.adl
+        hists = self.normalize_and_clip(hists);
+      end
 		end
 
 
