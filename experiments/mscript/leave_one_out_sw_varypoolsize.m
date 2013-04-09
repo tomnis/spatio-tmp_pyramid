@@ -26,4 +26,4 @@ function [] = leave_one_out_sw_varypoolsize(savedir, pool, left_out_ind)
     confns{i} = confn;
   end
   % we dont care about f in this case
-	save([savedir, 'trial', num2str(left_out_ind)], 'accuracy', 'confn');
+	save([savedir, 'trial', num2str(left_out_ind)], 'accuracies', 'confns');
