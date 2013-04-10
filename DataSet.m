@@ -16,7 +16,7 @@ classdef DataSet
 
 		num_clips
 		valid_labels
-    adl % bool for gatech or adl
+    should_clip % bool for gatech or should_clip
 	end
   
   
@@ -133,7 +133,7 @@ classdef DataSet
       % hacky...
       if length(unique(self.label)) == 7
         self.valid_labels = [1:7]
-        self.adl = 0;
+        self.should_clip = 0;
       else
         % remap the label set
         self.valid_labels = [1 2 3 4 5 6 9 10 12 13 14 15 17 20 22 23 24 27];
@@ -144,7 +144,14 @@ classdef DataSet
         %% mapping the action labels to a new label set.
         map1(labels+1) = [1:n_label]; 
         self.label = map1(self.label+1);
-        self.adl = 1;
+        % hacky, determine that we are using detected objects from the adl dataset
+        % so we should clip and normalize
+        if length(unique(data.person)) < 20
+          self.should_clip = 1;
+        % otherwise just use the histograms
+        else
+          self.should_clip = 0;
+        end
       end
 
 			self = set_features(self);
@@ -183,7 +190,7 @@ classdef DataSet
 					hists(:, k) = compute_hist(self.features{k}, cut_eqs, dim);
 				end
 			end
-      if self.adl
+      if self.should_clip
         hists = self.normalize_and_clip(hists);
       end
 		end
@@ -209,7 +216,7 @@ classdef DataSet
         end
         
 			end
-      if self.adl
+      if self.should_clip
         hists = self.normalize_and_clip(hists);
       end
 		end
