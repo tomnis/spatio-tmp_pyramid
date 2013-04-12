@@ -2,6 +2,7 @@
 % output is strong classifier
 function [f] = boost_varyrounds(dataset, pool, target_accuracy, dim, kernel_type, num_rounds)
   spatial_cuts = dim.spatial_cuts;
+  fprintf(1, '%d boosting rounds\n', num_rounds);
 
   labels = unique(dataset.label);
   n_label = length(labels);
