@@ -7,6 +7,9 @@ for i = 1:length(files)
 	load([directory, '/', files(i).name]);
 	combined.accuracies(i) = accuracy;
 	combined.confns(i, :, :) = confn;
+  
+  %combined.allaccuracies(i,:) = accuracies;
+  %combined.allconfns{i} = confns;
   if i == length(files)
   	combined.fs = f;
   end
