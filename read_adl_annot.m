@@ -1,6 +1,6 @@
 % read the adl object annotations
 function [data, frames, best_scores, locations] = read_adl_annot()
-  person_ids = [1:20]
+  person_ids = [7:20]
   path = '~/thesis/ADL_code/ADL_annotations/';
   setup
   
@@ -68,18 +68,22 @@ function [data, frames, best_scores, locations] = read_adl_annot()
     passive_locs = zeros(length(all_passive), length(frames{person}), 4);
     
     annot = all_annot{person};
-    
     % for each annotation of this person, increment the appropriate histogram
     % and store the locations
-    for k=1:length(annot)
+    for k=1:length(annot.fr)
+      frameind = find(frames{person} == annot.fr(k));
+      if size(frameind) == [1 0]
+        fprintf(1, 'skipping frame %d of %d\n', k, length(annot.fr));
+        continue
+      end
       if annot.active(k)
         objind = strs2nums(annot.label(k), all_active);
-        active_objs(objind, annot.fr(k)) = active_objs(objind, annot.fr(k)) + 1;
-        active_locs(objind, annot.fr(k), :) = annot.bbox(k,:);
+        active_objs(objind, frameind) = active_objs(objind, frameind) + 1;
+        active_locs(objind, frameind, :) = annot.bbox(k,:);
       else
         objind = strs2nums(annot.label(k), all_passive);
-        passive_objs(objind, annot.fr(k)) = passive_objs(objind, annot.fr(k)) + 1;
-        passive_locs(objind, annot.fr(k), :) = annot.bbox(k,:);
+        passive_objs(objind, frameind) = passive_objs(objind, frameind) + 1;
+        passive_locs(objind, frameind, :) = annot.bbox(k,:);
       end
     end
 

@@ -113,7 +113,7 @@ classdef DataSet
 	methods 
 		% constructor
 		% (data, frs, best_scores, locations, object_type)
-		function self=DataSet(data, frs, best_scores, locations, object_type)
+		function self=DataSet(data, frs, best_scores, locations, object_type, should_clip)
 			% TODO add some error checking here
 			self.person = data.person;
 			self.fr_start = data.fr_start;
@@ -144,16 +144,15 @@ classdef DataSet
         %% mapping the action labels to a new label set.
         map1(labels+1) = [1:n_label]; 
         self.label = map1(self.label+1);
-        % hacky, determine that we are using detected objects from the adl dataset
-        % so we should clip and normalize
-        if length(unique(data.person)) < 20
-          self.should_clip = 1;
-        % otherwise just use the histograms
-        else
-          self.should_clip = 0;
-        end
       end
 
+      % be careful with this, need to make sure only to clip when 
+      % appropriate
+      if exist('should_clip')
+        self.should_clip = should_clip
+      else 
+        self.should_clip = 1;
+      end
 			self = set_features(self);
 		end
 
