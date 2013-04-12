@@ -5,6 +5,7 @@
 % kernel_type is 'poly', 'chisq', 'histintersect'
 function [d] = boost_main_1vall(pools, traindata, testdata, kernel_type, dim)
 	num_itrs = length(pools);
+  fprintf(1, '1vall mode enabled\n');
 
 	target_accuracy = .8;
   
@@ -123,4 +124,7 @@ function [d] = boost_main_1vall(pools, traindata, testdata, kernel_type, dim)
 	
 	d.accuracies = accuracies;
 	d.confns = confns;
-	d.fs = fs;
+  for i=1:length(fs{1}{1}{1})
+    f{i} = fs{1}{1}{1}{i}.min_pat_inds
+  end
+	d.fs = f;
