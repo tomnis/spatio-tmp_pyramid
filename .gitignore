@@ -5,5 +5,5 @@
 err*
 out*
 *.log
-results/
-condor/
+results/*
+condor/*
