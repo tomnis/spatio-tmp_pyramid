@@ -1,24 +1,31 @@
 \backcite {Ramanan12}{{1}{(document)}{Doc-Start}}
+\backcite {Schuldt04, Rodriguez08}{{1}{1}{section.1}}
+\backcite {Schuldt04}{{1}{1}{section.1}}
 \backcite {Ramanan12}{{1}{1}{section.1}}
 \backcite {Sellen07}{{1}{1}{section.1}}
 \backcite {Kopp97, Catz97, Itzkovich07}{{1}{1}{section.1}}
-\backcite {Ramanan12}{{1}{1}{section.1}}
-\backcite {Laptev08}{{1}{1}{section.1}}
-\backcite {Kovashka10}{{1}{1}{section.1}}
+\backcite {Lazebnik06}{{2}{1}{section.1}}
+\backcite {Ramanan12}{{2}{1}{section.1}}
+\backcite {Laptev08}{{2}{1}{section.1}}
+\backcite {Kovashka10}{{2}{1}{section.1}}
 \backcite {Sharma11}{{2}{1}{section.1}}
 \backcite {Laptev08}{{2}{1.1}{subsection.1.1}}
+\backcite {Laptev08}{{2}{1.1}{subsection.1.1}}
+\backcite {Bosch07, Lazebnik06}{{2}{1.1}{subsection.1.1}}
 \backcite {Marszalek09}{{2}{1.1}{subsection.1.1}}
 \backcite {Fathi12}{{2}{1.1}{subsection.1.1}}
 \backcite {Ramanan12}{{2}{1.1}{subsection.1.1}}
 \backcite {Fathi11}{{2}{1.1}{subsection.1.1}}
-\backcite {Ramanan12}{{2}{1.1}{subsection.1.1}}
-\backcite {Jiang12}{{2}{1.1}{figure.1}}
-\backcite {Zhu06}{{2}{1.1}{figure.1}}
-\backcite {Jiang12}{{2}{1.1}{figure.1}}
-\backcite {Lee12}{{2}{1.1}{figure.1}}
-\backcite {Chang11}{{2}{2}{section.2}}
-\backcite {Ramanan12}{{3}{2.1}{figure.3}}
-\backcite {Ramanan12}{{3}{3}{section.3}}
-\backcite {Ramanan12}{{3}{3}{table.1}}
-\backcite {Ramanan12}{{4}{3}{table.1}}
-\backcite {Jiang12}{{4}{3}{table.1}}
+\backcite {Ramanan12}{{3}{1.1}{table.1}}
+\backcite {Lee12}{{3}{1.1}{table.1}}
+\backcite {Jiang12}{{3}{1.1}{table.1}}
+\backcite {Zhu06}{{3}{1.1}{table.1}}
+\backcite {Chang11}{{3}{2}{section.2}}
+\backcite {Ramanan12}{{5}{2.1}{figure.3}}
+\backcite {Ramanan12}{{5}{3}{section.3}}
+\backcite {Ramanan12}{{5}{3}{table.2}}
+\backcite {Ramanan12}{{5}{3}{table.2}}
+\backcite {Ramanan12}{{5}{3}{table.2}}
+\backcite {Ramanan12}{{5}{3}{table.2}}
+\backcite {Jiang12}{{5}{3}{table.2}}
+\backcite {Jiang12}{{6}{3}{figure.4}}

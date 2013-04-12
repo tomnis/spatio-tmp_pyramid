@@ -15,7 +15,7 @@
 % run, let it finish, and you should be clear).
 \usepackage[pagebackref=true,breaklinks=true,letterpaper=true,colorlinks,bookmarks=false]{hyperref}
 
-% \iccvfinalcopy % *** Uncomment this line for the final submission
+%\iccvfinalcopy % *** Uncomment this line for the final submission
 
 \def\iccvPaperID{****} % *** Enter the ICCV Paper ID here
 \def\httilde{\mbox{\tt\raisebox{-.5ex}{\symbol{126}}}}
@@ -55,7 +55,7 @@ University of Texas at Austin\\
   Existing work in activity recognition uses predefined binning schemes,
   which may fail to capture important temporal relationships between
   features.
-  We propose to partition video clips into
+  We propose to partition video clips into sets of
 	3-dimensional cuboids based on many different multi-level randomized partitioning
 	schemes, then concatenate object histograms
 	over multiple levels to form feature vectors which we then use to train a pool
@@ -76,35 +76,36 @@ University of Texas at Austin\\
 \section{Introduction}
 	Activity recognition is becoming an increasingly canonical problem in
 	computer vision as researchers are beginning to explore the domain more
-	thoroughly and several relevant datasets have been released. The problem 
+  thoroughly and several relevant datasets have been released \cite{Schuldt04, Rodriguez08}. The problem 
 	of human activity recognition is in some ways less well defined
 	than, say, object recognition for 2D images, in part due to the relative
 	lack of datasets for activity recognition, and also because it is somewhat
 	problematic to define a canonical representation for each type of action.
 	In other words, it seems as though there can be higher intra-class
-	variation for activity recognition than for, say, object recognition. 
+	variation for activity recognition than for object recognition. 
 	% past datasets scripted activities
 	Datasets geared towards activity recognition in the past have often
 	consisted of actors performing scripted activities in a static and at
-	times artificial environment. However, in order to develop robust and effective
-	methods, we need datasets that are more organic in the sense that they
+  times artificial environment \cite{Schuldt04}. However, in order to develop robust and effective
+	recognition methods, we need datasets that are more organic in the sense that they
 	depict unscripted activities occurring in a natural environment such as a home or
 	apartment.
 	\cite{Ramanan12}. 
 	% similarity of problems, occlusion, clutter
 	However, activity recognition and object recognition do share some
-	similar properties. For instance, occlusion and background clutter are
-	problems that arise in both problems.
+	similar properties. For instance, similar learning techniques are applicable to both
+  scenarios, and occlusion and background clutter are
+	difficulties that arise in both problems.
 
 	% application to life logging
 	A robust and accurate method for egocentric activity recognition would have 
 	many useful practical applications. For instance,
 	a recent trend in wearable computing is so-called life logging which can
 	assist patients suffering from memory loss \cite{Sellen07}. However, with
-	such large amounts of video, it becomes necessary to have a system for
+	the storage of large amounts of video, it becomes necessary to have a system for
 	efficiently browsing video. A robust egocentric activity recognition
-	system could automatically tag video clips with types of activities (this
-	could be done either online or offline), thus allowing the user to, for
+	system could automatically tag video clips with types of activities,
+	thus allowing the user to, for
 	instance, quickly find all clips recorded in the past that depict making tea.
 
 	% application to senior living
@@ -115,7 +116,8 @@ University of Texas at Austin\\
 	could greatly impact the workflow for patient evaluation, as such a system
 	would allow for passive long term observation of patients in their own
 	homes. This could lead to more accurate clinical evaluations since it would be
-	possible to collect far more data about individual patients. Such a system
+	possible to collect far more data about individual patients in the form of continuous 
+  monitoring rather than infrequently benchmarked. Such a system
 	would also eliminate the need for patients to commute to a hospital to have
 	evaluations done, thus reducing cognitive and physical burden on patients.
 	
@@ -123,17 +125,24 @@ University of Texas at Austin\\
   Egocentric activity recognition in a daily living context differs from
   non-egocentric activity recognition because activities can have long-term
   temporal dependencies and actions can be interrupted by other actions. For
-  example, a subject might wash a few dishes while waiting for a cup of tea
-  to brew. The well-known bag-of-words approach for aggregating features
-  over time can yield reasonable performance, but falls short because it
+  example, a user might wash a few dishes while waiting for a cup of tea
+  to brew. The familiar bag-of-words approach can be used to aggregate space-time
+  features with reasonable performance,  but falls short because it
   fails to capture temporal dependencies between features.
+
+  The pyramid is a well-known extension of a pure bag-of-words model that encodes spatial
+  relationships between features by recursively subdividing images or video and extracting 
+  features from each spatial bin \cite{Lazebnik06}, yielding impressive
+  results across a range of applications.
 
   Previous work in egocentric activity recognition has employed a single strict
   hand-coded partition scheme \cite{Ramanan12}, which may not be particularly robust to
   inter and intra-class variation. The work of \cite{Laptev08} uses multiple
   candidate spatio-temporal grids for the task of activity recognition (but
-  not in an egocentric setting), however each grid is hand-coded and only 24
-  candidate grids are considered. The work presented in \cite{Kovashka10}
+  not in an egocentric setting), however each grid is predefined and only 24
+  candidate grids are considered. With such a small pool of schemes for imposing spatial
+  information, the most discriminative space-time relationships between features may not be 
+  captured. The work presented in \cite{Kovashka10}
   describes an effective state-of-the-art method for learning the shapes of spatio-temporal
   regions on a per-class basis, but makes use of lower-level features such as optical flow and
   is not applied in an egocentric setting.
@@ -194,7 +203,7 @@ University of Texas at Austin\\
 			%\fbox{\rule{0pt}{2in} \rule{0.9\linewidth}{0pt}}
 			  \includegraphics[width=0.8\linewidth]{/u/tomas/thesis/figures/thumbnail.jpg}
 		\end{center}
-    \caption{An example frame from the ADL datset with annotations for hand
+    \caption{An example frame from the ADL dataset with annotations for hand
     position and detected objects} 
 				\label{fig:long}
 				\label{fig:onecol}
@@ -510,7 +519,7 @@ University of Texas at Austin\\
   distribution. The work of \cite{Jiang12}, which uses a similar
   pyramid-based boosting approach for 2D image recognition, found that using
   pyramids with more than 3 levels actually led to a decrease in overall
-  accuracy due to oversegmentation of image space. However, we found that in the
+  accuracy due to over-segmentation of image space. However, we found that in the
   3D case 4-level pyramids give better overall accuracy than coarser-grained
   representations.
 	
