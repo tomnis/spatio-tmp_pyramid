@@ -45,3 +45,4 @@ function [d] = boost_main_vary_boostrounds(pools, traindata, testdata, kernel_ty
 
 	d.accuracies = accuracies;
 	d.confns = confns;
+  d.fs = f.min_pat_inds;
