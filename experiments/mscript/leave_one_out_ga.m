@@ -1,10 +1,10 @@
-function [] = leave_one_out_ga()
+function [confn accuracy] = leave_one_out_ga()
   setup;
   load loaded_gatech;
   person_ids = 1:3
 
   object_type = 'active';
-  d = DataSet(data, frs, best_scores, locations, object_type);
+  d = DataSet(data, frs, best_scores, locations, object_type, 0);
   
   n_label = length(unique(d.label));
 
@@ -13,6 +13,7 @@ function [] = leave_one_out_ga()
   feat = d.compute_ramanan_histograms('pyramid')
 
   size(feat)
+  feat = feat(1:16, :);
   person_ids
   d.person
 for left_out = person_ids
@@ -53,4 +54,3 @@ end
 
 confn = bsxfun(@rdivide, conf, sum(conf, 2) + eps); %% normalize the confussin matrix
 accuracy = sum(diag(confn)/sum(confn(:)))
-keyboard

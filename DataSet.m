@@ -206,7 +206,7 @@ classdef DataSet
         n_frs = length(self.frs{k});
         
         if isequal(feat_type, 'bag')
-          self.feat(:, k) = sum(self.best_s{k}, 2) / n_frs;
+          hists(:, k) = sum(self.best_s{k}, 2) / n_frs;
         elseif isequal(feat_type, 'pyramid')
           mid_fr = (self.fr_start(1, k) + self.fr_end(1, k))/2;
           f1 = find(self.frs{1, k} < mid_fr);
