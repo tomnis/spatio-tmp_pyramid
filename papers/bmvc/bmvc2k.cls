@@ -119,6 +119,7 @@
 \RequirePackage{graphicx,subfigure}
 \RequirePackage{xspace}
 \RequirePackage{eso-pic}
+\RequirePackage{url}
 \ifbmv@extabs
 % no need for hyperref in a 1-pager, but we do want urlstyle
 \RequirePackage{url}

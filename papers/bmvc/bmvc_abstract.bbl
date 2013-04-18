@@ -1,0 +1,14 @@
+\begin{thebibliography}{1}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Pirsiavash and Ramanan()]{Ramanan12}
+H.~Pirsiavash and D.~Ramanan.
+\newblock Detecting activities of daily living in first-person camera views.
+\newblock \emph{Computer Vision and Pattern Recognition, 2012.}, pages
+  2847--2854.
+
+\end{thebibliography}

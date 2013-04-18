@@ -1,9 +1,9 @@
 \documentclass{bmvc2k}
 
 %% Enter your paper number here for the review copy
-\bmvcreviewcopy{??}
+%\bmvcreviewcopy{??}
 
-\title{Biased Randomized Spatio-Temporal Pyramids for Egocentric Activity Recognition}
+\title{Object-Centric Spatio-Temporal Pyramids for Egocentric Activity Recognition}
 
 % Enter the paper's authors in order
 % \addauthor{Name}{email/homepage}{INSTITUTION_CODE}
@@ -17,7 +17,7 @@
  University of Texas at Austin
 }
 
-\runninghead{Student, Prof, Collaborator}{BMVC Author Guidelines}
+\runninghead{McCandless, Grauman}{Object-Centric Spatio-Temporal Pyramids}
 
 % Any macro definitions you would like to include
 % These are not defined in the style file, because they don't begin
@@ -41,7 +41,7 @@
 	egocentric activity recognition using the UC Irvine ADL (Activities of Daily Living)
 	dataset \cite{Ramanan12}.  
   Existing work in activity recognition uses predefined binning schemes,
-  which may fail to capture important temporal relationships between
+  which may fail to capture important spatio-temporal relationships between
   features.
   We propose to partition video clips into sets of
 	3-dimensional cuboids based on many different multi-level randomized partitioning
@@ -64,13 +64,8 @@
 \section{Introduction}
 	Activity recognition is becoming an increasingly canonical problem in
 	computer vision as researchers are beginning to explore the domain more
-  thoroughly and several relevant datasets have been released \cite{Schuldt04, Rodriguez08}. The problem 
-	of human activity recognition is in some ways less well defined
-	than, say, object recognition for 2D images, in part due to the relative
-	lack of datasets for activity recognition, and also because it is somewhat
-	problematic to define a canonical representation for each type of action.
-	In other words, it seems as though there can be higher intra-class
-	variation for activity recognition than for object recognition. 
+  thoroughly and several relevant datasets have been released 
+  \cite{Schuldt04, Rodriguez08, Fathi11, Ramanan12}. 
 	% past datasets scripted activities
 	Datasets geared towards activity recognition in the past have often
 	consisted of actors performing scripted activities in a static and at
@@ -78,61 +73,44 @@
 	recognition methods, we need datasets that are more organic in the sense that they
 	depict unscripted activities occurring in a natural environment such as a home or
 	apartment.
-	\cite{Ramanan12}. 
-	% similarity of problems, occlusion, clutter
-	However, activity recognition and object recognition do share some
-	similar properties. For instance, similar learning techniques are applicable to both
-  scenarios, and occlusion and background clutter are
-	difficulties that arise in both problems.
 
 	% application to life logging
 	A robust and accurate method for egocentric activity recognition would have 
 	many useful practical applications. For instance,
 	a recent trend in wearable computing is so-called life logging which can
-	assist patients suffering from memory loss \cite{Sellen07}. However, with
-	the storage of large amounts of video, it becomes necessary to have a system for
-	efficiently browsing video. A robust egocentric activity recognition
+	assist patients suffering from memory loss \cite{Sellen07}. 
+	A robust egocentric activity recognition
 	system could automatically tag video clips with types of activities,
 	thus allowing the user to, for
-	instance, quickly find all clips recorded in the past that depict making tea.
-
-	% application to senior living
-	There are many clinical benchmarks used to evaluate patients everyday
-	functional abilities \cite{Kopp97, Catz97, Itzkovich07}. 
-	These benchmarks are currently conducted in a
-	hospital setting, but a robust system for egocentric activity recognition
-	could greatly impact the workflow for patient evaluation, as such a system
-	would allow for passive long term observation of patients in their own
-	homes. This could lead to more accurate clinical evaluations since it would be
-	possible to collect far more data about individual patients in the form of continuous 
-  monitoring rather than infrequently benchmarked. Such a system
-	would also eliminate the need for patients to commute to a hospital to have
-	evaluations done, thus reducing cognitive and physical burden on patients.
+	example, quickly find all clips recorded in the past that depict making tea.
 	
-	% TODO application to law enforcement?
   Egocentric activity recognition in a daily living context differs from
   non-egocentric activity recognition because activities can have long-term
   temporal dependencies and actions can be interrupted by other actions. For
   example, a user might wash a few dishes while waiting for a cup of tea
   to brew. The familiar bag-of-words approach can be used to aggregate space-time
-  features with reasonable performance,  but falls short because it
+  features with reasonable performance, but ultimately falls short because it
   fails to capture temporal dependencies between features.
-
   The pyramid is a well-known extension of a pure bag-of-words model that encodes spatial
   relationships between features by recursively subdividing images or video and extracting 
   features from each spatial bin \cite{Lazebnik06}, yielding impressive
   results across a range of applications.
-
-  Previous work in egocentric activity recognition has employed a single strict
+  
+  Existing work in egocentric activity recognition has shown that activities
+  are well-defined by the types of objects that are interacted with by users
+  during particular actions \cite{Ramanan12}. 
+  Previous work in egocentric activity recognition has often employed a single strict
   hand-coded partition scheme \cite{Ramanan12}, which may not be particularly robust to
   inter and intra-class variation. The work of \cite{Laptev08} uses multiple
   candidate spatio-temporal grids for the task of activity recognition (but
   not in an egocentric setting), however each grid is predefined and only 24
-  candidate grids are considered. With such a small pool of schemes for imposing spatial
+  possible
+  candidate grids are considered. With a small pool of schemes for imposing spatial
   information, the most discriminative space-time relationships between features may not be 
   captured. The work presented in \cite{Kovashka10}
   describes an effective state-of-the-art method for learning the shapes of spatio-temporal
-  regions on a per-class basis, but makes use of lower-level features such as optical flow and
+  regions on a per-class basis, but makes use of lower-level features such as
+  optical flow, rather than object locations, and
   is not applied in an egocentric setting.
 
   Spatial pooling of features in a learned way for object recognition in 2D images
@@ -148,9 +126,14 @@
   the ability to bias the randomization step such that 
   resulting partition schemes have a high probability of cutting through or around
   spatio-temporal regions which are known to tend to contain active objects.
+  We call pyramids generated according to this method object-centric
+  pyramids.
   We found that partitioning schemes that have a larger number of levels and
   are biased to cut through regions known to contain active
   objects are often the most discriminative.
+  We evaluate the performance of our method using a cross-validation
+  experiment and found that our method using object-centric pyramids improves
+  upon the current state of the art.
 
 %-------------------------------------------------------------------------
 \subsection{Related Work}
@@ -158,8 +141,9 @@
 
 	In \cite{Laptev08}, Laptev \etal investigate automatically aligning movie scripts with
 	video for the purpose of annotating human actions, and achieve 91.8\%
-  accuracy on the KTH dataset. The method presented in \cite{Laptev08} 
-  extends previous work on spatial pyramids \cite{Bosch07, Lazebnik06}
+  accuracy on the KTH dataset. 
+  Previous work on spatial pyramids \cite{Bosch07, Lazebnik06} is
+  extended
   by defining the spatio-temporal pyramid representation of video clips, but uses a
   relatively small number of predefined schemes for spatio-temporal binning,
   which may fail to capture important spatio-temporal relationships between
@@ -183,16 +167,10 @@
 	The main work related to our own is that carried out in \cite{Ramanan12}. 
 	In this work the ADL dataset is introduced as well as detailed analysis of
 	performance of several different classifiers. 
-  The ADL dataset consists of hundreds of egocentric video clips
-	(roughly 10 hours of video in total) collected from 20 people performing
-	18 types of unscripted actions in their own homes. These naturally
-  occurring
-  actions are often related to hygiene or food preparation and are more
-  varied than actions presented in previous datasets such as that of \cite{Fathi11}.
 	\begin{figure}[t]
 		\begin{center}
 			%\fbox{\rule{0pt}{2in} \rule{0.9\linewidth}{0pt}}
-			  \includegraphics[width=0.8\linewidth]{/u/tomas/thesis/figures/thumbnail.jpg}
+			  \includegraphics[width=0.7\linewidth]{/u/tomas/thesis/figures/thumbnail.jpg}
 		\end{center}
     \caption{An example frame from the ADL dataset with annotations for hand
     position and detected objects} 
@@ -204,77 +182,20 @@
   different appearances when they are being interacted with. For example, a
   refrigerator or microwave has a different appearance when it is open and
   being interacted with. 
-  There are 26 different 
-	types of detected objects, including 5 active and 21 passive objects. 
-  Object detectors are trained on videos from the
-  first 6 people and tested on the videos from the remaining 14 people.
-  
-	\begin{table}
-		\begin{center}
-			\begin{tabular}{|l|c|}
-				\hline \hline
-        label & activity type \\
-        \hline
-        1 & combing hair \\
-        \hline
-        2 & make up \\
-        \hline
-        3 & brushing teeth \\
-        \hline
-        4 & dental floss \\
-        \hline
-        5 & washing hands/face \\
-        \hline
-        6 & drying hands/face \\
-        \hline
-        7 & laundry \\
-        \hline
-        8 & washing dishes \\
-        \hline
-        9 & moving dishes \\
-        \hline
-       10 & making tea \\
-        \hline
-       11 & making coffee \\
-        \hline
-       12 & drinking water/bottle \\
-        \hline
-       13 & drinking water/tap \\
-        \hline
-       14 & preparing cold food/snack \\
-        \hline
-       15 & vacuuming \\
-        \hline
-       16 & watching tv \\
-        \hline
-       17 & using computer \\
-        \hline
-       18 & using cell phone \\
-				\hline
-			\end{tabular}
-		\end{center}
-		\caption{Types of activities present in the ADL dataset.}
-	\end{table}
-  
-	Each frame in the dataset
-	is annotated with activity labels and bounding boxes for objects and hand positions, 
-	Additionally, each object is tagged as active or passive depending
-	on whether it is being interacted with.
   A comparison of the well-known bag-of-words approach with a strict
   predefined
   2-level temporal pyramid using both space-time interest points and the
   results of the part-based object detectors is presented. The temporal pyramid makes 
   a single cut along the temporal dimension and no cuts along the
   spatial dimensions, but is simple, easy to implement, and outperforms a 
-  classifier trained on bag-of-words histograms. Using detected objects as
-  features offers impressive results over using space-time interest points
+  classifier trained on bag-of-words histograms. The use of detected objects as
+  features offers impressive improvement over using space-time interest points
   (STIP).
-  
 	The crucial contribution of
 	\cite{Ramanan12} is that egocentric activity recognition is ``all about
 	the objects'', particularly the objects being interacted with, as
-	recognition accuracy increases dramatically when ground truth object
-	locations rather than detected locations are used to train the classifier. 
+	recognition accuracy increases dramatically when locations of active
+  objects in addition to passive objects are used as features. 
 
 	The video collected for the ADL dataset is available in a temporally
 	presegmented format; each video has been segmented into clips depicting
@@ -309,7 +230,7 @@
   $w_i$ for each
 	training point $p_i$ that is inversely proportional to the number of points
 	with the same class as $p_i$. Giving larger weights to training examples of
-  infrequently occurring actions helps to mitigate the effect imbalanced
+  infrequently occurring actions helps to mitigate any bias resulting from imbalanced
   training data.
   During each round of boosting we select the
 	candidate partition $\theta_j$ that is most discriminative (has minimum
@@ -317,10 +238,9 @@
 	error, which is computed as the dot product between the weight vector $w$
   and an indicator of incorrect classifications using $f_\theta$)
   Next, we compute a weight for $\theta_j$, and compute accuracy for the
-	current version of the final strong classifier. 
-	We set the number of boosting rounds to 30, noting that additional boosting
-	rounds only give a marginal boost to performance. Additionally, with a
-	larger number of boosting rounds, overfitting becomes a possibility.\\
+	current version of the final strong classifier, which maximizes a weighted
+  sum of classifications produced by each weak classifier.
+	We set the number of boosting rounds to 30.\\
 
 	\noindent\textbf{Algorithm 1:} Training RSTP Classifier via Boosting \\
 	\textbf{INPUT:} 
@@ -398,29 +318,49 @@
   arbitrary size, we consider
   partitioning an ``idealized'' video clip that has all dimensions normalized
   to length 1. To generate a single cut we sample a random number from a
-  distribution subject to any constraints imposed by ``parent cuts''. To
+  distribution subject to any constraints imposed by ``parent cuts'' and use
+  this as a randomized offset for an appropriate axis-aligned plane. To
   construct an unbiased partition scheme we sample from a uniform
   distribution.
+  
+  To represent a video clip as a randomized spatio-temporal pyramid (RSTP)
+  using a particular partition scheme we use the output of object detectors
+  trained in \cite{Ramanan12}, which gives bounding boxes and object
+  labels for each extracted frame. We compute histograms of detected
+  objects for each individual level in the pyramid,
+  where level 0 is the entire video clip volume and level $i$ is all the
+  cells of depth $i$ in the k-d tree. 
+  Note that level $i$ has $8^i$ leaf
+  cells. To form the final RSTP representation, we concatenate the
+  histograms computed for each level to form a single feature vector.
+  We can choose whether or not to include detected active objects when
+  forming an RSTP representation of a video clip, however taking active
+  objects into account gives a substantial improvement to overall
+  classification accuracy.
+  
+  \subsection{Object-Centric Cuts (OCC)}
   The key novel contribution of our work is the ability to create
   meaningfully biased partition schemes that tend to be more discriminative
   than unbiased partition schemes.
   To accomplish this, we replace the uniform distribution with a discrete
   approximation of the distribution of active objects across each dimension
+  $(x, y, t)$
   and otherwise proceed normally.
 
-	\begin{figure}[t]
-		\begin{center}
-			%\fbox{\rule{0pt}{2in} \rule{0.9\linewidth}{0pt}}
-			  \includegraphics[width=1.0\linewidth]{/u/tomas/thesis/figures/active_obj_distr_x.png}
-			  \includegraphics[width=1.0\linewidth]{/u/tomas/thesis/figures/active_obj_distr_y.png}
-		\end{center}
+\begin{figure}
+  \begin{center}
+\begin{tabular}{cc}
+\bmvaHangBox{\fbox{\includegraphics[width=5.9cm]{/u/tomas/thesis/figures/active_obj_distr_x.png}}}&
+\bmvaHangBox{\fbox{\includegraphics[width=5.9cm]{/u/tomas/thesis/figures/active_obj_distr_y.png}}}\\
+(a)&(b)
+\end{tabular}
 		   \caption{Histograms of detected active objects across the $x$ and
        $y$ spatial dimensions of training data. Active objects tend to appear in the lower
      center field of view. There is a slight bias favoring the
    right side of the field of view because many users are right-handed. }
-				\label{fig:long}
-				\label{fig:onecol}
-	\end{figure}
+\label{fig:teaser}
+  \end{center}
+\end{figure}
 	
 	From figure 2 we see that active objects often tend to occur in the lower center
 	of the field of view. This conforms to our expectations, because
@@ -450,8 +390,8 @@
   type 3. The salient feature to note is that visible splits along the $y$
   dimension correspond to the observed distribution of active objects along
   the $y$ dimension.
-  
 
+  \iffalse
   \begin{figure}[t]
     \begin{center}
 		 \includegraphics[width=1.0\linewidth]{/u/tomas/thesis/figures/lvl3-3.png}
@@ -463,25 +403,71 @@
 			\label{fig:long}
 			\label{fig:onecol}
   \end{figure}
-	
-   To represent a video clip as a randomized spatio-temporal pyramid (RSTP)
-   using a particular partition scheme we use the output of object detectors
-   trained in \cite{Ramanan12}, which gives bounding boxes and object
-   labels for each extracted frame. We compute histograms of detected
-   objects for each individual level in the pyramid,
-   where level 0 is the entire video clip volume and level $i$ is all the
-   cells of depth $i$ in the k-d tree. 
-   Note that level $i$ has $8^i$ leaf
-   cells. To form the final RSTP representation, we simply concatenate the
-   histograms computed for each level to form a single feature vector.
-   We can choose whether or not to include detected active objects when
-   forming an RSTP representation of a video clip, however taking active
-   objects into account gives a substantial improvement to overall
-   classification accuracy.
-   
-
+  \fi
 
 \section{Results}
+  The ADL dataset consists of hundreds of egocentric video clips
+	(roughly 10 hours of video in total) collected from 20 people performing
+	18 types of unscripted actions in their own homes. These naturally
+  occurring
+  actions are often related to hygiene or food preparation and are more
+  varied than actions presented in previous datasets such as that of \cite{Fathi11}.
+  There are 26 different 
+	types of detected objects, including 5 active and 21 passive objects. 
+  Object detectors are trained on videos from the
+  first 6 people and tested on the videos from the remaining 14 people.
+  
+	\begin{table}
+		\begin{center}
+			\begin{tabular}{|l|c|}
+				\hline \hline
+        label & activity type \\
+        \hline
+        1 & combing hair \\
+        \hline
+        2 & make up \\
+        \hline
+        3 & brushing teeth \\
+        \hline
+        4 & dental floss \\
+        \hline
+        5 & washing hands/face \\
+        \hline
+        6 & drying hands/face \\
+        \hline
+        7 & laundry \\
+        \hline
+        8 & washing dishes \\
+        \hline
+        9 & moving dishes \\
+        \hline
+       10 & making tea \\
+        \hline
+       11 & making coffee \\
+        \hline
+       12 & drinking water/bottle \\
+        \hline
+       13 & drinking water/tap \\
+        \hline
+       14 & preparing cold food/snack \\
+        \hline
+       15 & vacuuming \\
+        \hline
+       16 & watching tv \\
+        \hline
+       17 & using computer \\
+        \hline
+       18 & using cell phone \\
+				\hline
+			\end{tabular}
+		\end{center}
+		\caption{Types of activities present in the ADL dataset.}
+	\end{table}
+  
+	Each frame in the dataset
+	is annotated with activity labels and bounding boxes for detected objects and hand positions, 
+	Additionally, each object is tagged as active or passive depending
+	on whether it is being interacted with.
 	The ADL dataset has been modified since the publication of
 	\cite{Ramanan12}; because of this, running the published code gives
 	slightly lower accuracy than the originally published numbers. We use the
@@ -496,15 +482,15 @@
 	
 	\begin{table}
 		\begin{center}
-			\begin{tabular}{|l|c|c|c|c|}
+			\begin{tabular}{|l|c|c|c|c|c|}
 				\hline
-        Feature Type & BoW & Temporal Pyramid & RSTP \\
+        Feature Type & BoW & Temporal Pyramid & RSTP & RSTP+OCC \\
 				\hline\hline
-        STIP & 16.5\% & 22.8\% & - \\ 
+        STIP & 16.5\% & 22.8\% & - & - \\ 
         \hline
-       O & 26.6\% & 29.0\% & 32.7\%\\
+        O & 26.6\% & 29.0\% & - & 32.7\%\\
         \hline
-      AO & 34.9\% & 36.9\% & 38.7\%\\
+        AO & 34.9\% & 36.9\% & 33.7\% & 38.7\%\\
 				\hline
 			\end{tabular}
 		\end{center}
@@ -534,7 +520,6 @@
   Following \cite{Ramanan12}, we exclude videos from the first 6 people
   (because they were used to train the object detectors) from our
   experiments.
-  
   Feature vectors are computed using detections for both active and passive
   objects. The results for bag of words and temporal pyramids (2 level, with
   a single cut along the temporal dimension) are both presented in
@@ -542,7 +527,7 @@
   
   For this experiment we used pools of 4-level partitioning schemes of
   varying sizes with a varying number of boosting rounds. The numbers
-  presented in table 1 were obtained with 5 boosting rounds and a pool of
+  presented in Table 2 were obtained with 5 boosting rounds and a pool of
   size 70.
   Each partitioning scheme was of bias type 3, meaning the cuts for level 1
   were biased such that they had a tendency to cut through regions containing
@@ -554,17 +539,15 @@
   3D case 4-level pyramids give better overall accuracy than coarser-grained
   representations.
 	
-  \begin{figure}[t]
-		\begin{center}
-			%\fbox{\rule{0pt}{2in} \rule{0.9\linewidth}{0pt}}
-			  \includegraphics[width=1.0\linewidth]{/u/tomas/thesis/figures/confn2.png}
-		\end{center}
-		   \caption{Confusion matrix for our method using detected active and
+  \begin{figure}
+  \begin{center}
+  \bmvaHangBox{\fbox{\includegraphics[width=10.0cm]{/u/tomas/thesis/figures/confn2-labels.png}}}
+		   \caption{Confusion matrix for RSTP+OCC using detected active and
        passive objects}
-				\label{fig:long}
-				\label{fig:onecol}
-	\end{figure}
-	As seen in figure 4, our method has particularly good
+  \label{fig:teaser}
+  \end{center}
+  \end{figure}
+	As seen in Figure 3, our method has particularly good
   performance for activity types 5 and 6 (``combing hair'' and ``drying
   hands/face'', respectively). Some activity types on which our method does
   poorly are 10 and 11, which are ``making tea'' and ``making coffee'',
@@ -580,7 +563,7 @@
   partitions to each pool between runs. The pool containing partitions of
   bias type 3 consistently outperformed the pool of bias type 2, which
   consistently outperformed the unbiased pool. The
-  results from this experiment are depicted in figure 5. We were initially
+  results from this experiment are depicted in figure 4. We were initially
   surprised to find that increasing pool size can
   sometimes negatively impact overall classification accuracy, however we
   believe this is due to the inherent bias between the training and the test
@@ -623,19 +606,18 @@
 	
 \section{Conclusion and Future Work}
 	We have presented an application of the well-known boosting framework
-	with results that improve upon the current state of the art for an
-  egocentric activity recognition task.
+	with results for an
+  egocentric activity recognition task that improve upon the current state of
+  the art.
 	Our main novel contribution is a method for generating biased partition
 	schemes based on observations of active object locations throughout the
-  training data.
+  training data (Object-Centric Cuts).
 	Future work could potentially incorporate different types of biases when generating
 	partitions. The ADL dataset also includes annotations for hand positions,
 	which we have incorporated implicitly through our generation of biased partitions
 	biased relative to regions which tend to contain active objects. However,
 	it could be possible to incorporate explicit information given by hand
 	positions to obtain better classification results.
-	Additionally, it may be worthwhile to investigate the performance of other
-	variants of the boosting algorithm.
 	The partitions we focus on contain cuts that are
   planar and axis-aligned (we consider random shifts but not random
   rotations, and we do not consider non-planar splits),
@@ -643,6 +625,5 @@
 	video volume in more advanced non-linear ways. Such a method would involve more
 	sophisticated computational geometry, but may yield a more discriminative
 	partitioning scheme that could lead to better classification accuracy.
-
 \bibliography{egbib}
 \end{document}
