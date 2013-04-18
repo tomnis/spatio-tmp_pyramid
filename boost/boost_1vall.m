@@ -1,11 +1,14 @@
 % data contains labels
 % output is strong classifier
-function [f, partitioned_feats] = boost_1vall(dataset, pool, target_accuracy, dim, kernel_type, omit_base)
+function [f, partitioned_feats] = boost_1vall(dataset, pool, target_accuracy, dim, kernel_type, num_rounds)
   spatial_cuts = dim.spatial_cuts;
 
-	if ~exist('omit_base')
-		omit_base = 0;
-	end
+  if ~exist('num_rounds')
+    num_rounds = 30;
+  end
+  fprintf('using %d boosting rounds\n', num_rounds);
+  
+  omit_base = 0;
 
   labels = unique(dataset.label);
   n_label = length(labels);
@@ -79,7 +82,7 @@ function [f, partitioned_feats] = boost_1vall(dataset, pool, target_accuracy, di
   j = 0;
   accuracy = 0;
   accuracies = [];
-  while accuracy < target_accuracy && j < 30
+  while accuracy < target_accuracy && j < num_rounds
   	% for each clip, update the weight
   	weights = weights ./ sum(weights);
   	j = j+1;

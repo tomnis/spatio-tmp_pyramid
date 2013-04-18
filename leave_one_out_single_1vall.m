@@ -1,5 +1,5 @@
 % leave one out train and test
-function [accuracy, confn, f] = leave_one_out_single_1vall(dataset, pool, person_ids, left_out_ind)
+function [accuracy, confn, f] = leave_one_out_single_1vall(dataset, pool, person_ids, left_out_ind, num_boost_rounds)
 %%% leave one out train and test
 
 
@@ -44,7 +44,7 @@ left_out = person_ids(left_out_ind);
 
 	% train...
   pools{1} = pool;
-	d = boost_main_1vall(pools, traindata, testdata, 'poly', dim);
+	d = boost_main_1vall(pools, traindata, testdata, 'poly', dim, num_boost_rounds);
 	
   conf1 = d.confns;
 
@@ -52,3 +52,4 @@ left_out = person_ids(left_out_ind);
 %accuracy = sum(diag(confn)/sum(confn(:)))
 confn = conf1;
 accuracy = sum(diag(conf1)) / sum(conf1(:));
+f = d.fs;
