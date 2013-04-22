@@ -6,12 +6,6 @@ A.~Bosch, A.~Zisserman, and X.~Munoz.
 \newblock {\em Proceedings of the 6th ACM international conference on Image and
   video retrieval}, 2007.
 
-\bibitem{Catz97}
-A.~Catz, M.~Itzkovich, E.~Agranov, H.~Ring, A.~Tamir, et~al.
-\newblock Scim--spinal cord independence measure: a new disability scale for
-  patients with spinal cord lesions.
-\newblock {\em Spinal Cord}, 35(12):850, 1997.
-
 \bibitem{Chang11}
 C.-C. Chang and C.-J. Lin.
 \newblock Libsvm: A library for support vector machines.
@@ -29,27 +23,11 @@ A.~Fathi, X.~Ren, and J.~Rehg.
 \newblock {\em Computer Vision and Pattern Recognition (CVPR), 2011 IEEE
   Conference on}, pages 3281--3288, 2011.
 
-\bibitem{Itzkovich07}
-M.~Itzkovich, I.~Gelernter, F.~Biering-Sorensen, C.~Weeks, M.~Laramee,
-  B.~Craven, M.~Tonack, S.~Hitzig, E.~Glaser, G.~Zeilig, et~al.
-\newblock The spinal cord independence measure (scim) version iii: reliability
-  and validity in a multi-center international study.
-\newblock {\em Disability \& Rehabilitation}, 29(24):1926--1933, 2007.
-
 \bibitem{Jiang12}
 Y.~Jiang, J.~Yuan, and G.~Yu.
 \newblock Randomized spatial partition for scene recognition.
 \newblock {\em Proceedings of the 12th European conference on Computer Vision -
   Volume Part II}, pages 730--743, 2012.
-
-\bibitem{Kopp97}
-B.~Kopp, A.~Kunkel, H.~Flor, T.~Platz, U.~Rose, K.-H. Mauritz, K.~Gresser,
-  K.~L. McCulloch, E.~Taub, et~al.
-\newblock The arm motor ability test: reliability, validity, and sensitivity to
-  change of an instrument for assessing disabilities in activities of daily
-  living.
-\newblock {\em Archives of physical medicine and rehabilitation}, 78(6):615,
-  1997.
 
 \bibitem{Kovashka10}
 A.~Kovashka and K.~Grauman.

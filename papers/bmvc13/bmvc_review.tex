@@ -1,51 +1,39 @@
-\documentclass[10pt,twocolumn,letterpaper]{article}
+\documentclass{bmvc2k}
 
-\usepackage{iccv}
-\usepackage{times}
-\usepackage{epsfig}
-\usepackage{graphicx}
-\usepackage{amsmath}
-\usepackage{amssymb}
+%% Enter your paper number here for the review copy
+%\bmvcreviewcopy{??}
 
-% Include other packages here, before hyperref.
-\usepackage{algpseudocode}
+\title{Object-Centric Spatio-Temporal Pyramids for Egocentric Activity Recognition}
 
-% If you comment hyperref and then uncomment it, you should delete
-% egpaper.aux before re-running latex.  (Or just hit 'q' on the first latex
-% run, let it finish, and you should be clear).
-\usepackage[pagebackref=true,breaklinks=true,letterpaper=true,colorlinks,bookmarks=false]{hyperref}
+% Enter the paper's authors in order
+% \addauthor{Name}{email/homepage}{INSTITUTION_CODE}
+\addauthor{Tomas McCandless}{tomas@cs.utexas.edu}{1}
+\addauthor{Kristen Grauman}{grauman@cs.utexas.edu}{1}
 
-%\iccvfinalcopy % *** Uncomment this line for the final submission
-
-\def\iccvPaperID{****} % *** Enter the ICCV Paper ID here
-\def\httilde{\mbox{\tt\raisebox{-.5ex}{\symbol{126}}}}
-
-% Pages are numbered in submission mode, and unnumbered in camera-ready
-\ificcvfinal\pagestyle{empty}\fi
-\begin{document}
-
-%%%%%%%%% TITLE
-\title{Biased Randomized Spatio-Temporal Pyramids for Egocentric Activity Recognition}
-
-\author{Tomas McCandless and Kristen Grauman\\
-University of Texas at Austin\\
-{\tt\small \{tomas, grauman\}@cs.utexas.edu}
-% For a paper whose authors are all at the same institution,
-% omit the following lines up until the closing ``}''.
-% Additional authors and addresses can be added with ``\and'',
-% just like the second author.
-% To save space, use either the email address or home page, not both
-%\and
-%Second Author\\
-%Institution2\\
-%First line of institution2 address\\
-%{\tt\small secondauthor@i2.org}
+% Enter the institutions
+% \addinstitution{Name\\Address}
+\addinstitution{
+ Department of Computer Science \\ 
+ University of Texas at Austin
 }
 
-\maketitle
-%\thispagestyle{empty}
+\runninghead{McCandless, Grauman}{Object-Centric Spatio-Temporal Pyramids}
 
-%%%%%%%%% ABSTRACT
+% Any macro definitions you would like to include
+% These are not defined in the style file, because they don't begin
+% with \bmva, so they might conflict with the user's own macros.
+% The \bmvaOneDot macro adds a full stop unless there is one in the
+% text already.
+\def\eg{\emph{e.g}\bmvaOneDot}
+\def\Eg{\emph{E.g}\bmvaOneDot}
+\def\etal{\emph{et al}\bmvaOneDot}
+
+%------------------------------------------------------------------------- 
+% Document starts here
+\begin{document}
+
+\maketitle
+
 \begin{abstract}
 	Egocentric video and wearable computing have become increasingly
 	prevalent in the past decade, resulting in a huge explosion in the amount
@@ -182,7 +170,7 @@ University of Texas at Austin\\
 	\begin{figure}[t]
 		\begin{center}
 			%\fbox{\rule{0pt}{2in} \rule{0.9\linewidth}{0pt}}
-			  \includegraphics[width=0.7\linewidth]{/u/tomas/thesis/figures/thumbnail.jpg}
+			  \includegraphics[width=0.7\linewidth]{figures/thumbnail.jpg}
 		\end{center}
     \caption{An example frame from the ADL dataset with annotations for hand
     position and detected objects} 
@@ -362,8 +350,8 @@ University of Texas at Austin\\
 \begin{figure}
   \begin{center}
 \begin{tabular}{cc}
-\fbox{\includegraphics[width=5.9cm]{/u/tomas/thesis/figures/active_obj_distr_x.png}}&
-\fbox{\includegraphics[width=5.9cm]{/u/tomas/thesis/figures/active_obj_distr_y.png}}\\
+\bmvaHangBox{\fbox{\includegraphics[width=5.9cm]{figures/active_obj_distr_x.png}}}&
+\bmvaHangBox{\fbox{\includegraphics[width=5.9cm]{figures/active_obj_distr_y.png}}}\\
 (a)&(b)
 \end{tabular}
 		   \caption{Histograms of detected active objects across the $x$ and
@@ -402,20 +390,6 @@ University of Texas at Austin\\
   type 3. The salient feature to note is that visible splits along the $y$
   dimension correspond to the observed distribution of active objects along
   the $y$ dimension.
-
-  \iffalse
-  \begin{figure}[t]
-    \begin{center}
-		 \includegraphics[width=1.0\linewidth]{/u/tomas/thesis/figures/lvl3-3.png}
-    \end{center}
-		   \caption{An example biased (type 3) partitioning scheme corresponding to a 3-level
-       pyramid. Splits along the lower portion of the $y$ dimension are
-     visible, corresponding to the tendency for active objects to appear in
-   the lower area of the field of view.}
-			\label{fig:long}
-			\label{fig:onecol}
-  \end{figure}
-  \fi
 
 \section{Results}
   The ADL dataset consists of hundreds of egocentric video clips
@@ -553,7 +527,7 @@ University of Texas at Austin\\
 	
   \begin{figure}
   \begin{center}
-  \fbox{\includegraphics[width=10.0cm]{/u/tomas/thesis/figures/confn2-labels.png}}
+  \bmvaHangBox{\fbox{\includegraphics[width=10.0cm]{figures/confn2-labels.png}}}
 		   \caption{Confusion matrix for RSTP+OCC using detected active and
        passive objects}
   \label{fig:teaser}
@@ -588,7 +562,7 @@ University of Texas at Austin\\
   \begin{figure}[t]
 		\begin{center}
 			%\fbox{\rule{0pt}{2in} \rule{0.9\linewidth}{0pt}}
-			  \includegraphics[width=1.0\linewidth]{/u/tomas/thesis/figures/biaseffect.png}
+			  \includegraphics[width=1.0\linewidth]{figures/biaseffect.png}
 		\end{center}
 		   \caption{Effect of using biased partition schemes. The pool
        containing type 3 biased partition schemes consistently outperforms
@@ -637,11 +611,5 @@ University of Texas at Austin\\
 	video volume in more advanced non-linear ways. Such a method would involve more
 	sophisticated computational geometry, but may yield a more discriminative
 	partitioning scheme that could lead to better classification accuracy.
-  
-
-{\small
-\bibliographystyle{ieee}
 \bibliography{egbib}
-}
-
 \end{document}

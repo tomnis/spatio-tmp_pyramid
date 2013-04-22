@@ -553,7 +553,7 @@ University of Texas at Austin\\
 	
   \begin{figure}
   \begin{center}
-  \fbox{\includegraphics[width=10.0cm]{/u/tomas/thesis/figures/confn2-labels.png}}
+  \bmvaHangBox{\fbox{\includegraphics[width=10.0cm]{/u/tomas/thesis/figures/confn2-labels.png}}}
 		   \caption{Confusion matrix for RSTP+OCC using detected active and
        passive objects}
   \label{fig:teaser}

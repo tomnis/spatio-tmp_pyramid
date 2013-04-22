@@ -1,0 +1,70 @@
+% Use class option [extendedabs] to prepare the 1-page extended abstract.
+\documentclass[extendedabs]{bmvc2k}
+
+% For the final submission, comment out the bmvcreviewcopy so that
+% author names etc appear.
+\bmvcreviewcopy{1234}
+
+% Enter a shortened version of the title as a running header.
+% For two authors, enter both surnames, separated by commas.  For
+% more than two authors, the first author's name followed by
+% \bmvaEtAl will produce the correct output (uppercase author name,
+% lowercase etal).  This will not appear in the extended abstract
+\runninghead{McCandless, Grauman}{Randomized Object-Centric Spatio-Temporal Pyramids}
+% \runninghead{Claus \bmvaEtAl}{Plumbline Constraint for the RF Model}
+
+% Document starts here
+\begin{document}
+
+\title{Randomized Object-Centric Spatio-Temporal Pyramids for Egocentric Activity Recognition}
+
+% Notice that there is a reasonable amount of whitespace around the
+% author names.  There should be no reason to compress this for the
+% online proceedings as the page limit is counted from the bottom
+% of the author list.
+%
+% While it may be tempting to compress this for the extended
+% abstract, please resist the temptation to overdo it.  This 1-page
+% abstract is currently three pages in normal BMVC style, which
+% should be plenty of space for your key idea, figure, and
+% references.
+\addauthor{Tomas McCandless}{tomas@cs.utexas.edu}{1}
+\addauthor{Kristen Graumen}{grauman@cs.utexas.edu}{1}
+
+\addinstitution{
+Department of Computer Science,\\
+University of Texas at Austin}
+\maketitle
+
+% Extended abstract begins here.  In a one-page document, there is
+% little need for section headers, but you may use \section etc if you
+% wish.
+
+\noindent
+	Egocentric video and wearable computing have become increasingly
+	prevalent in the past decade, resulting in a huge explosion in the amount
+	of available video content. In this paper, we present a novel approach for
+	egocentric activity recognition using the UC Irvine ADL (Activities of Daily Living)
+	dataset \cite{Ramanan12}.  
+  Existing work in activity recognition uses predefined binning schemes,
+  which may fail to capture important spatio-temporal relationships between
+  features.
+  We propose to partition video clips into sets of
+	3-dimensional cuboids based on many different multi-level randomized partitioning
+	schemes, then concatenate object histograms
+	over multiple levels to form feature vectors which we then use to train a pool
+	of weak SVM classifiers. 
+	Finally, we use a boosting algorithm to learn which partitioning schemes are
+  most discriminative and form a
+	final strong classifier with accuracy that improves upon the current state of
+	the art. Our main novel contribution is a method for
+	creating biased partition schemes based on observed distributions of
+	active object locations across each spatial and temporal dimension of the video clips.
+  We found that partitions which cut through spatio-temporal regions that
+  tend to contain active objects are often more discriminative than
+  unbiased partitions and 
+  partitions that cut around such active object regions.
+
+\bibliography{egbib}
+
+\end{document}
