@@ -12,6 +12,7 @@ function [d] = boost_main_1vall(pools, traindata, testdata, kernel_type, dim, nu
     num_rounds = 30;
   end
   
+  length(unique(testdata.label))
   
   n_label = length(unique(traindata.label));
   orig_label = traindata.label;
@@ -69,7 +70,7 @@ function [d] = boost_main_1vall(pools, traindata, testdata, kernel_type, dim, nu
   % select the training examples to use
   x_train1 = x_train(:, f3);
   y_train1 = y_train(:, f3);
-  
+   
   x_train1 = x_train;
   y_train1 = y_train;
 
@@ -118,9 +119,9 @@ function [d] = boost_main_1vall(pools, traindata, testdata, kernel_type, dim, nu
   strong_class_indicator = (strong_classifications == testdata.label);
   boost_main_accuracy = mean(strong_class_indicator)
   accuracies = boost_main_accuracy;
-  confn = confusionmat(testdata.label, strong_classifications);
+  confn = confusion(testdata.label, strong_classifications, n_label);
   clear partitioned_feats;
-  
+ 
   f = {};
 	d.accuracies = accuracies;
 	d.confns = confn;
