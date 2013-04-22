@@ -1,5 +1,10 @@
 % num_prts lets us use control how many of the partitions are used
 function [] = leave_one_out_sw_1vall(savedir, pool, left_out_ind, num_prts, num_boost_rounds)
+  if ~(exist(savedir, 'dir') == 7)
+    fprintf(1, '%s doesnt exist, creating\n', savedir);
+    mkdir(savedir);
+  end
+  
 	setup;
 	load loaded_data;
 	object_type = 'active_passive';
