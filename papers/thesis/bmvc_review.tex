@@ -37,107 +37,201 @@
 \begin{abstract}
 	Egocentric video and wearable computing have become increasingly
 	prevalent in the past decade, resulting in a huge explosion in the amount
-	of available video content. In this paper, we present a novel approach for
-	egocentric activity recognition using the UC Irvine ADL (Activities of Daily Living)
-	dataset \cite{Ramanan12}.  
-  Existing work in activity recognition uses predefined binning schemes,
-  which may fail to capture important spatio-temporal relationships between
+	of available video content and increased attention from the computer
+  vision community.
+  However, existing methods for activity recognition often use
+  predefined spatio-temporal binning schemes
+  to aggregate features. This encodes information beyond what is possible
+  with a pure ``bag of words'' model, but is ultimately inflexible
+  and may fail to capture important spatio-temporal relationships between
   features.
-  We propose to partition video clips into sets of
-	3-dimensional cuboids based on many different multi-level randomized partitioning
-	schemes, then concatenate object histograms
-	over multiple levels to form feature vectors which we then use to train a pool
+  We propose to randomly generate a pool of candidate binning schemes and
+  use a boosting algorithm to select those which are most discriminative for use in our final
+  classifier. In order to efficiently focus the candidate partition schemes, we
+  create biased partitions using ``object-centric'' cuts in video volumes.
+  Partition schemes generated using our method have a high probability of
+  cutting through video regions that contain ``active objects,'' the objects
+  being interacted with by the user during a given frame.
+  Given a set of training vides, our method first computes histograms of
+  active object locations across each $(x, y, t)$ dimension, then uses these
+  histograms to generate a pool of object-centric partition schemes that
+  have a high probability of cutting through regions that often contain
+  active objects.
+  Next, we represent each training video using each partition scheme and train a pool
 	of weak SVM classifiers. 
 	Finally, we use a boosting algorithm to learn which partitioning schemes are
   most discriminative and form a
-	final strong classifier with accuracy that improves upon the current state of
-	the art. Our main novel contribution is a method for
-	creating biased partition schemes based on observed distributions of
-	active object locations across each spatial and temporal dimension of the video clips.
-  We found that partitions which cut through spatio-temporal regions that
-  tend to contain active objects are often more discriminative than
-  unbiased partitions and 
-  partitions that cut around such active object regions.
+	final strong classifier. Our main novel contribution is two-fold: we show how to learn the
+  most useful partition schemes in an egocentric setting, and we focus
+  candidate partition schemes by exploiting locations of active objects.
+  Our approach yields state-of-the-art recognition performance, and we find
+  that object-centric partition schemes are often more discriminative than
+  their unbiased counterparts.
+  % TODO closing statement
 \end{abstract}
 
 %------------------------------------------------------------------------- 
 \section{Introduction}
+  % uses for egocentric activity
+  % recent research without detailed explanation
 	Activity recognition is becoming an increasingly canonical problem in
 	computer vision as researchers are beginning to explore the domain more
   thoroughly and several relevant datasets have been released 
   \cite{Schuldt04, Rodriguez08, Fathi11, Ramanan12}. 
-	% past datasets scripted activities
-	Datasets geared towards activity recognition in the past have often
-	consisted of actors performing scripted activities in a static and at
-  times artificial environment \cite{Schuldt04}. However, in order to develop robust and effective
-	recognition methods, we need datasets that are more organic in the sense that they
-	depict unscripted activities occurring in a natural environment such as a home or
-	apartment.
-
+  Egocentric activity recognition differs from
+  non-egocentric activity recognition because activities can have long-term
+  temporal dependencies and actions can be interrupted by other actions. 
 	% application to life logging
 	A robust and accurate method for egocentric activity recognition would have 
-	many useful practical applications. For instance,
+	useful practical applications, such as a memory aid, content-based
+  summarization, or telerehabilitation. For instance,
 	a recent trend in wearable computing is so-called life logging which can
 	assist patients suffering from memory loss \cite{Sellen07}. 
 	A robust egocentric activity recognition
-	system could automatically tag video clips with types of activities,
-	thus allowing the user to, for
-	example, quickly find all clips recorded in the past that depict making tea.
-	
-  Egocentric activity recognition in a daily living context differs from
-  non-egocentric activity recognition because activities can have long-term
-  temporal dependencies and actions can be interrupted by other actions. For
-  example, a user might wash a few dishes while waiting for a cup of tea
-  to brew. The familiar bag-of-words approach can be used to aggregate space-time
+	system could automatically tag video clips with types of activities.
+  Additionally, there are many clinical benchmarks used to evaluate patients everyday
+  functional abilities \cite{Kopp97, Catz97, Itzkovich07}. 
+  These benchmarks are currently conducted in a
+  hospital setting, but a robust system for egocentric activity
+  recognition
+  could greatly impact the workflow for patient evaluation, allowing
+  for passive long term observation of patients in their own
+  homes.
+  Existing work has made promising progress in both recognition and
+  summarization, \cite{Ramanan12, Fathi12,Lee12} 
+  yet it remains a challenging problem.
+
+
+
+
+
+
+  % egocentric defined by objects, binning with preservation of object
+  % relationships is unclear.
+  % existing work uses hand coding
+  % cite ramanan, choi, laptev but not in detail
+  Egocentric activities
+  are well-defined by the types of objects that are interacted with by users
+  during particular actions (``active objects'') \cite{Ramanan12}, yet how to optimally aggregate
+  features across space-time remains unclear.
+  The familiar bag-of-words approach can be used to aggregate 
   features with reasonable performance, but ultimately falls short because it
   fails to capture temporal dependencies between features.
   The pyramid is a well-known extension of a pure bag-of-words model that encodes spatial
   relationships between features by recursively subdividing images or video and extracting 
   features from each spatial bin \cite{Lazebnik06}, yielding impressive
   results across a range of applications.
-  
-  Existing work in egocentric activity recognition has shown that activities
-  are well-defined by the types of objects that are interacted with by users
-  during particular actions \cite{Ramanan12}. 
-  Previous work in egocentric activity recognition has often employed a single strict
-  hand-coded partition scheme \cite{Ramanan12}, which may not be particularly robust to
-  inter and intra-class variation. The work of \cite{Laptev08} uses multiple
-  candidate spatio-temporal grids for the task of activity recognition (but
-  not in an egocentric setting), however each grid is predefined and only 24
-  possible
-  candidate grids are considered. With a small pool of schemes for imposing spatial
+  Existing methods for activity recognition often rely on
+  hand-coded partition schemes \cite{Ramanan12, Choi08, Laptev08}.
+  With a small pool of hand-coded schemes for imposing spatial
   information, the most discriminative space-time relationships between features may not be 
-  captured. The work presented in \cite{Kovashka10}
-  describes an effective state-of-the-art method for learning the shapes of spatio-temporal
-  regions on a per-class basis, but makes use of lower-level features such as
-  optical flow, rather than object locations, and
-  is not applied in an egocentric setting.
+  captured. 
+% it is problematic to use hand-coded partitions because...
 
-  Spatial pooling of features in a learned way for object recognition in 2D images
-  has been thoroughly
-  explored \cite{Sharma11}, but to our knowledge there has been little work
-  on learning the best way to pool spatio-temporal features in video.
-  
-  Our proposed method, however, builds on existing work by creating a large number
-  of candidate partitioning schemes in a randomized way. 
-  We then pool spatio-temporal features in a
+
+
+
+
+
+
+  % our idea: learn partitions
+  Our idea is to randomly generate a pool
+  of candidate partitioning schemes. 
+  We then aggregate spatio-temporal features in a
   learned way, using a boosting algorithm to select those partitioning schemes which are most discriminative.
-  Our main novel contribution is
-  the ability to bias the randomization step such that 
-  resulting partition schemes have a high probability of cutting through or around
-  spatio-temporal regions which are known to tend to contain active objects.
-  We call pyramids generated according to this method object-centric
-  pyramids.
-  We found that partitioning schemes that have a larger number of levels and
-  are biased to cut through regions known to contain active
-  objects are often the most discriminative.
+  % focus the partition generation
+  Boosting is computationally expensive in terms of the number of weak
+  classifiers that are used, and there are many high-dimensional
+  partitioning schemes we could sample. This suggests that a large pool of
+  candidate partition schemes is required to obtain good performance.
+  In order to avoid generation of partitions that are not discriminative, we
+  introduce object-centric partitioning schemes, which have a high
+  probability of cutting through video regions known to contain active
+  objects.
+  
+
+
+
+
+
+  % method overview short, mention partition generation and boosting
+  Given a set of labeled training videos with object annotations (bounding boxes and
+  active/passive tags), our method first computes histograms of active
+  object locations across each $(x,y,t)$ dimension of video. We use these
+  histograms to generate a pool of object-centric partition schemes that have a high
+  probability of cutting through regions known to frequently contain active
+  objects. We compute feature vector representations of each training video clip using each
+  candidate in the pool, and use these vectors to train a pool of weak SVM
+  classifiers. Finally, we use a boosting algorithm to select the partitions
+  which are most discriminative and form a final strong classifier.
+
+
+
+
+
+
+  % results teaser -- not just improvement on stoa, but detail on what will
+  % be shown
+  We find that object-centric partitioning schemes that have a larger number
+  of levels are often the most discriminative in the sense that they tend to
+  get selected by boosting over their unbiased counterparts.
   We evaluate the performance of our method using a cross-validation
-  experiment and found that our method using object-centric pyramids improves
+  experiment and find that our method using object-centric pyramids improves
   upon the current state of the art.
+
+
+
+
+
+	
 
 %-------------------------------------------------------------------------
 \subsection{Related Work}
 
+  %--------
+  % activity recognition in general
+
+
+
+
+  % BoW methods for video (laptev, choi, ramanan)
+
+
+
+
+
+
+  % egocentric analysis: recognition, summarization.
+  % yong jae, lu zheng, fathi/ren (and some of their refs)
+  % main point: importance of objects in egocentric vs other cues in other
+  % domains
+
+
+
+
+
+  % spatial binning strategies
+  % kovashka, lazebnik, sharma, jiang (but not too much credit to jiang)
+
+
+
+
+
+
+
+
+
+
+
+  The work presented in \cite{Kovashka10}
+  describes an effective state-of-the-art method for learning the shapes of spatio-temporal
+  regions on a per-class basis, but makes use of lower-level features such as
+  optical flow, rather than object locations, and
+  is not applied in an egocentric setting.
+  Spatial pooling of features in a learned way for object recognition in 2D images
+  has been thoroughly
+  explored \cite{Sharma11}, but to our knowledge there has been little work
+  on learning the best way to pool spatio-temporal features in video.
 
 	In \cite{Laptev08}, Laptev \etal investigate automatically aligning movie scripts with
 	video for the purpose of annotating human actions, and achieve 91.8\%
@@ -303,22 +397,17 @@
 
 			\end{enumerate}
 	
-	The original version of the SAMME algorithm has each weak classifier
-	$f_\theta$ trained on
-	a randomly sampled subset of the training examples, but we train each of
-	our weak classifiers on the full training dataset.
 
-  \subsection{RSTP Implementation}
-	We use k-d trees to represent randomized partition schemes. Each level in the tree
-	represents a set of cuts along a certain dimension, and we generate cuts
-  for subsequent levels in the tree.
-  in a round-robin manner over dimensions $(x, y, t)$. Cuts for child nodes are generated independently, and each cut is axis-aligned
+  \subsection{Generating Randomized Spatio-Temporal Partitions (RSTP)}
+  An RSTP is generated using a hierarchical partitioning of feature space.  
+  We generate cuts independently in a round-robin manner over dimensions $(x, y, t)$. 
+  Each cut is axis-aligned
   (we incorporate random shifts, but not random rotations).
   To construct a partition scheme that is easily applicable to videos of
   arbitrary size, we consider
   partitioning an ``idealized'' video clip that has all dimensions normalized
   to length 1. To generate a single cut we sample a random number from a
-  distribution subject to any constraints imposed by ``parent cuts'' and use
+  uniform distribution subject to any constraints imposed by ``parent cuts'' and use
   this as a randomized offset for an appropriate axis-aligned plane. To
   construct an unbiased partition scheme we sample from a uniform
   distribution.
@@ -326,7 +415,9 @@
   To represent a video clip as a randomized spatio-temporal pyramid (RSTP)
   using a particular partition scheme we use the output of object detectors
   trained in \cite{Ramanan12}, which gives bounding boxes and object
-  labels for each extracted frame. We compute histograms of detected
+  labels for each extracted frame. We use centroids of bounding boxes to
+  obtain $(x,y,t)$ coordinates for each individual object.
+  We compute histograms of detected
   objects for each individual level in the pyramid,
   where level 0 is the entire video clip volume and level $i$ is all the
   cells of depth $i$ in the k-d tree. 
@@ -338,11 +429,16 @@
   objects into account gives a substantial improvement to overall
   classification accuracy.
   
-  \subsection{Object-Centric Cuts (OCC)}
-  The key novel contribution of our work is the ability to create
-  meaningfully biased partition schemes that tend to be more discriminative
-  than unbiased partition schemes.
-  To accomplish this, we replace the uniform distribution with a discrete
+  \subsection{Generating Object-Centric Cuts (OCC)}
+  There are many high-dimensional partition schemes that we could sample
+  randomly, which suggests that a very large pool of candidate partition
+  schemes is required to obtain good results. However, boosting is
+  computationally expensive, so we would like to minimize the size of the
+  pool while maintaining good results.
+  One of the main contributions of our work is the ability to generate
+  meaningfully biased randomized partition schemes that tend to be more discriminative
+  than their unbiased counterparts.
+  To accomplish this, we propose to replace the uniform distribution with a discrete
   approximation of the distribution of active objects across each dimension
   $(x, y, t)$
   and otherwise proceed normally.
@@ -367,16 +463,14 @@
 	the active objects are close to the hands which are in the lower field of
 	view from an egocentric perspective. Active objects tend to occur on the
   right side of the field of view slightly more often because a large
-  percentage of users are right-handed. Since different clips can have
+  percentage of users are right-handed.
+  The distribution of active objects
+  across the temporal dimension is nearly uniform. 
+  Since different clips can have
   varying lengths with respect to time, we normalize the length of each
   video clip to 1 and consider relative temporal locations of active
-  objects. The distribution of active objects
-  across the temporal dimension is nearly uniform. When generating a biased
-	partition scheme, we can choose to prefer splits that cut around regions that tend to
-	contain active objects (denoted as bias type 2), or we can choose to prefer 
-	splits that cut through regions that tend to contain active objects (denoted as bias type 3). 
-	We denote by bias type 1 the method of using uniform
-	distributions to generate partitions. For biased partitions, we generate
+  objects. 
+	For biased partitions, we generate
   the first split along each dimension according to a weighted distribution
   corresponding to the histograms of observed active object regions in the training data,
   and we generate all subsequent child cuts using a uniform distribution.
@@ -386,10 +480,10 @@
   be interpreted as implicitly taking into account information about hand
   locations.
   
-  Figure 3 depicts an example 3-level partition scheme created using bias
-  type 3. The salient feature to note is that visible splits along the $y$
+  Figure 3 depicts an example 3-level object-centric partition scheme. 
+  The salient feature to note is that visible splits along the $y$
   dimension correspond to the observed distribution of active objects along
-  the $y$ dimension.
+  the $y$ dimension of the training data.
 
 \section{Results}
   The ADL dataset consists of hundreds of egocentric video clips
@@ -466,65 +560,62 @@
   activities, the ADL dataset simply uses the label of the interrupting
   action when a longer action is disrupted.
 	
-	\begin{table}
+  
+  \subsection{Action Recognition Performance}
+  Following \cite{Ramanan12}, we evaluate recognition performance on the ADL
+  dataset using a form of cross
+	validation (the video clips from person $i$ are used as a held out validation set, and
+	training occurs using the video clips from the remaining people).
+  We exclude videos from the first 6 people
+  (because they were used to train the object detectors) from our
+  experiments.
+  The results for the bag of words baseline and temporal pyramids (2 level, with
+  a single cut along the temporal dimension) are both presented in
+  \cite{Ramanan12}.
+  
+
+	  Table 2 shows a comparison of overall classification accuracy between our
+  approach and the method based on temporal pyramids which is
+  presented in \cite{Ramanan12}. The temporal pyramid
+  has two levels, formed by making a single cut along the temporal
+  dimension and no cuts along the spatial dimensions.
+  Row 1 shows results
+  obtained using only passive detected objects, while row 2 shows results obtained
+  using both active (being interacted with) and passive detected objects.
+  The consideration of active objects when constructing feature vectors
+  gives a significant improvement over just including passive objects, and
+  in both cases our method improves on the current state of the art.
+
+  \begin{table}
 		\begin{center}
 			\begin{tabular}{|l|c|c|c|c|c|}
 				\hline
-        Feature Type & BoW & Temporal Pyramid & RSTP & RSTP+OCC \\
+        Feature Type & BoW & Temporal Pyramid \cite{Ramanan12} & RSTP & RSTP+OCC \\
 				\hline\hline
-        STIP & 16.5\% & 22.8\% & - & - \\ 
-        \hline
-        O & 26.6\% & 29.0\% & - & 32.7\%\\
+        O & 26.6\% & 29.0\% & 35.4\% & 32.7\%\\
         \hline
         AO & 34.9\% & 36.9\% & 33.7\% & 38.7\%\\
 				\hline
 			\end{tabular}
 		\end{center}
 		\caption{Overall classification accuracy on pre-segmented video clips,
-    evaluated using a form of cross validation. Our boosted RSTP classifier
-  improves on the current state of the art.}
+    evaluated using a form of cross validation. Our boosted classifiers
+  improve on the current state of the art.}
 	\end{table}
-	
-  Table 2 shows a comparison of overall classification accuracy between our
-  method and two methods presented in \cite{Ramanan12}. The temporal pyramid
-  has two levels, formed by making a single cut along the temporal
-  dimension and no cuts along the spatial dimensions.
   
-  Row 1 shows results originally published in \cite{Ramanan12} which we
-  reproduce to illustrate the advantage of using higher level features such
-  as detected objects over low level features such as space-time interest
-  points.  Row 2 shows results
-  obtained using only passive detected objects, while row 3 shows results obtained
-  using both active (being interacted with) and passive detected objects.
-  The consideration of active objects when constructing feature vectors
-  gives a significant improvement over just including passive objects, and
-  in both cases our method improves on the current state of the art.
-
-	The results shown in Table 2 and Figure 4 are computed using a form of cross
-	validation (the video clips from person $i$ are used as a held out validation set, and
-	training occurs using the video clips from the remaining people).
-  Following \cite{Ramanan12}, we exclude videos from the first 6 people
-  (because they were used to train the object detectors) from our
-  experiments.
-  Feature vectors are computed using detections for both active and passive
-  objects. The results for bag of words and temporal pyramids (2 level, with
-  a single cut along the temporal dimension) are both presented in
-  \cite{Ramanan12}.
-  
-  For this experiment we used pools of 4-level partitioning schemes of
+	For this experiment we used pools of 4-level partitioning schemes of
   varying sizes with a varying number of boosting rounds. The numbers
   presented in Table 2 were obtained with 5 boosting rounds and a pool of
   size 70.
-  Each partitioning scheme was of bias type 3, meaning the cuts for level 1
-  were biased such that they had a tendency to cut through regions containing
-  active objects, and the cuts for levels 2 and 3 were drawn from a uniform
-  distribution. The work of \cite{Jiang12}, which uses a similar
+  The work of \cite{Jiang12}, which uses a similar
   pyramid-based boosting approach for 2D image recognition, found that using
   pyramids with more than 3 levels actually led to a decrease in overall
   accuracy due to over-segmentation of image space. However, we found that in the
   3D case 4-level pyramids give better overall accuracy than coarser-grained
   representations.
-	
+
+
+  
   \begin{figure}
   \begin{center}
   \bmvaHangBox{\fbox{\includegraphics[width=10.0cm]{figures/confn2-labels.png}}}
@@ -533,7 +624,7 @@
   \label{fig:teaser}
   \end{center}
   \end{figure}
-	As seen in Figure 3, our method has particularly good
+ 	As seen in Figure 3, our method has particularly good
   performance for activity types 5 and 6 (``combing hair'' and ``drying
   hands/face'', respectively). Some activity types on which our method does
   poorly are 10 and 11, which are ``making tea'' and ``making coffee'',
@@ -541,23 +632,24 @@
   the ADL dataset). Since the two activity types are similar in the sense that
   they involve the same active objects, it is not
   unexpected that a recognition system would confuse them often.
-  
+   
+  \subsection{Effect of Object-Centric Partition Schemes}
+	
+
   To illustrate the improvement on accuracy obtained from using a pool of
-  biased partitions, we created 3 separate pools containing 4-level
+  biased partitions, we created separate pools containing 4-level
   partition schemes of each bias type and
   repeatedly ran the cross-validation experiment, adding additional
-  partitions to each pool between runs. The pool containing partitions of
-  bias type 3 consistently outperformed the pool of bias type 2, which
-  consistently outperformed the unbiased pool. The
+  partitions to each pool between runs. The pool containing object-centric partitions 
+  consistently outperformed the unbiased pool.
+  The
   results from this experiment are depicted in figure 4. We were initially
   surprised to find that increasing pool size can
   sometimes negatively impact overall classification accuracy, however we
   believe this is due to the inherent bias between the training and the test
   data. In other words, sometimes a partition scheme with small training error
   on the train data that gets selected during a round of boosting can have a
-  larger training error on the test data. A similar behavior was discovered
-  in the case of boosting spatial pyramids for 2D image recognition
-  \cite{Jiang12}.
+  larger training error on the test data. 
  
   \begin{figure}[t]
 		\begin{center}
@@ -571,6 +663,7 @@
 				\label{fig:onecol}
 	\end{figure}
   
+  \subsection{Analysis of Selected Partitions}
   To further support our claim that 4-level pyramids of bias type 3 tend to be most
   discriminative, we created a heterogeneous pool containing partition
   schemes of
@@ -591,25 +684,32 @@
   partition schemes, especially those which are unbiased.
 	
 \section{Conclusion and Future Work}
-	We have presented an application of the well-known boosting framework
-	with results for an
-  egocentric activity recognition task that improve upon the current state of
-  the art.
-	Our main novel contribution is a method for generating biased partition
-	schemes based on observations of active object locations throughout the
-  training data (Object-Centric Cuts).
-	Future work could potentially incorporate different types of biases when generating
+	Our main novel contribution is two-fold. We show how to learn the most
+  discriminative partition schemes for spatio-temporal binning in video feature space, and
+  we introduce object-centric partition schemes, which have a high
+  probability of cutting through video regions known to frequently contain
+  active objects. Unlike previous work, we randomly generate a pool of
+  candidate partitioning schemes and select those which are most
+  discriminative using a boosting algorithm.
+  Our recognition approach improves on the current state of the art, and our
+  experiments demonstrate the positive impact of taking active object
+  locations into account by generating object-centric partition schemes.
+  
+  In future work, we intend to investigate ways of learning the most
+  discriminative partition schemes on a per-class basis.
+	Additionally, it may be possible to incorporate different types of biases when generating
 	partitions. The ADL dataset also includes annotations for hand positions,
-	which we have incorporated implicitly through our generation of biased partitions
-	biased relative to regions which tend to contain active objects. However,
+	which we have incorporated implicitly through our generation of
+  object-centric cuts.
+	However,
 	it could be possible to incorporate explicit information given by hand
-	positions to obtain better classification results.
+	positions to obtain better results.
 	The partitions we focus on contain cuts that are
   planar and axis-aligned (we consider random shifts but not random
   rotations, and we do not consider non-planar splits),
   but it is possible to carve up the
-	video volume in more advanced non-linear ways. Such a method would involve more
-	sophisticated computational geometry, but may yield a more discriminative
+	video volume in more advanced non-linear ways. Such a method would 
+  make histogram computation more expensive	, but may yield a more discriminative
 	partitioning scheme that could lead to better classification accuracy.
 \bibliography{egbib}
 \end{document}

@@ -1,4 +1,4 @@
-\begin{thebibliography}{16}
+\begin{thebibliography}{20}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -11,10 +11,22 @@ Anna Bosch, Andrew Zisserman, and Xavier Munoz.
 \newblock \emph{Proceedings of the 6th ACM international conference on Image
   and video retrieval}, 2007.
 
+\bibitem[Catz et~al.(1997)Catz, Itzkovich, Agranov, Ring, Tamir,
+  et~al.]{Catz97}
+A~Catz, M~Itzkovich, E~Agranov, H~Ring, A~Tamir, et~al.
+\newblock Scim--spinal cord independence measure: a new disability scale for
+  patients with spinal cord lesions.
+\newblock \emph{Spinal Cord}, 35\penalty0 (12):\penalty0 850, 1997.
+
 \bibitem[Chang and Lin(2011)]{Chang11}
 Chih-Chung Chang and Chih-Jen Lin.
 \newblock Libsvm: A library for support vector machines.
 \newblock \emph{ACM Trans. Intell. Syst. Technol.}, pages 27:1--27:27, 2011.
+
+\bibitem[Choi et~al.(2008)Choi, Jeon, and Lee]{Choi08}
+Jaesik Choi, Won~J. Jeon, and Sang-Chul Lee.
+\newblock Spatio-temporal pyramid matching for sports videos.
+\newblock 2008.
 
 \bibitem[Fathi et~al.(2011)Fathi, Ren, and Rehg]{Fathi11}
 A.~Fathi, Xiaofeng Ren, and J.M. Rehg.
@@ -28,11 +40,30 @@ Alireza Fathi, Yin Li, and James~M Rehg.
 \newblock \emph{Proceedings of the 12th European conference on Computer Vision
   - Volume Part II}, 2012.
 
+\bibitem[Itzkovich et~al.(2007)Itzkovich, Gelernter, Biering-Sorensen, Weeks,
+  Laramee, Craven, Tonack, Hitzig, Glaser, Zeilig, et~al.]{Itzkovich07}
+M~Itzkovich, I~Gelernter, F~Biering-Sorensen, C~Weeks, MT~Laramee, BC~Craven,
+  M~Tonack, SL~Hitzig, E~Glaser, G~Zeilig, et~al.
+\newblock The spinal cord independence measure (scim) version iii: reliability
+  and validity in a multi-center international study.
+\newblock \emph{Disability \& Rehabilitation}, 29\penalty0 (24):\penalty0
+  1926--1933, 2007.
+
 \bibitem[Jiang et~al.(2012)Jiang, Yuan, and Yu]{Jiang12}
 Yuning Jiang, Junsong Yuan, and Gang Yu.
 \newblock Randomized spatial partition for scene recognition.
 \newblock \emph{Proceedings of the 12th European conference on Computer Vision
   - Volume Part II}, pages 730--743, 2012.
+
+\bibitem[Kopp et~al.(1997)Kopp, Kunkel, Flor, Platz, Rose, Mauritz, Gresser,
+  McCulloch, Taub, et~al.]{Kopp97}
+Bruno Kopp, Annett Kunkel, Herta Flor, Thomas Platz, Ulrike Rose, Karl-Heinz
+  Mauritz, Klaus Gresser, Karen~L McCulloch, Edward Taub, et~al.
+\newblock The arm motor ability test: reliability, validity, and sensitivity to
+  change of an instrument for assessing disabilities in activities of daily
+  living.
+\newblock \emph{Archives of physical medicine and rehabilitation}, 78\penalty0
+  (6):\penalty0 615, 1997.
 
 \bibitem[Kovashka and Grauman(2010)]{Kovashka10}
 Adriana Kovashka and Kristen Grauman.
