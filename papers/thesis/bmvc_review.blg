@@ -2,7 +2,6 @@ This is BibTeX, Version 0.99c (Web2C 7.5.7)
 The top-level auxiliary file: bmvc_review.aux
 The style file: plainnat.bst
 Database file #1: egbib.bib
-Warning--empty booktitle in Choi08
 Warning--empty journal in Kovashka10
 Warning--empty year in Laptev08
 Warning--empty year in Laptev08
@@ -10,46 +9,47 @@ Warning--empty year in Marszalek09
 Warning--empty year in Marszalek09
 Warning--empty year in Ramanan12
 Warning--empty year in Ramanan12
+Warning--empty journal in Ramanan03
 Warning--empty journal in Rodriguez08
-You've used 20 entries,
+You've used 25 entries,
             2773 wiz_defined-function locations,
-            723 strings with 9066 characters,
-and the built_in function-call counts, 11448 in all, are:
-= -- 1003
-> -- 768
-< -- 14
-+ -- 257
-- -- 237
-* -- 945
-:= -- 1715
-add.period$ -- 60
-call.type$ -- 20
-change.case$ -- 136
-chr.to.int$ -- 20
-cite$ -- 49
-duplicate$ -- 506
-empty$ -- 823
-format.name$ -- 265
-if$ -- 2437
-int.to.chr$ -- 1
+            751 strings with 9926 characters,
+and the built_in function-call counts, 13294 in all, are:
+= -- 1165
+> -- 882
+< -- 18
++ -- 296
+- -- 270
+* -- 1075
+:= -- 2014
+add.period$ -- 75
+call.type$ -- 25
+change.case$ -- 162
+chr.to.int$ -- 24
+cite$ -- 59
+duplicate$ -- 599
+empty$ -- 966
+format.name$ -- 311
+if$ -- 2817
+int.to.chr$ -- 2
 int.to.str$ -- 1
-missing$ -- 20
-newline$ -- 108
-num.names$ -- 80
-pop$ -- 285
+missing$ -- 25
+newline$ -- 133
+num.names$ -- 100
+pop$ -- 334
 preamble$ -- 1
-purify$ -- 116
+purify$ -- 137
 quote$ -- 0
-skip$ -- 440
+skip$ -- 516
 stack$ -- 0
-substring$ -- 445
-swap$ -- 110
+substring$ -- 455
+swap$ -- 116
 text.length$ -- 10
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 220
+type$ -- 275
 warning$ -- 9
-while$ -- 91
+while$ -- 106
 width$ -- 0
-write$ -- 256
+write$ -- 316
 (There were 9 warnings)

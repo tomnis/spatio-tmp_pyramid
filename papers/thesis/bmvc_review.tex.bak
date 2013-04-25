@@ -17,7 +17,7 @@
  University of Texas at Austin
 }
 
-\runninghead{McCandless}{Object-Centric Spatio-Temporal Pyramids}
+\runninghead{McCandless, Grauman}{Object-Centric Spatio-Temporal Pyramids}
 
 % Any macro definitions you would like to include
 % These are not defined in the style file, because they don't begin
@@ -46,13 +46,13 @@
   and may fail to capture important spatio-temporal relationships between
   features.
   We propose to randomly generate a pool of candidate binning schemes and
-  use a boosting algorithm to combine those which are most discriminative. 
-  In order to efficiently focus the candidate partition schemes, we
+  use a boosting algorithm to select those which are most discriminative for use in our final
+  classifier. In order to efficiently focus the candidate partition schemes, we
   create biased partitions using ``object-centric'' cuts in video volumes.
   Partition schemes generated using our method have a high probability of
   cutting through video regions that contain ``active objects,'' the objects
   being interacted with by the user during a given frame.
-  Given a set of training videos, our method first computes histograms of
+  Given a set of training vides, our method first computes histograms of
   active object locations across each $(x, y, t)$ dimension, then uses these
   histograms to generate a pool of object-centric partition schemes that
   have a high probability of cutting through regions that often contain
@@ -85,7 +85,7 @@
 	a recent trend in wearable computing is so-called life logging which can
 	assist patients suffering from memory loss \cite{Sellen07}. 
 	A robust egocentric activity recognition
-	system could automatically tag video clips with their corresponding types of activities.
+	system could automatically tag video clips with types of activities.
   Additionally, there are many clinical benchmarks used to evaluate patients everyday
   functional abilities \cite{Kopp97, Catz97, Itzkovich07}. 
   These benchmarks are currently conducted in a
@@ -217,15 +217,15 @@
   community. Recent work has explored discovery of important people for
   automatic summarization of egocentric
   video \cite{Lee12}. The relationship between gaze and activity in an
-  egocentric setting is explored in \cite{Fathi12}, which presents methods
+  egocentric setting is explored in \cite{Fathi12}, which develops methods
   to predict activity given gaze, gaze given activity, and both activity and
   gaze given neither. Object recognition in an egocentric setting has been
   explored with promising results by \cite{Ramanan12, Fathi11, Ren09}.
-  Activity recognition in an egocentric context has been investigated by
+  Activity regognition in an egocentric context has been investigated by
   \cite{Ramanan12, Fathi11_}.
   The main work related to our own is that carried out in \cite{Ramanan12}, 
   which introduces the ADL dataset we use to benchmark our method, 
-  as well as detailed analysis of the the
+  as well as detailed analysis of
 	performance of several different classifiers. 
 	
   Existing work has established that egocentric activities are object-driven
@@ -252,8 +252,8 @@
   
 	
   
-	We use a version of the SAMME multi-class Ada-boost algorithm \cite{Zhu06}
-  with randomized spatio-temporal pyramids to explore discriminative
+	We use a version of the SAMME Ada-boost algorithm \cite{Zhu06}
+  with randomized spatial-temporal pyramids to explore discriminative
   selection of partitions for video data, specifically in the egocentric
   domain.
 
@@ -268,16 +268,16 @@
   
   Existing methods for non-egocentric activity
   recognition often use space-time interest points \cite{Laptev03} as features. In other
-  words, in a non-egocentric setting action recognition is often driven by
+  words, in a non-egocentric setting action recognition is driven by
   summarization of motion cues throughout video, while object locations can
   serve as effective features in an egocentric setting.
 
   Active objects, those which are being interacted with by the user in a
   given video clip, are especially helpful features for egocentric activity
   recognition \cite{Ramanan12}, yet there is little work in the literature
-  exploring the best ways to pool video features across space-time. A common
+  exploring the best ways to pool features across space-time. A common
   technique for pooling features is ``bag-of-words'', an orderless histogram
-  of feature counts. This technique is simple, but does not encode any
+  of feature counts. This technique is simple but does not encode any
   potentially useful relationships between features in space-time. The
   ``pyramid'' is an extension to bag-of-words that encodes space-time
   relationships between features by recursively
@@ -515,7 +515,7 @@
   We do not consider locations of passive objects at all during the
   generation of biased partition schemes.
   Since active objects are located
-  in close spatial proximity to hands, creating object-centric partition schemes can
+  in close spatial proximity to hands, creating biased partition schemes can
   be interpreted as implicitly taking into account information about hand
   locations.
 	\begin{figure}[t]
@@ -604,7 +604,6 @@
   varied than actions presented in previous datasets such as that of \cite{Fathi11}.
   There are 26 different 
 	types of detected objects, including 5 active and 21 passive objects. 
-  Lists of activity types and object types are given in Table 1.
   Object detectors are trained on videos from the
   first 6 people and tested on the videos from the remaining 14 people.
 
@@ -696,7 +695,7 @@
   \label{fig:teaser}
   \end{center}
   \end{figure}
- 	As seen in Figure 6, our method has particularly good
+ 	As seen in Figure 3, our method has particularly good
   performance for activity types 5 and 6 (``combing hair'' and ``drying
   hands/face'', respectively). Some activity types on which our method does
   poorly are 10 and 11, which are ``making tea'' and ``making coffee'',
@@ -704,13 +703,6 @@
   the ADL dataset). Since the two activity types are similar in the sense that
   they involve the same active objects, it is not
   unexpected that a recognition system would confuse them often.
-  Furthermore, since the distributions of objects across space-time are
-  similar, and kettles and tea bags are not modelled in an active way, it is
-  difficult for our boosting algorithm to select partitioning schemes that
-  are discriminative for these classes. An extension of our method which
-  allowed selection of discriminative partition schemes on a per-class basis
-  could allow for more fine-grained control and could help mitigate such
-  issues.
 
 
 
@@ -723,8 +715,7 @@
   object-centric partitions, we created separate pools containing 4-level
   partition schemes of each bias type and
   repeatedly ran our boosting algorithm, computing training error and adding additional
-  partitions to each pool between runs. Results from this experiment are
-  depicted in Figure 7. The pool containing object-centric partitions 
+  partitions to each pool between runs. The pool containing object-centric partitions 
   usually had a lower training error than the unbiased pool.
   Larger improvements are visible with smaller pool sizes, and the difference
   between the two pools diminishes as pool size increases. This conforms to

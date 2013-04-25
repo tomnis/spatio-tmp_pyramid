@@ -1,0 +1,124 @@
+	\begin{table}
+		\begin{center}
+			\begin{tabular}{|l|c|}
+				\hline \hline
+        label & activity type \\
+        \hline
+        1 & combing hair \\
+        \hline
+        2 & make up \\
+        \hline
+        3 & brushing teeth \\
+        \hline
+        4 & dental floss \\
+        \hline
+        5 & washing hands/face \\
+        \hline
+        6 & drying hands/face \\
+        \hline
+        7 & laundry \\
+        \hline
+        8 & washing dishes \\
+        \hline
+        9 & moving dishes \\
+        \hline
+       10 & making tea \\
+        \hline
+       11 & making coffee \\
+        \hline
+       12 & drinking water/bottle \\
+        \hline
+       13 & drinking water/tap \\
+        \hline
+       14 & preparing cold food/snack \\
+        \hline
+       15 & vacuuming \\
+        \hline
+       16 & watching tv \\
+        \hline
+       17 & using computer \\
+        \hline
+       18 & using cell phone \\
+				\hline
+			\end{tabular}
+		\end{center}
+		\caption{Types of activities present in the ADL dataset.}
+	\end{table}
+  
+  \begin{table}
+    \begin{center}
+      \begin{tabular}{|l|c|}
+				\hline \hline
+        label & object type \\
+        \hline
+        1 & fridge (active)\\
+        \hline
+        2 & microwave (active)\\
+        \hline
+        3 & mug/cup (active)\\
+        \hline
+        4 & oven/stove (active)\\
+        \hline 
+        5 & soap liquid (active) \\
+        \hline
+        6 & bed (passive) \\
+        \hline 
+        7 & book (passive) \\
+        \hline 
+        8 & bottle (passive) \\
+        \hline 
+        9 & cell phone (passive)\\
+        \hline
+        10 & dental floss (passive) \\
+        \hline
+        11 & detergent (passive) \\
+        \hline
+        12 & dish (passive) \\
+        \hline 
+        13 & door (passive) \\
+        \hline 
+        14 & fridge (passive) \\
+        \hline 
+        15 & kettle (passive) \\
+        \hline
+        16 & laptop (passive) \\
+        \hline 
+        17 & microwave (passive) \\
+        \hline
+        18 & monitor (passive) \\
+        \hline
+        19 & pan (passive) \\
+        \hline
+        20 & pitcher (passive) \\
+        \hline
+        21 & soap liquid (passive) \\
+        \hline 
+        22 & tap (passive) \\
+        \hline
+        23 & tea bag (passive) \\
+        \hline 
+        24 & toothpaste (passive) \\
+        \hline 
+        25 & television (passive) \\
+        \hline 
+        26 & tv remote (passive) \\
+        \hline
+
+      \end{tabular}
+     \end{center}
+  \end{table}
+
+
+
+
+
+	\begin{figure}[t]
+		\begin{center}
+			%\fbox{\rule{0pt}{2in} \rule{0.9\linewidth}{0pt}}
+			  \includegraphics[width=5.0cm]{figures/thumbnail.jpg}
+		\end{center}
+    \caption{An example frame from the ADL dataset with annotations for hand
+    position and detected objects} 
+				\label{fig:long}
+				\label{fig:onecol}
+	\end{figure}
