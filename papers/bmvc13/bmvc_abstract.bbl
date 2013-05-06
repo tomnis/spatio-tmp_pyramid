@@ -1,14 +1,29 @@
-\begin{thebibliography}{1}
+\begin{thebibliography}{4}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
   \providecommand{\doi}[1]{doi: #1}\else
   \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
 
-\bibitem[Pirsiavash and Ramanan()]{Ramanan12}
+\bibitem[Choi et~al.(2008)Choi, Jeon, and Lee]{Choi08}
+Jaesik Choi, Won~J. Jeon, and Sang-Chul Lee.
+\newblock Spatio-temporal pyramid matching for sports videos.
+\newblock \emph{MIR}, 2008.
+
+\bibitem[Laptev et~al.(2008)Laptev, Marszalek, Schmid, and Rozenfeld]{Laptev08}
+I.~Laptev, M.~Marszalek, C.~Schmid, and B.~Rozenfeld.
+\newblock Learning realistic human actions from movies.
+\newblock \emph{CVPR}, 2008.
+
+\bibitem[Lazebnik et~al.(2006)Lazebnik, Schmid, and Ponce]{Lazebnik06}
+Svetlana Lazebnik, Cordelia Schmid, and Jean Ponce.
+\newblock Beyond bags of features: Spatial pyramid matching for recognizing
+  natural scene categories.
+\newblock \emph{CVPR}, 2006.
+
+\bibitem[Pirsiavash and Ramanan(2012)]{Ramanan12}
 H.~Pirsiavash and D.~Ramanan.
 \newblock Detecting activities of daily living in first-person camera views.
-\newblock \emph{Computer Vision and Pattern Recognition, 2012.}, pages
-  2847--2854.
+\newblock \emph{CVPR}, 2012.
 
 \end{thebibliography}

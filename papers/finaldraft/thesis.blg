@@ -1,0 +1,97 @@
+This is BibTeX, Version 0.99c (Web2C 7.5.7)
+The top-level auxiliary file: thesis.aux
+The style file: bmvc2k.bst
+Database file #1: egbib.bib
+Warning--entry type for "Choi08" isn't style-file defined
+--line 8 of file egbib.bib
+Warning--entry type for "Ramanan03" isn't style-file defined
+--line 30 of file egbib.bib
+Warning--entry type for "Spriggs" isn't style-file defined
+--line 52 of file egbib.bib
+Warning--entry type for "Rao01" isn't style-file defined
+--line 59 of file egbib.bib
+Warning--entry type for "Jiang12" isn't style-file defined
+--line 67 of file egbib.bib
+Warning--entry type for "Laptev08" isn't style-file defined
+--line 74 of file egbib.bib
+Warning--entry type for "ren-gu-cvpr2010" isn't style-file defined
+--line 81 of file egbib.bib
+Warning--entry type for "Fathi-ICCV2011" isn't style-file defined
+--line 89 of file egbib.bib
+Warning--entry type for "Fathi12" isn't style-file defined
+--line 96 of file egbib.bib
+Warning--entry type for "Kopp97" isn't style-file defined
+--line 103 of file egbib.bib
+Warning--entry type for "Catz97" isn't style-file defined
+--line 114 of file egbib.bib
+Warning--entry type for "Itzkovich07" isn't style-file defined
+--line 123 of file egbib.bib
+Warning--entry type for "Sellen07" isn't style-file defined
+--line 133 of file egbib.bib
+Warning--entry type for "Lazebnik06" isn't style-file defined
+--line 142 of file egbib.bib
+Warning--entry type for "Zhu06" isn't style-file defined
+--line 150 of file egbib.bib
+Warning--entry type for "Sundaram" isn't style-file defined
+--line 180 of file egbib.bib
+Warning--entry type for "Hanheide" isn't style-file defined
+--line 195 of file egbib.bib
+Warning--entry type for "Lee12" isn't style-file defined
+--line 203 of file egbib.bib
+Warning--entry type for "Chang11" isn't style-file defined
+--line 210 of file egbib.bib
+Warning--entry type for "Fathi11" isn't style-file defined
+--line 218 of file egbib.bib
+Warning--entry type for "Sharma11" isn't style-file defined
+--line 225 of file egbib.bib
+Warning--entry type for "Kovashka10" isn't style-file defined
+--line 232 of file egbib.bib
+Warning--entry type for "Schuldt04" isn't style-file defined
+--line 239 of file egbib.bib
+Warning--entry type for "Rodriguez08" isn't style-file defined
+--line 246 of file egbib.bib
+Warning--entry type for "Bosch07" isn't style-file defined
+--line 253 of file egbib.bib
+Warning--empty journal in Marszalek09
+You've used 27 entries,
+            2120 wiz_defined-function locations,
+            643 strings with 7630 characters,
+and the built_in function-call counts, 7596 in all, are:
+= -- 627
+> -- 556
+< -- 0
++ -- 219
+- -- 190
+* -- 458
+:= -- 1296
+add.period$ -- 56
+call.type$ -- 27
+change.case$ -- 174
+chr.to.int$ -- 0
+cite$ -- 28
+duplicate$ -- 195
+empty$ -- 585
+format.name$ -- 190
+if$ -- 1551
+int.to.chr$ -- 0
+int.to.str$ -- 27
+missing$ -- 2
+newline$ -- 113
+num.names$ -- 54
+pop$ -- 301
+preamble$ -- 1
+purify$ -- 147
+quote$ -- 0
+skip$ -- 223
+stack$ -- 0
+substring$ -- 137
+swap$ -- 26
+text.length$ -- 0
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 108
+warning$ -- 1
+while$ -- 54
+width$ -- 29
+write$ -- 221
+(There were 26 warnings)

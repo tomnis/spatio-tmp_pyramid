@@ -2,53 +2,98 @@ This is BibTeX, Version 0.99c (Web2C 7.5.7)
 The top-level auxiliary file: bmvc_review.aux
 The style file: plainnat.bst
 Database file #1: egbib.bib
-Warning--empty journal in Kovashka10
-Warning--empty year in Laptev08
-Warning--empty year in Laptev08
-Warning--empty year in Marszalek09
-Warning--empty year in Marszalek09
-Warning--empty year in Ramanan12
-Warning--empty year in Ramanan12
-Warning--empty journal in Rodriguez08
-You've used 16 entries,
+<<<<<<< bmvc_review.blg
+You've used 25 entries,
+=======
+You've used 30 entries,
+>>>>>>> 1.3
             2773 wiz_defined-function locations,
-            693 strings with 7919 characters,
-and the built_in function-call counts, 8705 in all, are:
-= -- 795
-> -- 489
-< -- 14
-+ -- 163
-- -- 147
-* -- 673
-:= -- 1264
-add.period$ -- 48
-call.type$ -- 16
-change.case$ -- 97
-chr.to.int$ -- 16
-cite$ -- 40
-duplicate$ -- 420
-empty$ -- 667
-format.name$ -- 171
-if$ -- 1894
-int.to.chr$ -- 1
+<<<<<<< bmvc_review.blg
+            717 strings with 8445 characters,
+and the built_in function-call counts, 11082 in all, are:
+= -- 900
+> -- 882
+< -- 8
++ -- 296
+=======
+            739 strings with 8587 characters,
+and the built_in function-call counts, 13535 in all, are:
+= -- 1072
+> -- 900
+< -- 10
++ -- 301
+>>>>>>> 1.3
+- -- 270
+<<<<<<< bmvc_review.blg
+* -- 900
+:= -- 1820
+add.period$ -- 75
+call.type$ -- 25
+change.case$ -- 162
+chr.to.int$ -- 24
+cite$ -- 50
+duplicate$ -- 492
+empty$ -- 768
+format.name$ -- 311
+if$ -- 2238
+=======
+* -- 1036
+:= -- 2051
+add.period$ -- 90
+call.type$ -- 30
+change.case$ -- 180
+chr.to.int$ -- 29
+cite$ -- 60
+duplicate$ -- 708
+empty$ -- 1211
+format.name$ -- 318
+if$ -- 2872
+>>>>>>> 1.3
+int.to.chr$ -- 2
 int.to.str$ -- 1
-missing$ -- 16
-newline$ -- 88
-num.names$ -- 64
-pop$ -- 208
+<<<<<<< bmvc_review.blg
+missing$ -- 25
+newline$ -- 133
+num.names$ -- 100
+pop$ -- 324
+=======
+missing$ -- 30
+newline$ -- 158
+num.names$ -- 120
+pop$ -- 460
+>>>>>>> 1.3
 preamble$ -- 1
-purify$ -- 81
+purify$ -- 150
 quote$ -- 0
-skip$ -- 362
+<<<<<<< bmvc_review.blg
+skip$ -- 404
+=======
+skip$ -- 482
+>>>>>>> 1.3
 stack$ -- 0
-substring$ -- 388
-swap$ -- 106
-text.length$ -- 10
+<<<<<<< bmvc_review.blg
+substring$ -- 50
+swap$ -- 27
+text.length$ -- 0
+=======
+substring$ -- 128
+swap$ -- 69
+text.length$ -- 1
+>>>>>>> 1.3
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 176
-warning$ -- 8
+<<<<<<< bmvc_review.blg
+type$ -- 275
+warning$ -- 0
 while$ -- 75
+=======
+type$ -- 330
+warning$ -- 0
+while$ -- 95
+>>>>>>> 1.3
 width$ -- 0
-write$ -- 206
-(There were 8 warnings)
+<<<<<<< bmvc_review.blg
+write$ -- 307
+=======
+write$ -- 370
+>>>>>>> 1.3

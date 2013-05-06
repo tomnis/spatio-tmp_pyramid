@@ -1,0 +1,128 @@
+\begin{thebibliography}{10}\itemsep=-1pt
+
+\bibitem{Bosch07}
+A.~Bosch, A.~Zisserman, and X.~Munoz.
+\newblock Representing shape with a spatial pyramid kernel, 2007.
+
+\bibitem{Catz97}
+A.~Catz, M.~Itzkovich, E.~Agranov, H.~Ring, A.~Tamir, et~al.
+\newblock Scim--spinal cord independence measure: a new disability scale for
+  patients with spinal cord lesions., 1997.
+
+\bibitem{Chang11}
+C.-C. Chang and C.-J. Lin.
+\newblock L{I}{B}{S}{V}{M}: A library for support vector machines, 2011.
+
+\bibitem{Choi08}
+J.~Choi, W.~Jeon, and S.-C. Lee.
+\newblock Spatio-temporal pyramid matching for sports videos, 2008.
+
+\bibitem{Fathi-ICCV2011}
+A.~Fathi, A.~Farhadi, and J.~Rehg.
+\newblock Understanding egocentric activities, 2011.
+
+\bibitem{Fathi12}
+A.~Fathi, Y.~Li, and J.~Rehg.
+\newblock Learning to recognize daily actions using gaze, 2012.
+
+\bibitem{Fathi11}
+A.~Fathi, X.~Ren, and J.~Rehg.
+\newblock Learning to recognize objects in egocentric activities, 2011.
+
+\bibitem{Hanheide}
+M.~Hanheide, N.~Hofemann, and G.~Sagerer.
+\newblock Action recognition in a wearable assistance system, 2006.
+
+\bibitem{Itzkovich07}
+M.~Itzkovich, I.~Gelernter, F.~Biering-Sorensen, C.~Weeks, M.~Laramee,
+  B.~Craven, M.~Tonack, S.~Hitzig, E.~Glaser, G.~Zeilig, et~al.
+\newblock The spinal cord independence measure (scim) version iii: reliability
+  and validity in a multi-center international study, 2007.
+
+\bibitem{Jiang12}
+Y.~Jiang, J.~Yuan, and G.~Yu.
+\newblock Randomized spatial partition for scene recognition, 2012.
+
+\bibitem{Kopp97}
+B.~Kopp, A.~Kunkel, H.~Flor, T.~Platz, U.~Rose, K.~Mauritz, K.~Gresser,
+  K.~McCulloch, and E.~Taub.
+\newblock The arm motor ability test: reliability, validity, and sensitivity to
+  change of an instrument for assessing disabilities in activities of daily
+  living, 1997.
+
+\bibitem{Kovashka10}
+A.~Kovashka and K.~Grauman.
+\newblock Learning a hierarchy of discriminative space-time neighborhood
+  features for human action recognition, 2010.
+
+\bibitem{Laptev08}
+I.~Laptev, M.~Marszalek, C.~Schmid, and B.~Rozenfeld.
+\newblock Learning realistic human actions from movies, 2008.
+
+\bibitem{Lazebnik06}
+S.~Lazebnik, C.~Schmid, and J.~Ponce.
+\newblock Beyond bags of features: Spatial pyramid matching for recognizing
+  natural scene categories, 2006.
+
+\bibitem{Lee12}
+Y.~Lee, J.~Ghosh, and K.~Grauman.
+\newblock Discovering important people and objects for egocentric video
+  summarization, 2012.
+
+\bibitem{Marszalek09}
+M.~Marszalek, I.~Laptev, and C.~Schmid.
+\newblock Actions in context.
+\newblock 2009.
+
+\bibitem{Ramanan12}
+H.~Pirsiavash and D.~Ramanan.
+\newblock Detecting activities of daily living in first-person camera views.
+\newblock {\em CVPR}, 2012.
+
+\bibitem{Ramanan03}
+D.~Ramanan and D.~Forsyth.
+\newblock Automatic annotation of everyday movements, 2003.
+
+\bibitem{Rao01}
+C.~Rao and M.~Shah.
+\newblock View-invariance in action recognition, 2001.
+
+\bibitem{ren-gu-cvpr2010}
+X.~Ren and C.~Gu.
+\newblock Figure-ground segmentation improves handled object recognition in
+  egocentric video, 2010.
+
+\bibitem{Rodriguez08}
+M.~Rodriguez, J.~Ahmed, and M.~Shah.
+\newblock Action {M}{A}{C}{H} a spatio-temporal maximum average correlation
+  height filter for action recognition, 2008.
+
+\bibitem{Schuldt04}
+C.~Schuldt, I.~Laptev, and B.~Caputo.
+\newblock Recognizing human actions: a local svm approach, 2004.
+
+\bibitem{Sellen07}
+A.~J. Sellen, A.~Fogg, M.~Aitken, S.~Hodges, C.~Rother, and K.~Wood.
+\newblock Do life-logging technologies support memory for the past?: an
+  experimental study using sensecam, 2007.
+
+\bibitem{Sharma11}
+G.~Sharma and F.~Jurie.
+\newblock {Learning discriminative spatial representation for image
+  classification}, 2011.
+
+\bibitem{Spriggs}
+E.~Spriggs, F.~D. la~Torre, and M.~Hebert.
+\newblock Temporal segmentation and activity classification from first-person
+  sensing, 2009.
+
+\bibitem{Sundaram}
+S.~Sundaram and W.~Cuevas.
+\newblock High level activity recognition using low resolution wearable vision,
+  2009.
+
+\bibitem{Zhu06}
+J.~Zhu, S.~Rosset, H.~Zou, and T.~Hastie.
+\newblock Multi-class adaboost, 2009.
+
+\end{thebibliography}

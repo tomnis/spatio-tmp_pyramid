@@ -1,0 +1,17 @@
+
+\section{Conclusions and Future Work}
+
+	Our main contribution is two-fold. We show how to learn the most
+  discriminative partition schemes for spatio-temporal binning in action recognition, and
+  we introduce object-centric cuts for egocentric data.  
+  Our  approach improves on the current state of the art for recognizing activities of daily living from the first person viewpoint, and our
+  experiments demonstrate the positive impact of taking active object
+  locations into account via object-centric cuts.
+
+  In future work, we intend to investigate ways of learning the most
+  discriminative partition schemes on a per-class basis.
+	Additionally, it may be possible to incorporate other related sampling biases. For example, our current strategy only implicitly accounts for the positions of hands via our OCC's, but it may be useful to incorporate explicit features about the hands.
+	While we obtain good results using cuts that are
+  planar and axis-aligned, one could easily extend the approach to populate the pool with non-linear cuts and/or randomized rotations. Such a method would
+  make histogram computation more expensive, but may yield the discriminative
+	partitions necessary for more fine-grained decisions.

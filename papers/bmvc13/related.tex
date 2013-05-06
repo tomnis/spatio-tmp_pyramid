@@ -1,0 +1,43 @@
+
+\subsection{Related Work}
+
+%1) Brief para on activity recognition approaches in general - see some of my recent papers to grab those refs and text
+
+For generic (non-egocentric) activity recognition, methods based on tracked limbs and body shapes (e.g., \cite{Ramanan03, Rao01, Rodriguez08}) analyze human actions in a model-based way.  More recently, model-free alternatives based on low-level descriptors of gradients and optical flow have been explored (e.g.,~\cite{Schuldt04,Laptev08,Marszalek09}), attempting to directly learn the motion and appearance patterns associated with an activity.  A fairly standard pipeline has emerged analogous to the bag-of-visual-words approaches often employed for image classification: detect space-time interest points, extract local descriptors for each point, quantize to space-time visual words, then represent the entire video with a histogram counting how often each word appears.
+
+%2) Bag of words methods for video - straight bow, then elaborations...Laptev, Choi, Ramanan (object occurrences for ego, rather than stips), Adriana,...
+
+Since a pure bag-of-words lacks any notion of ordering, researchers have further drawn inspiration from spatial pyramid image representations~\cite{Lazebnik06,Bosch07} to construct space-time histograms from subcells within the video volume.  These subcells count features appearing in particular regions of the video, and as such they can flexibly capture the relative layout.  In~\cite{Laptev08}, a set of spatio-temporal bin structures is defined that uses six possible spatial grids and four temporal binning schemes, resulting in a total of 24 possible spatio-temporal partitions.  The histograms from all partitions are combined by a summed kernel.  In~\cite{Choi08}, a space-time pyramid with a hierarchy of regularly sized cubic bins is constructed, and used to pool the features at multiple resolutions.   A related strategy is to hierarchically bin neighboring local features and discriminatively learn which space-time weightings are most informative~\cite{Kovashka10}.  For the egocentric setting, a temporal pyramid that divides the video into half along the temporal axis (and uses no spatial partitions) is proposed, and used to histogram object detector outputs~\cite{Ramanan12}.  Unlike any of these approaches, our idea is to learn which pyramid structures are discriminative.
+
+
+%3) egocentric video analysis work - includes recognition and other apps like summarization, social role discovery etc-- cite Yong Jae, Lu Zheng, Fathi/Ren papers here, as well as refs in Yong Jae / Lu Zheng paper about ego work --- conclude that much of the work establishes the importance of *objects* in ego activity rec; they drive the actions (as opposed to say body pose as an important signal in other forms of activity rec, or low-level stips)
+
+Prior work on activity recognition from wearable cameras~\cite{Sundaram,Hanheide,Fathi-ICCV2011} often considers a particular environment of interest (like a particular kitchen) for which individual familiar objects are informative, and some explores the role of additional sensors such as Inertial Measurement Units~\cite{Spriggs}.  In contrast, we are interested in recognizing activities by a camera wearer moving about multiple environments and without additional sensors or pre-placed objects of interest.  Such a setting is also tackled in the recent work of~\cite{Ramanan12}.  We leverage their finding that object-based representations are critical for egocentric activity, and also use their idea of ``active'' objects.  However, while that method uses a simple hand-crafted histogram structure consisting of two temporal bins (one for the first half of the video, one for the second half of the video), we propose to learn a boosted combination of discriminative histogram partitions.  Through direct comparison in our results, we show that our idea achieves substantially more accurate activity recognition.
+
+Aside from recognizing activities, egocentric video analysis also entails interesting problems in object recognition~\cite{ren-gu-cvpr2010}, event segmentation~\cite{clarkson}, novelty detection~\cite{novelty}, summarization or unsupervised discovery~\cite{jojic,kitani,Lee12}, and the relationship between gaze and activity~\cite{Fathi12}.
+
+
+% add lu zheng
+
+
+%4) spatial binning strategies and learning thereof - Lazebnik, Sharma, Jiang,...; for this, do not give too much credit to Jiang.  Just say we explore discriminative partition selection for video data, and specifically in ego centric domain...
+Our approach to learn discriminative space-time bin structures for activity recognition takes inspiration from methods for image classification that select discriminative spatial bins~\cite{Sharma11,Jiang12}.  In~\cite{Sharma11}, the spatial grid and classifier are jointly learned using a maximum margin formulation, and in~\cite{Jiang12}, boosting is used to select useful randomized spatial partitions.  Both methods target scene classification from images.  In contrast, we learn discriminative partitions in space-time for activity recognition.  To our knowledge, no prior work considers discriminative learning of spatio-temporal partitions, whether for egocentric or non-egocentric data.  Furthermore, our idea to bias the randomized partitions to focus on active objects is novel, and is critical for recognition results, as we will show in experiments.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+	%
+%  Existing work has established that egocentric activities are object-driven
+%  in the sense that visible objects provide useful cues about what types of
+%  activities are occurring, rather than tracking of limb position or
+%  summarization of overall motion. In other words,
+%	egocentric activity recognition is ``all about
+%  the objects'' \cite{Ramanan12}, particularly the objects being interacted
+%  with (``active objects''), as
+%	recognition accuracy increases dramatically when locations of active
+%  objects in addition to passive objects are used as features.
+%
+

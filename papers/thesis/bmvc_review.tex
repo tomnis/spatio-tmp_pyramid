@@ -8,7 +8,7 @@
 % Enter the paper's authors in order
 % \addauthor{Name}{email/homepage}{INSTITUTION_CODE}
 \addauthor{Tomas McCandless}{tomas@cs.utexas.edu}{1}
-\addauthor{Supervised by Kristen Grauman}{grauman@cs.utexas.edu}{1}
+\addauthor{Kristen Grauman}{grauman@cs.utexas.edu}{1}
 
 % Enter the institutions
 % \addinstitution{Name\\Address}
@@ -17,7 +17,7 @@
  University of Texas at Austin
 }
 
-\runninghead{McCandless}{Object-Centric Spatio-Temporal Pyramids}
+\runninghead{McCandless, Grauman}{Object-Centric Spatio-Temporal Pyramids}
 
 % Any macro definitions you would like to include
 % These are not defined in the style file, because they don't begin
@@ -330,7 +330,7 @@
   simply take the center of each bounding box.
   Thus, each training example $V_i$ is a set of $(o,x,y,t)$ object
   locations, where $o$ denotes an object label.
-  
+
   To represent a particular training example $V_i$ using a particular
   partition scheme $\theta$, we compute separate bag-of-words histograms for
   each level in $\theta$, and concatenate all such histograms to form a
@@ -362,7 +362,7 @@
   Finally, we generate the 
 	final strong classifier $F$, which maximizes a weighted
   sum of correct classifications produced by each weak classifier.\\
-
+  \\
 	\noindent\textbf{Algorithm 1:} Training RSTP Classifier via Multi-Class Boosting \\
 	\textbf{INPUT:} 
 	\begin{itemize}
@@ -388,8 +388,8 @@
 						\item A weight $w_i = \frac{1}{C N_{c_i}}$ for each video clip,
 							where $N_{c_i}$ is the number of videos with label $c_i$,
               and $C$ is the number of distinct labels in the training data.
-						\item Current iteration number $j=0$.
-						\item Current accuracy $\sigma_j = 0$.
+						\item Current boosting round $j=0$.
+						%\item Current accuracy $\sigma_j = 0$.
 					\end{itemize}
 
 				\item For each round of boosting:

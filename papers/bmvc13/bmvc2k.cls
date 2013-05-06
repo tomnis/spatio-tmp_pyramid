@@ -128,7 +128,7 @@
 \bmv@pdfcompresslevel % reset as hyperref mucks it (of course..)
 \fi
 
-\DeclareUrlCommand\bmvaUrl{\urlstyle{sf}}
+%\DeclareUrlCommand\bmvaUrl{\urlstyle{sf}}
 
 \usepackage{amsmath}
 

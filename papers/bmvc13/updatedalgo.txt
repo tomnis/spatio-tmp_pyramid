@@ -1,0 +1,51 @@
+  \footnotesize
+  \line(1,0){365}\\
+  \noindent\textbf{Algorithm 1:} Training RSTP Classifier via Multi-Class Boosting \\
+  \line(1,0){365}\\
+  \textbf{\scriptsize INPUT:} 
+  \begin{itemize}
+    \item $N$ labeled training videos $\Phi = \{(V_i, c_i)\}_{i=1}^N$
+    \item A pool of $M$ partition patterns $\Theta = \{\theta\}$
+  \end{itemize}
+  \textbf{\scriptsize OUTPUT:}
+  \begin{itemize}
+    \item A strong video classifier $F$. For an unlabeled video $V$, 
+      $c=F(V)$ is the predicted label for $V$.
+  \end{itemize}
+      \begin{enumerate}
+        \item For each pattern $\theta \in \Theta$:
+          \begin{itemize}
+            \item Represent each $V_i \in \Phi$ using $\theta$
+            and train an SVM classifier $f_\theta$ on the 
+            resulting feature vectors.
+          \end{itemize}
+
+        \item Initialize:
+          \begin{itemize}
+            \item A weight vector $w$ with $w_i = \frac{1}{C N_{c_i}}$ for each video
+              where 
+              $N_{c_i}$ is the number of videos with label $c_i$, and 
+              $C$ is the number of distinct action labels.
+            \item Current boosting round $j=0$.
+          \end{itemize}
+
+        \item For each round of boosting:
+          \begin{itemize}
+            \item Increment $j$ and re-normalize the weight vector $w$.
+            \item For each pattern $\theta$,
+              compute its weighted classification error:
+              $\;\;\;\;e_\theta = w \cdot \mbox{\textbf{I}}(f_\theta(V) \neq c)$
+            \item Choose the pattern $\theta_j$ with minimum weighted
+              classification error $e_j$.
+            \item Compute the weight for $\theta_j$ as: 
+              $\;\;\;\;\alpha_j = \mbox{log} \frac{1 - e_j}{e_j} + \mbox{log}(C-1)$
+            \item Update the weight vector $w$:
+              $\;\;\;\;\forall i: w_i = w_i \cdot \mbox{exp}(\alpha_j \cdot
+              \mbox{\textbf{I}}(f_{\theta_j}(V_i) \neq c_i))$.
+            \item Generate the current strong classifier as: 
+              $\;\;\;\;F(V) = \mbox{argmax}_c \Sigma_{m=1}^j \alpha_m \cdot
+              \mbox{\textbf{I}}(f_{\theta_m}(V) = c)$
+          \end{itemize}
+      \end{enumerate}
+  \line(1,0){365}\\
+  \normalsize
